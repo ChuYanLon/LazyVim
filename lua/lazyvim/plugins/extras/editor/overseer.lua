@@ -65,7 +65,7 @@ return {
     optional = true,
     opts = {
       spec = {
-        { "<leader>o", group = "overseer" },
+        { "<leader>o", group = "overseer",icon = { icon = "", color = "green" }   },
       },
     },
   },
