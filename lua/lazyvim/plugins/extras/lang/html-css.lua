@@ -30,6 +30,9 @@ return {
           filetypes,
         },
         html = { init_options = { provideFormatter = false } },
+        cssmodules_ls = {
+          init_options = { camelCase = "dashes" },
+        },
         cssls = {
           init_options = { provideFormatter = false },
           settings = {
