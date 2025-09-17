@@ -31,6 +31,9 @@ return {
         },
         html = { init_options = { provideFormatter = false } },
         cssmodules_ls = {
+          capabilities = {
+            definitionProvider = false,
+          },
           init_options = { camelCase = "dashes" },
         },
         cssls = {
