@@ -50,6 +50,11 @@ return {
                 },
               },
             },
+            javascript = {
+              implicitProjectConfig = {
+                checkJs = true,
+              },
+            },
             typescript = {
               updateImportsOnFileMove = { enabled = "always" },
               suggest = {
