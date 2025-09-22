@@ -58,6 +58,21 @@ return {
     config = function(_, opts)
       local TS = require("nvim-treesitter")
 
+      setmetatable(require("nvim-treesitter.install"), {
+        __newindex = function(_, k)
+          if k == "compilers" then
+            vim.schedule(function()
+              LazyVim.error({
+                "Setting custom compilers for `nvim-treesitter` is no longer supported.",
+                "",
+                "For more info, see:",
+                "- [compilers](https://docs.rs/cc/latest/cc/#compile-time-requirements)",
+              })
+            end)
+          end
+        end,
+      })
+
       -- some quick sanity checks
       if not TS.get_installed then
         return LazyVim.error("Please use `:Lazy` and update `nvim-treesitter`")
@@ -94,12 +109,12 @@ return {
           end
 
           -- indents
-          if vim.tbl_get(opts, "indent", "enable") ~= false then
+          if vim.tbl_get(opts, "indent", "enable") ~= false and LazyVim.treesitter.have(ev.match, "indents") then
             LazyVim.set_default("indentexpr", "v:lua.LazyVim.treesitter.indentexpr()")
           end
 
           -- folds
-          if vim.tbl_get(opts, "folds", "enable") ~= false then
+          if vim.tbl_get(opts, "folds", "enable") ~= false and LazyVim.treesitter.have(ev.match, "folds") then
             if LazyVim.set_default("foldmethod", "expr") then
               LazyVim.set_default("foldexpr", "v:lua.LazyVim.treesitter.foldexpr()")
             end
