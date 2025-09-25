@@ -50,15 +50,13 @@ return {
                 },
               },
             },
-            javascript = {
-              implicitProjectConfig = {
-                checkJs = true,
-              },
-            },
             typescript = {
               updateImportsOnFileMove = { enabled = "always" },
               suggest = {
                 completeFunctionCalls = true,
+              },
+              implicitProjectConfig = {
+                checkJs = true,
               },
               inlayHints = {
                 enumMemberValues = { enabled = true },
