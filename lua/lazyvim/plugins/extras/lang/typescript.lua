@@ -55,7 +55,7 @@ return {
               suggest = {
                 completeFunctionCalls = true,
               },
-              implicitProjectConfig = {
+              implicitProjectConfiguration = {
                 checkJs = true,
               },
               inlayHints = {
