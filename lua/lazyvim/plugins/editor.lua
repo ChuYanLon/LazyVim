@@ -104,13 +104,6 @@ return {
     },
     keys = {
       {
-        "<leader>?",
-        function()
-          require("which-key").show({ global = false })
-        end,
-        desc = "Buffer Keymaps (which-key)",
-      },
-      {
         "<c-w><space>",
         function()
           require("which-key").show({ keys = "<c-w>", loop = true })
