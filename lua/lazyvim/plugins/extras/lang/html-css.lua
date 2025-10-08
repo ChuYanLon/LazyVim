@@ -104,4 +104,56 @@ return {
       },
     },
   },
+  {
+    "Jezda1337/nvim-html-css",
+    lazy = true,
+    event = "VeryLazy",
+    dependencies = { "saghen/blink.cmp", "nvim-treesitter/nvim-treesitter" }, -- Use this if you're using blink.cmp
+    opts = {
+      enable_on = {
+        "html",
+        "htmldjango",
+        "tsx",
+        "jsx",
+        "erb",
+        "svelte",
+        "vue",
+        "blade",
+        "php",
+        "templ",
+        "astro",
+      },
+      handlers = {
+        definition = {
+          bind = "gd",
+        },
+        hover = {
+          bind = "K",
+          wrap = true,
+          border = "none",
+          position = "cursor",
+        },
+      },
+      documentation = {
+        auto_show = true,
+      },
+      style_sheets = {},
+    },
+  },
+  {
+    "saghen/blink.cmp",
+    optional = true,
+    dependencies = { "Kaiser-Yang/blink-cmp-avante", "saghen/blink.compat" },
+    opts = {
+      sources = {
+        default = { "html-css" },
+        providers = {
+          ["html-css"] = {
+            name = "html-css",
+            module = "blink.compat.source",
+          },
+        },
+      },
+    },
+  },
 }
