@@ -345,6 +345,7 @@ return {
     dependencies = { "Kaiser-Yang/blink-cmp-avante", "saghen/blink.compat" },
     opts = {
       sources = {
+        default = { "avante" },
         providers = {
           avante = {
             module = "blink-cmp-avante",
