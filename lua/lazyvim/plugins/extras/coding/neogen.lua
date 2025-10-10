@@ -5,10 +5,36 @@ return {
   keys = {
     {
       "<leader>cn",
-      function()
-        require("neogen").generate()
-      end,
+      "",
       desc = "Generate Annotations (Neogen)",
+    },
+    {
+      "<leader>cnf",
+      function()
+        require("neogen").generate({ type = "func" })
+      end,
+      desc = "Generate func Annotations (Neogen)",
+    },
+    {
+      "<leader>cnc",
+      function()
+        require("neogen").generate({ type = "class" })
+      end,
+      desc = "Generate class Annotations (Neogen)",
+    },
+    {
+      "<leader>cnt",
+      function()
+        require("neogen").generate({ type = "type" })
+      end,
+      desc = "Generate type Annotations (Neogen)",
+    },
+    {
+      "<leader>cne",
+      function()
+        require("neogen").generate({ type = "file" })
+      end,
+      desc = "Generate file Annotations (Neogen)",
     },
   },
   opts = function(_, opts)
