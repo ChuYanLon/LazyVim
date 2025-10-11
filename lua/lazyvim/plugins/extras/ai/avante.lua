@@ -280,7 +280,7 @@ return {
         width = 40,
         sidebar_header = {
           enabled = true, -- true, false to enable/disable the header
-          align = "left", -- left, center, right for title
+          align = "center", -- left, center, right for title
           rounded = true,
         },
         edit = {
