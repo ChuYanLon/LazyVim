@@ -280,7 +280,7 @@ return {
         width = 40,
         sidebar_header = {
           enabled = true, -- true, false to enable/disable the header
-          align = "center", -- left, center, right for title
+          align = "left", -- left, center, right for title
           rounded = true,
         },
         edit = {
@@ -293,10 +293,6 @@ return {
           border = "rounded",
           ---@type "ours" | "theirs"
           focus_on_apply = "theirs", -- which diff to focus after applying
-        },
-        input = {
-          prefix = "",
-          height = 10, -- Height of the input window in vertical layout
         },
       },
     },
