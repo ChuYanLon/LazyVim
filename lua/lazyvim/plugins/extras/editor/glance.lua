@@ -4,7 +4,7 @@ return {
     cmd = "Glance",
     opts = {
       winbar = {
-        enable = false,
+        enable = true,
       },
       use_trouble_qf = true,
       folds = {
