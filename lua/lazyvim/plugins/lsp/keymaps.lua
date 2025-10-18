@@ -5,7 +5,7 @@ M._keys = nil
 
 ---@alias LazyKeysLspSpec LazyKeysSpec|{has?:string|string[], cond?:fun():boolean}
 ---@alias LazyKeysLsp LazyKeys|{has?:string|string[], cond?:fun():boolean}
-
+---
 ---@return LazyKeysLspSpec[]
 function M.get()
   if M._keys then
@@ -16,7 +16,7 @@ function M.get()
       { "<leader>cl", function() Snacks.picker.lsp_config() end, desc = "Lsp Info" },
       { "gd", vim.lsp.buf.definition, desc = "Goto Definition", has = "definition" },
       { "gr", vim.lsp.buf.references, desc = "References", nowait = true },
-      { "gI", vim.lsp.buf.implementation, desc = "Goto Implementation" },
+      { "gi", vim.lsp.buf.implementation, desc = "Goto Implementation" },
       { "gy", vim.lsp.buf.type_definition, desc = "Goto T[y]pe Definition" },
       { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
       { "K", function() return vim.lsp.buf.hover() end, desc = "Hover" },
