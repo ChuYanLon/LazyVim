@@ -7,6 +7,10 @@ return {
         enable = true,
       },
       use_trouble_qf = true,
+      list = {
+        position = "right", -- Position of the list window 'left'|'right'
+        width = 0.4, -- Width as percentage (0.1 to 0.5)
+      },
       folds = {
         fold_closed = "",
         fold_open = "",
