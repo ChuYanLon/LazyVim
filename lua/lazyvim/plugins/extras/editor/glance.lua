@@ -45,7 +45,7 @@ return {
       local Keys = require("lazyvim.plugins.lsp.keymaps").get()
       -- stylua: ignore
       vim.list_extend(Keys, {
-        { "gd","<cmd>glance definitions<cr>",  desc = "Goto Definition", has = "definition" },
+        { "gd","<CMD>Glance definitions<CR>",  desc = "Goto Definition", has = "definition" },
         { "gr", "<CMD>Glance references<CR>", nowait = true, desc = "References" },
         { "gi", "<CMD>Glance implementations<CR>", desc = "Goto Implementation" },
         { "gy", "<CMD>Glance type_definitions<CR>",desc = "Goto T[y]pe Definition" },
