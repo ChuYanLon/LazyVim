@@ -258,7 +258,7 @@ return {
         end
       end
 
-      local js_filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" }
+      local js_filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact","vue" }
 
       local vscode = require("dap.ext.vscode")
       vscode.type_to_filetypes["node"] = js_filetypes
@@ -271,6 +271,41 @@ return {
             runtimeExecutable = vim.fn.executable("tsx") == 1 and "tsx" or "ts-node"
           end
           dap.configurations[language] = {
+              {
+              type = "pwa-chrome",
+              request = "launch",
+              name = "Launch server",
+              program = "${file}",
+              cwd = "${workspaceFolder}",
+              sourceMaps = true,
+              runtimeExecutable = runtimeExecutable,
+              skipFiles = {
+                "<node_internals>/**",
+                "node_modules/**",
+                "${workspaceFolder}/node_modules/**",
+                "**/*.min.js",
+                "**/chunk*.js",
+                "**/webpack/runtime/**",
+                "**/webpack-internal/**",
+                "webpack://**",
+                "webpack-internal://**",
+                "**/[^.]*",
+                "**/@fs/**",
+                "**/?t=*",
+                "**/*?*=",
+                "**/virtual:*",
+                "**/vite/client",
+                "**/@vite/client",
+                "**/hmr*",
+                "**/*refresh*",
+                "**/bootstrap",
+              },
+              resolveSourceMapLocations = {
+                "${workspaceFolder}/**",
+                "!**/node_modules/**",
+                 "webpack:///src/*": "${webRoot}/*"
+              },
+            },
             {
               type = "pwa-node",
               request = "launch",
