@@ -124,3 +124,31 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
 })
+
+local function clear_cmdarea()
+  vim.defer_fn(function()
+    vim.api.nvim_echo({}, false, {})
+  end, 800)
+end
+
+local echo = function(txts)
+  vim.api.nvim_echo(txts, false, {})
+end
+
+vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+  nested = true,
+  group = augroup("autosave"),
+  callback = function()
+    if vim.g.autosave and #vim.api.nvim_buf_get_name(0) ~= 0 and vim.bo.buflisted then
+      vim.fn.timer_stop(vim.b.save_timer or 0)
+      vim.b.save_timer = vim.fn.timer_start(1000, function()
+        if vim.fn.mode(true):sub(1, 1) ~= "i" then
+          vim.cmd("silent w")
+        end
+        vim.b.save_timer = nil
+        clear_cmdarea()
+      end, { ["repeat"] = 0 })
+    end
+  end,
+})
+
