@@ -298,10 +298,7 @@ return {
                 "**/@vite/client",
                 "**/hmr*",
                 "**/*refresh*",
-                "**/bootstrap",
-              },
-              sourceMapPathOverrides={
-                 "webpack:///src/*": "${webRoot}/*"
+                "**/bootstrap"
               },
               resolveSourceMapLocations = {
                 "${workspaceFolder}/**",
