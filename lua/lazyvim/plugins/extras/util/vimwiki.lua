@@ -1,4 +1,4 @@
-{
+return {
   {
     "ChuYanLon/vimwiki",
     branch = "local-dev",
