@@ -278,4 +278,15 @@ return {
       return opts
     end,
   },
+  {
+    "folke/which-key.nvim",
+    opts = {
+      spec = {
+        {
+          mode = { "n", "x" },
+          { "<leader>k", desc = "rss", icon = " " }
+        },
+      },
+    },
+  }
 }
