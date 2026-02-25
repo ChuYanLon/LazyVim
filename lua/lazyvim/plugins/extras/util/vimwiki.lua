@@ -5,7 +5,7 @@
     lazy = true,
     event = "VeryLazy",
     keys = {
-      {"<leader>m<leader>","",desc="VimwikiAdvanced"},
+      { "<leader>m<leader>", "", desc = "VimwikiAdvanced" },
       {
         "<leader>ms",
         function()
@@ -55,9 +55,9 @@
       spec = {
         {
           mode = { "n", "x" },
-          { "<leader>m", desc = "wiki", icon = " " }
+          { "<leader>m", desc = "wiki", icon = " " },
         },
       },
     },
-  }
+  },
 }
