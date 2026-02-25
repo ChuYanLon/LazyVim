@@ -300,10 +300,12 @@ return {
                 "**/*refresh*",
                 "**/bootstrap",
               },
+              sourceMapPathOverrides={
+                 "webpack:///src/*": "${webRoot}/*"
+              },
               resolveSourceMapLocations = {
                 "${workspaceFolder}/**",
-                "!**/node_modules/**",
-                 "webpack:///src/*": "${webRoot}/*"
+                "!**/node_modules/**"
               },
             },
             {
