@@ -5,6 +5,9 @@ vim.g.maplocalleader = "\\"
 -- LazyVim auto format
 vim.g.autoformat = true
 
+-- LazyVim auto save
+vim.g.autosave = false
+
 -- Snacks animations
 -- Set to `false` to globally disable all snacks animations
 vim.g.snacks_animate = true
