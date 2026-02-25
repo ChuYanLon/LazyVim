@@ -274,7 +274,7 @@ return {
               {
               type = "pwa-chrome",
               request = "launch",
-              name = "Launch server",
+              name = "Launch chrome",
               program = "${file}",
               cwd = "${workspaceFolder}",
               sourceMaps = true,
