@@ -300,8 +300,14 @@ return {
 								"**/hmr*",
 								"**/*refresh*",
 								"**/bootstrap",
-                "${workspaceFolder}/dap-src:**",
-                "${workspaceFolder}/dap-src/**",
+              -- 新增：针对 dap-src: 虚拟路径及其子路径
+      "dap-src:**",
+      "dap-src:/**",
+      "dap-src:/**/**",
+
+      -- 针对 localhost:3000 这样的端口路径
+      "**/localhost:*",
+      "**/localhost꞉*",  -- 包含你路径里的特殊冒号
 							},
 							sourceMapPathOverrides = {
 								["webpack:///src/*"] = "${webRoot}/*",
