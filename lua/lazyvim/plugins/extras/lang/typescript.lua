@@ -300,6 +300,7 @@ return {
 								"**/hmr*",
 								"**/*refresh*",
 								"**/bootstrap",
+                "dap-src:/**/*"
 							},
 							sourceMapPathOverrides = {
 								["webpack:///src/*"] = "${webRoot}/*",
