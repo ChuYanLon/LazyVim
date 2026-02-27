@@ -278,7 +278,7 @@ return {
 							name = "Launch Chrome",
 							url = "http://localhost:3000",
 							webRoot = "${workspaceFolder}",
-							sourceMaps = true,
+							sourceMaps = false,
 							protocol = "inspector",
 							skipFiles = {
 								"<node_internals>/**",
