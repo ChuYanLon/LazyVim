@@ -276,17 +276,7 @@ return {
 							type = "pwa-chrome",
 							request = "launch",
 							name = "Launch Chrome",
-							url = function()
-								local default = "http://localhost:3000"
-								local input =
-									vim.fn.input("请输入调试 URL（直接回车或 Esc 取消）：", default)
-								if input == nil or vim.trim(input) == "" then
-									require("dap").close()
-									require("dapui").close()
-									return
-								end
-								return vim.trim(input)
-							end,
+							url = "http://localhost:3000",
 							webRoot = "${workspaceFolder}",
 							sourceMaps = true,
 							protocol = "inspector",
