@@ -310,8 +310,7 @@ return {
       "**/localhost꞉*",  -- 包含你路径里的特殊冒号
 							},
 							sourceMapPathOverrides = {
-								["webpack:///src/*"] = "${webRoot}/*",
-                ["*"] = "${webRoot}/*",  -- 强力兜底，强制映射回真实路径
+								["webpack:///src/*"] = "${webRoot}/*"
 							},
 						},
 						{
