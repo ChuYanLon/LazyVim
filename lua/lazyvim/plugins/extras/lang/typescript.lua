@@ -279,7 +279,7 @@ return {
               webRoot = "${workspaceFolder}",
               cwd = "${workspaceFolder}",
               sourceMaps = true,
-              runtimeExecutable = runtimeExecutable,
+              protocol = "inspector",
               skipFiles = {
                 "<node_internals>/**",
                 "node_modules/**",
