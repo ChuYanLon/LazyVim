@@ -277,23 +277,18 @@ return {
     request = "launch",
     name = "Launch Chrome → localhost:3000 (Vite)",
 
-   url = function()
-  local default = "http://localhost:5173"
-  local input = vim.fn.input({
-    prompt = "Debug URL (empty/Esc to cancel): ",
-    default = default,
-    -- 可以加个回调风格，但 vim.fn.input 是同步的
-  })
+  url = function()
+    local default = "http://localhost:5173"
+    local input = vim.fn.input("调试 URL（空或 Esc 取消）：", default)
 
-  -- 明确处理取消/空输入
-  if not input or input:match("^%s*$") then  -- nil 或 全是空格
-    print("Debug cancelled (no URL provided)")
-    return nil
-  end
+    -- 关键在这里：如果用户没给有效输入，就返回一个无效值，让 dap 启动失败但不乱弹
+    -- 返回空字符串会让 chrome adapter 报错并安静退出（通常不闪 UI）
+    if input == nil or vim.trim(input) == "" then
+      return ""   -- ← 故意返回空，让 adapter fail fast，不打开浏览器
+    end
 
-  -- 简单 trim 一下（可选）
-  return vim.trim(input)
-end,
+    return vim.trim(input)
+  end,
     webRoot = "${workspaceFolder}",              -- 项目根目录
 
     -- 下面这些是原配置里的关键字段，几乎可以直接对应
