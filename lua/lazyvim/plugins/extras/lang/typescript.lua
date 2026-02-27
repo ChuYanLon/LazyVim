@@ -278,7 +278,7 @@ return {
 							name = "Launch Chrome",
 							url = "http://localhost:3000",
 							webRoot = "${workspaceFolder}",
-							sourceMaps = false,
+							sourceMaps = true,
 							protocol = "inspector",
 							skipFiles = {
 								"<node_internals>/**",
@@ -304,8 +304,6 @@ return {
       "dap-src:**",
       "dap-src:/**",
       "dap-src:/**/**",
-
-      -- 针对 localhost:3000 这样的端口路径
       "**/localhost:*",
       "**/localhost꞉*",  -- 包含你路径里的特殊冒号
 							},
