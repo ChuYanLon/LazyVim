@@ -273,41 +273,40 @@ return {
 					end
 					dap.configurations[language] = {
 						{
-							type = "pwa-chrome",
-							request = "launch",
-							name = "Launch chrome",
-							url = "http://localhost:3000",
-							webRoot = "${workspaceFolder}",
-							sourceMaps = true,
-							protocol = "inspector",
-							skipFiles = {
-								"<node_internals>/**",
-								"node_modules/**",
-								"${workspaceFolder}/node_modules/**",
-								"**/*.min.js",
-								"**/chunk*.js",
-								"**/webpack/runtime/**",
-								"**/webpack-internal/**",
-								"webpack://**",
-								"webpack-internal://**",
-								"**/[^.]*",
-								"**/@fs/**",
-								"**/?t=*",
-								"**/*?*=",
-								"**/virtual:*",
-								"**/vite/client",
-								"**/@vite/client",
-								"**/hmr*",
-								"**/*refresh*",
-								"**/bootstrap",
-							},
-							resolveSourceMapLocations = {
-								"${workspaceFolder}/**",
-								"!**/node_modules/**",
-							},
-							sourceMapPathOverrides = {
-								["webpack:///src/*"] = "${webRoot}/*",
-							},
+					type = "pwa-chrome",
+    request = "launch",
+    name = "Launch Chrome → localhost:5173 (Vite)",
+
+    url = "http://localhost:5173",               -- ← 你的 Vite 地址
+    webRoot = "${workspaceFolder}",              -- 项目根目录
+
+    -- 下面这些是原配置里的关键字段，几乎可以直接对应
+    sourceMaps = true,
+    protocol = "inspector",
+
+    -- 强烈建议保留（防止卡在 node_modules / vite 内部文件）
+    skipFiles = {
+      "<node_internals>/**",
+      "node_modules/**",
+      "${workspaceFolder}/node_modules/**",
+      "**/*.min.js",
+      "**/chunk*.js",
+      "**/webpack/runtime/**",
+      "**/webpack-internal/**",
+      "webpack://**",
+      "webpack-internal://**",
+      "**/@fs/**",
+      "**/vite/client",
+      "**/@vite/client",
+      "**/hmr*",
+      "**/*refresh*",
+    },
+
+    -- 如果你用了 sourceMapPathOverrides，也可以加进来
+    sourceMapPathOverrides = {
+      ["webpack:///src/*"] = "${webRoot}/*",
+      -- 如果有其他特殊路径映射，也可以继续加
+    },
 						},
 						{
 							type = "pwa-node",
