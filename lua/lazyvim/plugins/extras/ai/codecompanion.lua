@@ -58,7 +58,7 @@ return {
     },
     config = function()
       require("codecompanion").setup({
-        prompt_library = require("prompt").getPrompts(),
+        prompt_library = require("lazyvim.prompt").getPrompts(),
         extensions = {
           mcphub = {
             callback = "mcphub.extensions.codecompanion",
