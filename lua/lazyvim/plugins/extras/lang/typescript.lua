@@ -277,7 +277,17 @@ return {
     request = "launch",
     name = "Launch Chrome → localhost:3000 (Vite)",
 
-    url = "http://localhost:3000",               -- ← 你的 Vite 地址
+   url = function()
+    -- vim.fn.input 是最简单可靠的方式（同步）
+    return vim.fn.input("Enter debug URL: ", "http://localhost:5173")
+
+    -- 或者用更现代的 vim.ui.input（异步，但需要处理回调）
+    -- vim.ui.input({ prompt = "Enter debug URL: ", default = "http://localhost:5173" }, function(input)
+    --   if input then
+    --     -- 但因为 dap 配置期望同步返回值，这里不推荐直接用 vim.ui.input
+    --   end
+    -- end)
+  end,
     webRoot = "${workspaceFolder}",              -- 项目根目录
 
     -- 下面这些是原配置里的关键字段，几乎可以直接对应
