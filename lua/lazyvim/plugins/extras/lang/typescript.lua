@@ -277,18 +277,16 @@ return {
     request = "launch",
     name = "Launch Chrome → localhost:3000 (Vite)",
 
-  url = function()
+ resolveConfiguration = function(callback)
     local default = "http://localhost:5173"
-    local input = vim.fn.input("调试 URL（空或 Esc 取消）：", default)
+    local input = vim.fn.input("输入 URL（直接回车或 Esc 取消）：", default)
 
-    -- 关键在这里：如果用户没给有效输入，就返回一个无效值，让 dap 启动失败但不乱弹
-    -- 返回空字符串会让 chrome adapter 报错并安静退出（通常不闪 UI）
     if input == nil or vim.trim(input) == "" then
-      return ""   -- ← 故意返回空，让 adapter fail fast，不打开浏览器
-    end
-
-    return vim.trim(input)
-  end,
+      -- 返回 nil → nvim-dap 不会启动这个 session
+      -- 通常不会打开浏览器，也基本不闪 dap-ui（或只闪极短一下就消失）
+      callback(nil)
+      return
+                end,
     webRoot = "${workspaceFolder}",              -- 项目根目录
 
     -- 下面这些是原配置里的关键字段，几乎可以直接对应
