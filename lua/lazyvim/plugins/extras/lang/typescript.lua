@@ -325,23 +325,6 @@ return {
 						},
 						{
 							type = "pwa-node",
-							request = "launch",
-							name = "Launch test",
-							program = "npm run test",
-							cwd = "${workspaceFolder}",
-							sourceMaps = true,
-							skipFiles = {
-								"<node_internals>/**",
-								"node_modules/**",
-								"${workspaceFolder}/node_modules/**",
-							},
-							resolveSourceMapLocations = {
-								"${workspaceFolder}/**",
-								"!**/node_modules/**",
-							},
-						},
-						{
-							type = "pwa-node",
 							request = "attach",
 							name = "Attach",
 							processId = require("dap.utils").pick_process,
