@@ -277,14 +277,11 @@ return {
 							request = "launch",
 							name = "Launch Chrome → localhost:3000 (Vite)",
 
-							resolveConfiguration = function(callback)
+							resolveConfiguration = function()
 								local default = "http://localhost:5173"
 								local input = vim.fn.input("输入 URL（直接回车或 Esc 取消）：", default)
 
 								if input == nil or vim.trim(input) == "" then
-									-- 返回 nil → nvim-dap 不会启动这个 session
-									-- 通常不会打开浏览器，也基本不闪 dap-ui（或只闪极短一下就消失）
-									callback(nil)
 									return
 								end
 							end,
