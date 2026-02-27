@@ -278,16 +278,22 @@ return {
     name = "Launch Chrome → localhost:3000 (Vite)",
 
    url = function()
-    -- vim.fn.input 是最简单可靠的方式（同步）
-    return vim.fn.input("Enter debug URL: ", "http://localhost:5173")
+  local default = "http://localhost:5173"
+  local input = vim.fn.input({
+    prompt = "Debug URL (empty/Esc to cancel): ",
+    default = default,
+    -- 可以加个回调风格，但 vim.fn.input 是同步的
+  })
 
-    -- 或者用更现代的 vim.ui.input（异步，但需要处理回调）
-    -- vim.ui.input({ prompt = "Enter debug URL: ", default = "http://localhost:5173" }, function(input)
-    --   if input then
-    --     -- 但因为 dap 配置期望同步返回值，这里不推荐直接用 vim.ui.input
-    --   end
-    -- end)
-  end,
+  -- 明确处理取消/空输入
+  if not input or input:match("^%s*$") then  -- nil 或 全是空格
+    print("Debug cancelled (no URL provided)")
+    return nil
+  end
+
+  -- 简单 trim 一下（可选）
+  return vim.trim(input)
+end,
     webRoot = "${workspaceFolder}",              -- 项目根目录
 
     -- 下面这些是原配置里的关键字段，几乎可以直接对应
