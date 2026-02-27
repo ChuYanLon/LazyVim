@@ -311,6 +311,7 @@ return {
 							},
 							sourceMapPathOverrides = {
 								["webpack:///src/*"] = "${webRoot}/*",
+                ["*"] = "${webRoot}/*",  -- 强力兜底，强制映射回真实路径
 							},
 						},
 						{
