@@ -1,3 +1,18 @@
+local function deepMerge(t1, t2)
+  local result = {}
+  for k, v in pairs(t1) do
+    result[k] = type(v) == "table" and deepMerge({}, v) or v
+  end
+  for k, v in pairs(t2) do
+    if type(v) == "table" and type(result[k]) == "table" then
+      result[k] = deepMerge(result[k], v)
+    else
+      result[k] = v
+    end
+  end
+  return result
+end
+
 return {
   {
     "neo451/feed.nvim",
@@ -12,8 +27,8 @@ return {
       { "<leader>ks", "<cmd>Feed search<cr>", { desc = "search" } },
       { "<leader>kl", "<cmd>Feed<cr>", { desc = "list" } },
     },
-    config = function()
-      require("feed").setup({
+    config = function(_,opts)
+      require("feed").setup(deepMerge({
         ui = {
           order = { "date", "feed", "title", "reading_time" },
           reading_time = {
@@ -26,9 +41,8 @@ return {
               return string.format("(%s min)", time)
             end,
           },
-        },
-        feeds = vim.g.rss_feeds and vim.g.rss_feeds or {},
-      })
+        }
+      },opts or {}))
     end,
   },
   {
