@@ -276,28 +276,18 @@ return {
 							type = "pwa-chrome",
 							request = "launch",
 							name = "Launch Chrome → localhost:3000 (Vite)",
-
 							url = function()
 								local default = "http://localhost:3000"
-								-- 输入框弹出
 								local input =
 									vim.fn.input("请输入调试 URL（直接回车或 Esc 取消）：", default)
-
-								-- 如果取消或空输入，返回一个明显无效的值，让 adapter 快速失败
 								if input == nil or vim.trim(input) == "" then
-									-- 返回空字符串，pwa-chrome 会因为 url 无效而立刻中止
 									return ""
 								end
-
 								return vim.trim(input)
 							end,
-							webRoot = "${workspaceFolder}", -- 项目根目录
-
-							-- 下面这些是原配置里的关键字段，几乎可以直接对应
+							webRoot = "${workspaceFolder}",
 							sourceMaps = true,
 							protocol = "inspector",
-
-							-- 强烈建议保留（防止卡在 node_modules / vite 内部文件）
 							skipFiles = {
 								"<node_internals>/**",
 								"node_modules/**",
@@ -308,17 +298,19 @@ return {
 								"**/webpack-internal/**",
 								"webpack://**",
 								"webpack-internal://**",
+								"**/[^.]*",
 								"**/@fs/**",
+								"**/?t=*",
+								"**/*?*=",
+								"**/virtual:*",
 								"**/vite/client",
 								"**/@vite/client",
 								"**/hmr*",
 								"**/*refresh*",
+								"**/bootstrap",
 							},
-
-							-- 如果你用了 sourceMapPathOverrides，也可以加进来
 							sourceMapPathOverrides = {
 								["webpack:///src/*"] = "${webRoot}/*",
-								-- 如果有其他特殊路径映射，也可以继续加
 							},
 						},
 						{
