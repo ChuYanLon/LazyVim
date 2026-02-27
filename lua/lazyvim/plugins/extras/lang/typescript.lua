@@ -350,11 +350,6 @@ return {
 					}
 				end
 			end
-			dap.listeners.before.event_initialized["cancel_empty_chrome_url"] = function(session, _)
-				if session.config.type == "pwa-chrome" and (session.config.url == "" or not session.config.url) then
-					session:terminate()
-				end
-			end
 		end,
 	},
 
