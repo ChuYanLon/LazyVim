@@ -281,7 +281,9 @@ return {
 								local input =
 									vim.fn.input("请输入调试 URL（直接回车或 Esc 取消）：", default)
 								if input == nil or vim.trim(input) == "" then
-									return "about:blank?cancel" -- 这个值 chrome 不会打开任何有意义的东西，且 adapter 会快速 fail
+									require("dap").close()
+									require("dapui").close()
+									return
 								end
 								return vim.trim(input)
 							end,
