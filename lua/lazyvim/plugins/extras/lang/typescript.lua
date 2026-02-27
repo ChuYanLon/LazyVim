@@ -277,7 +277,6 @@ return {
               name = "Launch chrome",
               url =  "http://localhost:3000",
               webRoot = "${workspaceFolder}",
-              cwd = "${workspaceFolder}",
               sourceMaps = true,
               protocol = "inspector",
               skipFiles = {
@@ -305,6 +304,9 @@ return {
                 "${workspaceFolder}/**",
                 "!**/node_modules/**"
               },
+               sourceMapPathOverrides = {
+                 "webpack:///src/*": "${webRoot}/*"
+              }
             },
             {
               type = "pwa-node",
