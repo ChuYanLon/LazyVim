@@ -300,20 +300,9 @@ return {
 								"**/hmr*",
 								"**/*refresh*",
 								"**/bootstrap",
-              -- 针对 dap-src: 虚拟路径（关键匹配方式）
-  "dap-src:**",               -- 直接匹配 scheme + 任意子路径
-  "dap-src:/**",
-  "dap-src:/**/**",
-  "dap-src:/*",               -- 匹配根级
-  "**/dap-src:**",            -- 如果被当成子路径
-
-  -- 针对 localhost:3000 部分（你的路径有这个）
-  "**/localhost:*",
-  "**/localhost꞉*",           -- 包含可能的 Unicode 冒号
-  "**/*:3000",                -- 兜底端口匹配
 							},
 							sourceMapPathOverrides = {
-								["webpack:///src/*"] = "${webRoot}/*"
+								["webpack:///src/*"] = "${webRoot}/*",
 							},
 						},
 						{
@@ -327,6 +316,25 @@ return {
 							skipFiles = {
 								"<node_internals>/**",
 								"node_modules/**",
+								"${workspaceFolder}/node_modules/**",
+							},
+							resolveSourceMapLocations = {
+								"${workspaceFolder}/**",
+								"!**/node_modules/**",
+							},
+						},
+						{
+							type = "pwa-node",
+							request = "launch",
+							name = "Launch test",
+							program = "run test",
+							cwd = "${workspaceFolder}",
+							sourceMaps = true,
+							runtimeExecutable = "npm",
+							skipFiles = {
+								"<node_internals>/**",
+								"node_modules/**",
+								"${workspaceFolder}/node_modules/**",
 							},
 							resolveSourceMapLocations = {
 								"${workspaceFolder}/**",
