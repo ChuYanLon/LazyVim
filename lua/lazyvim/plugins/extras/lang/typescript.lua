@@ -275,7 +275,7 @@ return {
 						{
 							type = "pwa-chrome",
 							request = "launch",
-							name = "Launch Chrome",
+							name = "Launch Chrome :3000",
 							url = "http://localhost:3000",
 							webRoot = "${workspaceFolder}",
 							sourceMaps = true,
