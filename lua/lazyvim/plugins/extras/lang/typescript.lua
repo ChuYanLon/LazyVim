@@ -277,13 +277,19 @@ return {
 							request = "launch",
 							name = "Launch Chrome → localhost:3000 (Vite)",
 
-							resolveConfiguration = function()
-								local default = "http://localhost:5173"
-								local input = vim.fn.input("输入 URL（直接回车或 Esc 取消）：", default)
+							url = function()
+								local default = "http://localhost:3000"
+								-- 输入框弹出
+								local input =
+									vim.fn.input("请输入调试 URL（直接回车或 Esc 取消）：", default)
 
+								-- 如果取消或空输入，返回一个明显无效的值，让 adapter 快速失败
 								if input == nil or vim.trim(input) == "" then
-									return
+									-- 返回空字符串，pwa-chrome 会因为 url 无效而立刻中止
+									return ""
 								end
+
+								return vim.trim(input)
 							end,
 							webRoot = "${workspaceFolder}", -- 项目根目录
 
@@ -350,6 +356,11 @@ return {
 							},
 						},
 					}
+				end
+			end
+			dap.listeners.before.event_initialized["cancel_empty_chrome_url"] = function(session, _)
+				if session.config.type == "pwa-chrome" and (session.config.url == "" or not session.config.url) then
+					session:terminate()
 				end
 			end
 		end,
