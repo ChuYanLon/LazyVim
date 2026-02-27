@@ -327,10 +327,9 @@ return {
 							type = "pwa-node",
 							request = "launch",
 							name = "Launch test",
-							program = "run test",
+							program = "npm run test",
 							cwd = "${workspaceFolder}",
 							sourceMaps = true,
-							runtimeExecutable = "npm",
 							skipFiles = {
 								"<node_internals>/**",
 								"node_modules/**",
