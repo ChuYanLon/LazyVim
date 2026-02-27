@@ -275,7 +275,7 @@ return {
 						{
 							type = "pwa-chrome",
 							request = "launch",
-							name = "Launch Chrome → localhost:3000 (Vite)",
+							name = "Launch Chrome",
 							url = function()
 								local default = "http://localhost:3000"
 								local input =
@@ -348,11 +348,6 @@ return {
 							},
 						},
 					}
-				end
-			end
-			dap.listeners.before["initialize"]["cancel_chrome_no_url"] = function(_, config)
-				if config.type == "pwa-chrome" and (config.url == "about:blank?cancel" or config.url == "") then
-					return false
 				end
 			end
 		end,
