@@ -273,49 +273,50 @@ return {
 					end
 					dap.configurations[language] = {
 						{
-					type = "pwa-chrome",
-    request = "launch",
-    name = "Launch Chrome → localhost:3000 (Vite)",
+							type = "pwa-chrome",
+							request = "launch",
+							name = "Launch Chrome → localhost:3000 (Vite)",
 
- resolveConfiguration = function(callback)
-    local default = "http://localhost:5173"
-    local input = vim.fn.input("输入 URL（直接回车或 Esc 取消）：", default)
+							resolveConfiguration = function(callback)
+								local default = "http://localhost:5173"
+								local input = vim.fn.input("输入 URL（直接回车或 Esc 取消）：", default)
 
-    if input == nil or vim.trim(input) == "" then
-      -- 返回 nil → nvim-dap 不会启动这个 session
-      -- 通常不会打开浏览器，也基本不闪 dap-ui（或只闪极短一下就消失）
-      callback(nil)
-      return
-                end,
-    webRoot = "${workspaceFolder}",              -- 项目根目录
+								if input == nil or vim.trim(input) == "" then
+									-- 返回 nil → nvim-dap 不会启动这个 session
+									-- 通常不会打开浏览器，也基本不闪 dap-ui（或只闪极短一下就消失）
+									callback(nil)
+									return
+								end
+							end,
+							webRoot = "${workspaceFolder}", -- 项目根目录
 
-    -- 下面这些是原配置里的关键字段，几乎可以直接对应
-    sourceMaps = true,
-    protocol = "inspector",
+							-- 下面这些是原配置里的关键字段，几乎可以直接对应
+							sourceMaps = true,
+							protocol = "inspector",
 
-    -- 强烈建议保留（防止卡在 node_modules / vite 内部文件）
-    skipFiles = {
-      "<node_internals>/**",
-      "node_modules/**",
-      "${workspaceFolder}/node_modules/**",
-      "**/*.min.js",
-      "**/chunk*.js",
-      "**/webpack/runtime/**",
-      "**/webpack-internal/**",
-      "webpack://**",
-      "webpack-internal://**",
-      "**/@fs/**",
-      "**/vite/client",
-      "**/@vite/client",
-      "**/hmr*",
-      "**/*refresh*",
-    },
+							-- 强烈建议保留（防止卡在 node_modules / vite 内部文件）
+							skipFiles = {
+								"<node_internals>/**",
+								"node_modules/**",
+								"${workspaceFolder}/node_modules/**",
+								"**/*.min.js",
+								"**/chunk*.js",
+								"**/webpack/runtime/**",
+								"**/webpack-internal/**",
+								"webpack://**",
+								"webpack-internal://**",
+								"**/@fs/**",
+								"**/vite/client",
+								"**/@vite/client",
+								"**/hmr*",
+								"**/*refresh*",
+							},
 
-    -- 如果你用了 sourceMapPathOverrides，也可以加进来
-    sourceMapPathOverrides = {
-      ["webpack:///src/*"] = "${webRoot}/*",
-      -- 如果有其他特殊路径映射，也可以继续加
-    },
+							-- 如果你用了 sourceMapPathOverrides，也可以加进来
+							sourceMapPathOverrides = {
+								["webpack:///src/*"] = "${webRoot}/*",
+								-- 如果有其他特殊路径映射，也可以继续加
+							},
 						},
 						{
 							type = "pwa-node",
