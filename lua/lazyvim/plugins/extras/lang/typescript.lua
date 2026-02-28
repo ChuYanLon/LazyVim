@@ -271,50 +271,50 @@ return {
 					if language:find("typescript") then
 						runtimeExecutable = vim.fn.executable("tsx") == 1 and "tsx" or "ts-node"
 					end
-					--判断当前根目录是否存在package.json 并且里面是否有test脚本，如果没有则不添加npm test的配置
-					local package_json = vim.fs.find("package.json", { path = vim.fn.getcwd(), upward = true })[1]
-					if package_json then
-						local package_data = vim.fn.json_decode(vim.fn.readfile(package_json))
-						if package_data.scripts and package_data.scripts.test then
-							dap.configurations[language] = {
-								{
-									type = "pwa-node",
-									request = "launch",
-									name = "npm: test",
-									cwd = "${workspaceFolder}",
-									sourceMaps = true,
-									runtimeExecutable = "npm",
-									runtimeArgs = { "run", "test" },
-									skipFiles = {
-										"<node_internals>/**",
-										"node_modules/**",
-										"${workspaceFolder}/node_modules/**",
-										"**/*.min.js",
-										"**/chunk*.js",
-										"**/webpack/runtime/**",
-										"**/webpack-internal/**",
-										"webpack://**",
-										"webpack-internal://**",
-										"**/[^.]*",
-										"**/@fs/**",
-										"**/?t=*",
-										"**/*?*=",
-										"**/virtual:*",
-										"**/vite/client",
-										"**/@vite/client",
-										"**/hmr*",
-										"**/*refresh*",
-										"**/bootstrap",
-									},
-									resolveSourceMapLocations = {
-										"${workspaceFolder}/**",
-										"!**/node_modules/**",
-									},
-								},
-							}
-						end
-					end
-					table.insert(dap.configurations[language] or {}, {
+					-- local package_json = vim.fs.find("package.json", { path = vim.fn.getcwd(), upward = true })[1]
+					-- if package_json then
+					-- 	local package_data = vim.fn.json_decode(vim.fn.readfile(package_json))
+					-- 	if package_data.scripts and package_data.scripts.test then
+					-- 		dap.configurations[language] = {
+					-- 			,
+					-- 		}
+					-- 	end
+					-- end
+					dap.configurations[language] = {
+						{
+							type = "pwa-node",
+							request = "launch",
+							name = "npm: test",
+							cwd = "${workspaceFolder}",
+							sourceMaps = true,
+							runtimeExecutable = "npm",
+							runtimeArgs = { "run", "test" },
+							skipFiles = {
+								"<node_internals>/**",
+								"node_modules/**",
+								"${workspaceFolder}/node_modules/**",
+								"**/*.min.js",
+								"**/chunk*.js",
+								"**/webpack/runtime/**",
+								"**/webpack-internal/**",
+								"webpack://**",
+								"webpack-internal://**",
+								"**/[^.]*",
+								"**/@fs/**",
+								"**/?t=*",
+								"**/*?*=",
+								"**/virtual:*",
+								"**/vite/client",
+								"**/@vite/client",
+								"**/hmr*",
+								"**/*refresh*",
+								"**/bootstrap",
+							},
+							resolveSourceMapLocations = {
+								"${workspaceFolder}/**",
+								"!**/node_modules/**",
+							},
+						},
 						{
 							type = "pwa-chrome",
 							request = "launch",
@@ -383,7 +383,7 @@ return {
 								"!**/node_modules/**",
 							},
 						},
-					})
+					}
 				end
 			end
 		end,
