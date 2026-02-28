@@ -271,15 +271,6 @@ return {
 					if language:find("typescript") then
 						runtimeExecutable = vim.fn.executable("tsx") == 1 and "tsx" or "ts-node"
 					end
-					-- local package_json = vim.fs.find("package.json", { path = vim.fn.getcwd(), upward = true })[1]
-					-- if package_json then
-					-- 	local package_data = vim.fn.json_decode(vim.fn.readfile(package_json))
-					-- 	if package_data.scripts and package_data.scripts.test then
-					-- 		dap.configurations[language] = {
-					-- 			,
-					-- 		}
-					-- 	end
-					-- end
 					dap.configurations[language] = {
 						{
 							type = "pwa-node",
@@ -365,24 +356,7 @@ return {
 								"${workspaceFolder}/**",
 								"!**/node_modules/**",
 							},
-						},
-						{
-							type = "pwa-node",
-							request = "attach",
-							name = "Attach",
-							processId = require("dap.utils").pick_process,
-							cwd = "${workspaceFolder}",
-							sourceMaps = true,
-							runtimeExecutable = runtimeExecutable,
-							skipFiles = {
-								"<node_internals>/**",
-								"node_modules/**",
-							},
-							resolveSourceMapLocations = {
-								"${workspaceFolder}/**",
-								"!**/node_modules/**",
-							},
-						},
+						}
 					}
 				end
 			end
