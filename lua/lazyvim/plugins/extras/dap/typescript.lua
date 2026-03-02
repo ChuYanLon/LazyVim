@@ -67,9 +67,7 @@ return {
               sourceMaps = true,
               protocol = "inspector",
               runtimeExecutable = "npm",
-              -- 打印到 dap-terminal 中
               console = "integratedTerminal",
-              -- npm run start
               runtimeArgs = {
                 "run-script",
                 function()
@@ -161,6 +159,7 @@ return {
               cwd = "${workspaceFolder}",
               sourceMaps = true,
               runtimeExecutable = runtimeExecutable,
+              console = "integratedTerminal",
               skipFiles = {
                 "<node_internals>/**",
                 "node_modules/**",
