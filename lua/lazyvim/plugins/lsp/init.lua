@@ -112,6 +112,11 @@ return {
               Lua = {
                 workspace = {
                   checkThirdParty = false,
+                  library = {
+                    vim.env.VIMRUNTIME,
+                    vim.fn.expand("$VIMRUNTIME/lua"),
+                    vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
+                  }
                 },
                 codeLens = {
                   enable = true,
