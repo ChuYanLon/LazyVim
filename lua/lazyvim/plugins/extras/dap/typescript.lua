@@ -61,7 +61,7 @@ return {
             {
               type = "pwa-node",
               request = "launch",
-              name = "Launch Node (npm run scripts)",
+              name = "Launch npm",
               cwd = vim.fn.getcwd(),
               args = { "${file}" },
               sourceMaps = true,
@@ -147,7 +147,6 @@ return {
                 ["webpack:///src/*"] = "${webRoot}/*",
               },
               runtimeArgs = {
-                -- 自动打开调试面板
                 "--auto-open-devtools-for-tabs",
               },
             },
