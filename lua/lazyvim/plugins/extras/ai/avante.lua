@@ -14,6 +14,12 @@ return {
       -- behaviour = {
       --   auto_set_keymaps = false,
       -- },
+       git = {
+    commit_message = {
+      format = 'conventional', -- 支持conventional、angular等格式
+      auto_confirm = false     -- 是否自动确认生成的提交信息
+    }
+  }
     },
     cmd = {
       "AvanteAsk",
