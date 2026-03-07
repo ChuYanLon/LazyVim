@@ -5,28 +5,10 @@ return {
     event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      "j-hui/fidget.nvim",
+      "nvim-treesitter/nvim-treesitter"
     },
     opts = {
       strategies = {},
-    },
-    keys = {
-      { "<leader>a", mode = { "n", "v" }, "", desc = "ai" },
-      { "<leader>ap", mode = { "n", "v" }, "<cmd>CodeCompanionActions<cr>", desc = "Actions" },
-      {
-        "<leader>ac",
-        mode = { "n" },
-        function()
-          local input = vim.fn.input("Enter argument: ")
-          if input ~= "" then
-            vim.cmd("CodeCompanionCmd " .. input)
-          end
-        end,
-        desc = "Cmd",
-      },
-
-      { "<leader>aa", mode = { "n", "v" }, "<cmd>CodeCompanionChat Toggle<cr>", desc = "Toggle" },
     },
     config = function()
       require("codecompanion").setup({
