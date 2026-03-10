@@ -144,6 +144,9 @@ return {
   {
     "zbirenbaum/copilot.lua",
     optional = true,
+    cmd = "Copilot",
+    build = ":Copilot auth",
+    event = "BufReadPost",
     opts = {
       suggestion = {
         keymap = {
@@ -170,10 +173,24 @@ return {
   {
     "mason-org/mason.nvim",
     optional = true,
+    cmd = "Mason",
+    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
+    build = ":MasonUpdate",
     opts = function(_, opts)
       opts.ensure_installed = vim.tbl_filter(function(tool)
         return tool ~= "stylua" and tool ~= "shfmt"
       end, opts.ensure_installed or {})
+    end,
+  },
+  {
+    "nvim-lualine/lualine.nvim",
+    optional = true,
+    event = "VeryLazy",
+    opts = function(_, opts)
+      table.insert(opts.sections.lualine_x, 1, function()
+        local coc_status = vim.g.coc_status or ''
+        return coc_status ~= '' and ' ' .. coc_status or ''
+      end)
     end,
   },
   { "neovim/nvim-lspconfig",   enabled = false },
