@@ -146,6 +146,7 @@ return {
         {
           mode = { "n", "x" },
           { "<leader>p", desc = "package", icon = "󰏖 " },
+          { "<leader>l", desc = "lsp", icon = " ", },
         },
       },
     },
