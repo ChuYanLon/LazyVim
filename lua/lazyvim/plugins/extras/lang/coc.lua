@@ -53,7 +53,6 @@ return {
     event = { "InsertEnter", "User LazyFile" },
     config = function()
       vim.opt.cmdheight = 1
-      vim.g.ai_cmp = false
       vim.g.coc_snippet_next = "<Tab>"
       vim.g.coc_snippet_prev = "<S-Tab>"
       vim.g.coc_global_extensions = vim.list_extend(vim.g.coc_global_extensions, {
@@ -136,22 +135,6 @@ return {
         { 'v', 'mm',         '<Plug>(coc-translator-pv)',                                                                { desc = 'translate' } },
       })
     end,
-  },
-  {
-    "zbirenbaum/copilot.lua",
-    optional = true,
-    cmd = "Copilot",
-    build = ":Copilot auth",
-    event = "BufReadPost",
-    opts = function(_, opts)
-      opts.suggestion = merge(opts, {
-        keymap = {
-          accept = "<M-l>",
-          next = "<M-]>",
-          prev = "<M-[>",
-        },
-      })
-    end
   },
   {
     "folke/which-key.nvim",
