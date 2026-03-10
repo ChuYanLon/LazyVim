@@ -51,13 +51,11 @@ return {
       "CocWatch",
     },
     event = { "InsertEnter", "User LazyFile" },
-    init = function()
+    config = function()
       vim.opt.cmdheight = 1
       vim.g.ai_cmp = false
       vim.g.coc_snippet_next = "<Tab>"
       vim.g.coc_snippet_prev = "<S-Tab>"
-    end,
-    config = function()
       vim.g.coc_global_extensions = vim.list_extend(vim.g.coc_global_extensions, {
         "coc-marketplace",
         "coc-prettier",
@@ -145,15 +143,15 @@ return {
     cmd = "Copilot",
     build = ":Copilot auth",
     event = "BufReadPost",
-    opts = {
-      suggestion = {
+    opts = function(_, opts)
+      opts.suggestion = merge(opts, {
         keymap = {
           accept = "<M-l>",
           next = "<M-]>",
           prev = "<M-[>",
         },
-      },
-    },
+      })
+    end
   },
   {
     "folke/which-key.nvim",
