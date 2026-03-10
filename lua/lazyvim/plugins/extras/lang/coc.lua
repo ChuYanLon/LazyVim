@@ -51,15 +51,13 @@ return {
       "CocWatch",
     },
     event = { "InsertEnter", "User LazyFile" },
-    config = function()
+    init = function()
       vim.opt.cmdheight = 1
-
       vim.g.ai_cmp = false
-
       vim.g.coc_snippet_next = "<Tab>"
-
       vim.g.coc_snippet_prev = "<S-Tab>"
-
+    end,
+    config = function()
       vim.g.coc_global_extensions = vim.list_extend(vim.g.coc_global_extensions, {
         "coc-marketplace",
         "coc-prettier",
