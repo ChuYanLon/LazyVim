@@ -119,7 +119,7 @@ return {
         { 'n', '<space>xs',  ':<C-u>CocList diagnostics<CR>',                                                            { desc = 'all diagnostics' } },
         { 'n', '[d',         '<Plug>(coc-diagnostic-prev)',                                                              { desc = 'previous diagnostic' } },
         { 'n', ']d',         '<Plug>(coc-diagnostic-next)',                                                              { desc = 'next diagnostic' } },
-        { 'n', '<leader>p',  '',                                                                                         { desc = 'package' } },
+        { 'n', '<leader>p',  '',                                                                                         { desc = 'package', silent = true } },
         { 'n', '<leader>pc', ':<C-u>CocList commands<CR>',                                                               { desc = 'commands' } },
         { 'n', '<leader>pp', ':<C-u>CocList<CR>',                                                                        { desc = 'List' } },
         { 'n', '<leader>pl', ':<C-u>Lazy<CR>',                                                                           { desc = 'Lazy' } },
