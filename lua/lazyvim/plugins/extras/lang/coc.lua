@@ -167,6 +167,15 @@ return {
       },
     },
   },
+  {
+    "mason-org/mason.nvim",
+    optional = true,
+    opts = function(_, opts)
+      opts.ensure_installed = vim.tbl_filter(function(tool)
+        return tool ~= "stylua" and tool ~= "shfmt"
+      end, opts.ensure_installed or {})
+    end,
+  },
   { "neovim/nvim-lspconfig",   enabled = false },
   { "hrsh7th/nvim-cmp",        enabled = false },
   { "hrsh7th/cmp-nvim-lsp",    enabled = false },
