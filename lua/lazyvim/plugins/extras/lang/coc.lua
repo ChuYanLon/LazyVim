@@ -139,6 +139,13 @@ return {
     end,
   },
   {
+    "mlaursen/vim-react-snippets",
+    config = function()
+      require("vim-react-snippets").setup({})
+    end,
+  },
+  { "rafamadriz/friendly-snippets", lazy = true },
+  {
     "folke/which-key.nvim",
     optional = true,
     opts = {
@@ -175,15 +182,17 @@ return {
       end)
     end,
   },
-  { "neovim/nvim-lspconfig",   enabled = false },
-  { "hrsh7th/nvim-cmp",        enabled = false },
-  { "hrsh7th/cmp-nvim-lsp",    enabled = false },
-  { "saghen/blink.cmp",        enabled = false },
-  { "stevearc/conform.nvim",   enabled = false },
-  { "mfussenegger/nvim-lint",  enabled = false },
-  { "folke/noice.nvim",        enabled = false },
-  { "folke/lazydev.nvim",      enabled = false },
-  { "lewis6991/gitsigns.nvim", enabled = false },
-  { "catppuccin/nvim",         enabled = false },
-  { "folke/tokyonight.nvim",   enabled = false }
+  { "neovim/nvim-lspconfig",        enabled = false },
+  { "hrsh7th/nvim-cmp",             enabled = false },
+  { "hrsh7th/cmp-nvim-lsp",         enabled = false },
+  { "saghen/blink.cmp",             enabled = false },
+  { "stevearc/conform.nvim",        enabled = false },
+  { "mfussenegger/nvim-lint",       enabled = false },
+  { "folke/noice.nvim",             enabled = false },
+  { "folke/lazydev.nvim",           enabled = false },
+  { "lewis6991/gitsigns.nvim",      enabled = false },
+  { "catppuccin/nvim",              enabled = false },
+  { "folke/tokyonight.nvim",        enabled = false },
+  { "zeioth/garbage-day.nvim",      enabled = false },
+  { "uga-rosa/translate.nvim",      enabled = false }
 }
