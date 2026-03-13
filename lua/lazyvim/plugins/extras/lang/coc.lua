@@ -56,11 +56,28 @@ return {
       vim.opt.cmdheight = 1
       vim.g.coc_snippet_next = "<Tab>"
       vim.g.coc_snippet_prev = "<S-Tab>"
-      vim.g.coc_global_extensions = vim.list_extend(vim.g.coc_global_extensions, {
-        "coc-marketplace",
-        "coc-prettier",
-        "coc-translator"
-      })
+      local cssmodules = vim.g.coc_global_extensions and vim.tbl_contains(vim.g.coc_global_extensions, "coc-cssmodules")
+      if cssmodules then
+        vim.g.mason_ensure_installed = vim.list_extend(vim.g.mason_ensure_installed or {}, {
+          "cssmodules-language-server",
+        })
+        vim.fn['coc#config']('languageserver.cssmodules', {
+          command = "cssmodules-language-server",
+          initializationOptions = { camelCase = "dashes" },
+          filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+          requireRootPattern = 0,
+          settings = {},
+        })
+      end
+      vim.g.coc_global_extensions = vim.tbl_filter(function(ext)
+          return ext ~= "coc-cssmodules"
+        end,
+        vim.list_extend(vim.g.coc_global_extensions, {
+          "coc-marketplace",
+          "coc-prettier",
+          "coc-translator"
+        }))
+
 
       function _G.check_back_space()
         local col = vim.fn.col('.') - 1
@@ -144,7 +161,7 @@ return {
       require("vim-react-snippets").setup({})
     end,
   },
-  { "rafamadriz/friendly-snippets", lazy = true },
+  { "rafamadriz/friendly-snippets",                         lazy = true },
   {
     "folke/which-key.nvim",
     optional = true,
@@ -168,7 +185,7 @@ return {
     opts = function(_, opts)
       opts.ensure_installed = vim.tbl_filter(function(tool)
         return tool ~= "stylua" and tool ~= "shfmt"
-      end, opts.ensure_installed or {})
+      end, vim.list_extend(opts.ensure_installedor or {}, vim.g.mason_ensure_installed) or {})
     end,
   },
   {
@@ -182,17 +199,17 @@ return {
       end)
     end,
   },
-  { "neovim/nvim-lspconfig",        enabled = false },
-  { "hrsh7th/nvim-cmp",             enabled = false },
-  { "hrsh7th/cmp-nvim-lsp",         enabled = false },
-  { "saghen/blink.cmp",             enabled = false },
-  { "stevearc/conform.nvim",        enabled = false },
-  { "mfussenegger/nvim-lint",       enabled = false },
-  { "folke/noice.nvim",             enabled = false },
-  { "folke/lazydev.nvim",           enabled = false },
-  { "lewis6991/gitsigns.nvim",      enabled = false },
-  { "catppuccin/nvim",              enabled = false },
-  { "folke/tokyonight.nvim",        enabled = false },
-  { "zeioth/garbage-day.nvim",      enabled = false },
-  { "uga-rosa/translate.nvim",      enabled = false }
+  { "neovim/nvim-lspconfig",                                enabled = false },
+  { "hrsh7th/nvim-cmp",                                     enabled = false },
+  { "hrsh7th/cmp-nvim-lsp",                                 enabled = false },
+  { "saghen/blink.cmp",                                     enabled = false },
+  { "stevearc/conform.nvim",                                enabled = false },
+  { "mfussenegger/nvim-lint",                               enabled = false },
+  { "folke/noice.nvim",                                     enabled = false },
+  { "folke/lazydev.nvim",                                   enabled = false },
+  { "lewis6991/gitsigns.nvim",                              enabled = false },
+  { "catppuccin/nvim",                                      enabled = false },
+  { "folke/tokyonight.nvim",                                enabled = false },
+  { "zeioth/garbage-day.nvim",                              enabled = false },
+  { "uga-rosa/translate.nvim",                              enabled = false },
 }
