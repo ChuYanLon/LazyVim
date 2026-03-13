@@ -185,7 +185,7 @@ return {
     opts = function(_, opts)
       opts.ensure_installed = vim.tbl_filter(function(tool)
         return tool ~= "stylua" and tool ~= "shfmt"
-      end, vim.list_extend(opts.ensure_installedor or {}, vim.g.mason_ensure_installed) or {})
+      end, vim.list_extend(opts.ensure_installedor or {}, vim.g.mason_ensure_installed or {}) or {})
     end,
   },
   {
