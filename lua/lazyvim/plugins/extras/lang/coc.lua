@@ -28,7 +28,7 @@ end
 return {
   {
     "neoclide/coc.nvim",
-    branch = "release",
+    -- branch = "release",
     cmd = {
       "CocCommand",
       "CocConfig",
