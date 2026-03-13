@@ -29,7 +29,7 @@ return {
   {
     "neoclide/coc.nvim",
     -- branch = "release",
-    build = "npm run build",
+    build = "npm i && npm run build",
     cmd = {
       "CocCommand",
       "CocConfig",
