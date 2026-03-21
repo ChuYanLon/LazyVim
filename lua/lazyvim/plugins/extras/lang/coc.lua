@@ -268,6 +268,12 @@ return {
     optional = true,
     event = "VeryLazy",
     opts = function(_, opts)
+      opts.options.globalstatus = true
+      opts.options.disabled_filetypes = merge(opts.options.disabled_filetypes or {}, {
+        statusline = {
+          "list",
+        },
+      })
       table.insert(opts.sections.lualine_x, 1, function()
         local coc_status = vim.g.coc_status or ''
         return coc_status ~= '' and '' .. coc_status or ''
@@ -331,21 +337,21 @@ return {
       { "<leader>su",      false },
     },
   },
-  { "folke/trouble.nvim",        enabled = false },
-  { "akinsho/bufferline.nvim",   enabled = false },
-  { "MagicDuck/grug-far.nvim",   enabled = false },
-  { "folke/todo-comments.nvim",  enabled = false },
-  { "neovim/nvim-lspconfig",     enabled = false },
-  { "hrsh7th/nvim-cmp",          enabled = false },
-  { "hrsh7th/cmp-nvim-lsp",      enabled = false },
-  { "saghen/blink.cmp",          enabled = false },
-  { "stevearc/conform.nvim",     enabled = false },
-  { "mfussenegger/nvim-lint",    enabled = false },
-  { "folke/noice.nvim",          enabled = false },
-  { "folke/lazydev.nvim",        enabled = false },
-  { "lewis6991/gitsigns.nvim",   enabled = false },
-  { "catppuccin/nvim",           enabled = false },
-  { "folke/tokyonight.nvim",     enabled = false },
-  { "zeioth/garbage-day.nvim",   enabled = false },
-  { "uga-rosa/translate.nvim",   enabled = false },
+  { "folke/trouble.nvim",       enabled = false },
+  { "akinsho/bufferline.nvim",  enabled = false },
+  { "MagicDuck/grug-far.nvim",  enabled = false },
+  { "folke/todo-comments.nvim", enabled = false },
+  { "neovim/nvim-lspconfig",    enabled = false },
+  { "hrsh7th/nvim-cmp",         enabled = false },
+  { "hrsh7th/cmp-nvim-lsp",     enabled = false },
+  { "saghen/blink.cmp",         enabled = false },
+  { "stevearc/conform.nvim",    enabled = false },
+  { "mfussenegger/nvim-lint",   enabled = false },
+  { "folke/noice.nvim",         enabled = false },
+  { "folke/lazydev.nvim",       enabled = false },
+  { "lewis6991/gitsigns.nvim",  enabled = false },
+  { "catppuccin/nvim",          enabled = false },
+  { "folke/tokyonight.nvim",    enabled = false },
+  { "zeioth/garbage-day.nvim",  enabled = false },
+  { "uga-rosa/translate.nvim",  enabled = false },
 }
