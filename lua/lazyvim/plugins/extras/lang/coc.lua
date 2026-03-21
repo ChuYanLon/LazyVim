@@ -25,6 +25,21 @@ local function create_keys(maps, opts)
   end
 end
 
+local function deepMerge(t1, t2)
+  local result = {}
+  for k, v in pairs(t1) do
+    result[k] = type(v) == "table" and deepMerge({}, v) or v
+  end
+  for k, v in pairs(t2) do
+    if type(v) == "table" and type(result[k]) == "table" then
+      result[k] = deepMerge(result[k], v)
+    else
+      result[k] = v
+    end
+  end
+  return result
+end
+
 
 function _G.get_mode()
   local mode = vim.fn.mode()
@@ -408,23 +423,25 @@ return {
     cmd = "Copilot",
     build = ":Copilot auth",
     event = "BufReadPost",
-    opts = {
-      suggestion = {
-        enabled = not vim.g.ai_cmp,
-        auto_trigger = true,
-        hide_during_completion = vim.g.ai_cmp,
-        keymap = {
-          accept = not vim.g.ai_cmp and "<M-l>" or false, -- handled by nvim-cmp / blink.cmp
-          next = "<M-]>",
-          prev = "<M-[>",
+    config = function(_, opts)
+      require("copilot").setup(deepMerge({
+        suggestion = {
+          enabled = not vim.g.ai_cmp,
+          auto_trigger = true,
+          hide_during_completion = vim.g.ai_cmp,
+          keymap = {
+            accept = not vim.g.ai_cmp and "<M-l>" or false, -- handled by nvim-cmp / blink.cmp
+            next = "<M-]>",
+            prev = "<M-[>",
+          },
         },
-      },
-      panel = { enabled = false },
-      filetypes = {
-        markdown = true,
-        help = true,
-      },
-    },
+        panel = { enabled = false },
+        filetypes = {
+          markdown = true,
+          help = true,
+        },
+      }, opts or {}))
+    end,
   },
   { "folke/trouble.nvim",        enabled = false },
   { "akinsho/bufferline.nvim",   enabled = false },
