@@ -9,6 +9,7 @@ local function merge(left, right)
   return result
 end
 
+
 local function create_keys(maps, opts)
   opts = opts or {}
   for _, map in pairs(maps) do
@@ -25,81 +26,6 @@ local function create_keys(maps, opts)
   end
 end
 
-local function deepMerge(t1, t2)
-  local result = {}
-  for k, v in pairs(t1) do
-    result[k] = type(v) == "table" and deepMerge({}, v) or v
-  end
-  for k, v in pairs(t2) do
-    if type(v) == "table" and type(result[k]) == "table" then
-      result[k] = deepMerge(result[k], v)
-    else
-      result[k] = v
-    end
-  end
-  return result
-end
-
-
-function _G.get_mode()
-  local mode = vim.fn.mode()
-  local modes = {
-    n = "NORMAL",
-    i = "INSERT",
-    v = "VISUAL",
-    V = "V-LINE",
-    [""] = "V-BLOCK",
-    c = "COMMAND",
-    r = "REPLACE",
-    R = "REPLACE",
-    t = "TERM",
-    ["!"] = "SHELL"
-  }
-  return modes[mode] or mode
-end
-
-function _G.get_git_branch()
-  local branch = vim.fn.system("git rev-parse --abbrev-ref HEAD 2>/dev/null"):gsub("\n", "")
-  if branch == "" or branch == nil then return "" end
-  return " " .. branch
-end
-
-function _G.get_file_size()
-  local filename = vim.api.nvim_buf_get_name(0)
-  if filename == "" then return "" end
-  local size = vim.fn.getfsize(filename)
-  if size <= 0 then return "" end
-  if size < 1024 then
-    return "[" .. size .. "B]"
-  elseif size < 1024 * 1024 then
-    return string.format("[%.1fK]", size / 1024)
-  else
-    return string.format("[%.1fM]", size / 1024 / 1024)
-  end
-end
-
-function _G.getCocStatusDiagnostic()
-  local info = vim.b.coc_diagnostic_info or {}
-  if next(info) == nil then return (vim.g.coc_status or '') end
-
-  local msgs = {}
-  if (info.error or 0) > 0 then
-    table.insert(msgs, '󰅚 ' .. info.error)
-  end
-  if (info.warning or 0) > 0 then
-    table.insert(msgs, '󰀪 ' .. info.warning)
-  end
-
-  if (info.info or 0) > 0 then
-    table.insert(msgs, '󰋽 ' .. info.info)
-  end
-
-  if (info.hint or 0) > 0 or (info.information or 0) > 0 then
-    table.insert(msgs, '󰌶 ' .. info.hint or info.information)
-  end
-
-  return table.concat(msgs, ' ') .. ' ' .. (vim.g.coc_status or '')
-end
 
 return {
   { import = "lazyvim.plugins.extras.editor.snacks_picker" },
@@ -132,20 +58,6 @@ return {
     config = function()
       vim.g.coc_snippet_next = "<Tab>"
       vim.g.coc_snippet_prev = "<S-Tab>"
-      vim.opt.cmdheight = 1
-      vim.opt.laststatus = 3
-      vim.opt.showmode = false
-      vim.opt.statusline =
-          "%#StatusLine#" ..
-          " %{v:lua.get_mode()} " ..
-          "%t%{v:lua.get_file_size()}" ..
-          "%m%r%w" ..
-          " %{v:lua.get_git_branch()} " ..
-          "%=" ..
-          "%{v:lua.getCocStatusDiagnostic()}" ..
-          "%=" ..
-          " %l:%c " ..
-          "%{&fileencoding}/%{&fileformat} "
       vim.keymap.del("n", "<leader>l")
       vim.keymap.del("n", "<leader>fn")
       vim.keymap.del("n", "<leader>ft")
@@ -155,6 +67,7 @@ return {
       vim.keymap.del("n", "<leader>?")
       vim.keymap.del("n", "<leader>`")
       vim.keymap.set("n", "<leader>p", "<Nop>", { silent = true })
+      vim.keymap.set("n", "<Cr>", "<Nop>", { silent = true })
       local cssmodules = vim.g.coc_global_extensions and vim.tbl_contains(vim.g.coc_global_extensions, "coc-cssmodules")
       if cssmodules then
         vim.g.mason_ensure_installed = vim.list_extend(vim.g.mason_ensure_installed or {}, {
@@ -420,7 +333,6 @@ return {
   },
   { "folke/trouble.nvim",        enabled = false },
   { "akinsho/bufferline.nvim",   enabled = false },
-  { "nvim-lualine/lualine.nvim", enabled = false },
   { "MagicDuck/grug-far.nvim",   enabled = false },
   { "folke/todo-comments.nvim",  enabled = false },
   { "neovim/nvim-lspconfig",     enabled = false },
