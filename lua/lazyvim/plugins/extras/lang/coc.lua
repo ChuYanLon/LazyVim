@@ -270,7 +270,7 @@ return {
     opts = function(_, opts)
       table.insert(opts.sections.lualine_x, 1, function()
         local coc_status = vim.g.coc_status or ''
-        return coc_status ~= '' and ' ' .. coc_status or ''
+        return coc_status ~= '' and '' .. coc_status or ''
       end)
     end,
   },
