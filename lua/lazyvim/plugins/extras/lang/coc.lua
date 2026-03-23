@@ -178,6 +178,18 @@ return {
         { 'v', '<C-p>',         'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Visual mode: Scroll up float' } },
         { 'n', 'mm',            '<Plug>(coc-translator-p)',                                                                 { desc = 'translate' } },
         { 'v', 'mm',            '<Plug>(coc-translator-pv)',                                                                { desc = 'translate' } },
+        { 'n', '<C-q>', function()
+          local ft = vim.bo.filetype
+          local killfts = vim.tbl_extend("force",
+            { "Trouble", "qf", "help", "lspinfo", "null-ls-info", "notify", "lazy", "mason", "tsplayground",
+              "log",
+              "list" }, vim.g.killfts or {})
+          if #vim.api.nvim_list_wins() > 1 and vim.tbl_contains(killfts, ft) ~= true then
+            vim.cmd('close')
+          else
+            vim.cmd('bdelete')
+          end
+        end, { noremap = true, silent = true, desc = 'close' } },
       })
 
       if vim.g.coc_test_plugin then
