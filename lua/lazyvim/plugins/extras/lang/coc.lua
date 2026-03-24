@@ -356,6 +356,25 @@ return {
       { "<leader>sq",      false },
       { "<leader>su",      false },
     },
+    opts = {
+      dashboard = {
+        preset = {
+          keys = {
+            { icon = " ", key = "f", desc = "Find File", action = ":CocList files" },
+            { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+            { icon = " ", key = "w", desc = "Find Text", action = ":CocList grep" },
+            { icon = " ", key = "c", desc = "Config", action = ":CocConfig" },
+            { icon = " ", key = "s", desc = "Restore Session", section = "session" },
+            { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+          },
+        },
+        sections = {
+          { section = "header" },
+          { section = "keys",   gap = 1, padding = 1 },
+          { section = "startup" },
+        },
+      }
+    }
   },
   { "folke/trouble.nvim",       enabled = false },
   { "akinsho/bufferline.nvim",  enabled = false },
