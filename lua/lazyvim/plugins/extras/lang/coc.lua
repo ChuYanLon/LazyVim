@@ -360,12 +360,10 @@ return {
       dashboard = {
         preset = {
           keys = {
-            { icon = " ", key = "f", desc = "Find File", action = ":CocList files" },
-            { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-            { icon = " ", key = "w", desc = "Find Text", action = ":CocList grep" },
-            { icon = " ", key = "c", desc = "Config", action = ":CocConfig" },
-            { icon = " ", key = "s", desc = "Restore Session", section = "session" },
-            { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+            { icon = " ", key = "<C-m>", desc = "Find File", action = ":CocList files" },
+            { icon = " ", key = "<C-.>", desc = "Find Text", action = ":CocList grep" },
+            { icon = " ", key = "<C-s>", desc = "Restore Session", section = "session" },
+            { icon = " ", key = "<C-q>", desc = "Quit", action = ":qa" },
           },
         },
         sections = {
