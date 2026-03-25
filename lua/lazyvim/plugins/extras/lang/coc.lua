@@ -355,9 +355,52 @@ return {
       { "<leader>sR",      false },
       { "<leader>sq",      false },
       { "<leader>su",      false },
+      {
+        "<leader>ch",
+        function()
+          Snacks.image.hover()
+        end,
+        desc = "image hover",
+        noremap = true,
+        silent = true,
+      },
+      {
+        "<leader>h",
+        function()
+          if vim.bo.filetype == "snacks_dashboard" then
+            vim.cmd.bdelete()
+          else
+            Snacks.dashboard()
+          end
+        end,
+        desc = "Dashboard",
+        noremap = true,
+        silent = true,
+      },
     },
     opts = {
+      bigfile = {
+        notify = true,     -- 显示通知，当检测到大文件时
+        size = 300 * 1024, -- 大文件大小（300KB）
+        line_length = 600, -- 平均行长度（适用于处理压缩或最小化的文件）
+      },
+      image = {
+        doc = {
+          enabled = false,
+          conceal = function(lang)
+            return lang == "markdown"
+          end,
+        },
+      },
       dashboard = {
+        bo = {
+          bufhidden = "wipe",
+          buftype = "nofile",
+          buflisted = false,
+          filetype = "snacks_dashboard",
+          swapfile = false,
+          undofile = false,
+        },
         preset = {
           keys = {
             { icon = " ", key = "<C-m>", desc = "Find File", action = ":CocList files" },
