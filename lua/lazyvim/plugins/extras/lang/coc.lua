@@ -68,28 +68,11 @@ return {
       vim.keymap.del("n", "<leader>`")
       vim.keymap.set("n", "<leader>p", "<Nop>", { silent = true })
       vim.keymap.set("n", "<Cr>", "<Nop>", { silent = true })
-      local cssmodules = vim.g.coc_global_extensions and vim.tbl_contains(vim.g.coc_global_extensions, "coc-cssmodules")
-      if cssmodules then
-        vim.g.mason_ensure_installed = vim.list_extend(vim.g.mason_ensure_installed or {}, {
-          "cssmodules-language-server",
-        })
-        vim.fn['coc#config']('languageserver.cssmodules', {
-          command = "cssmodules-language-server",
-          initializationOptions = { camelCase = "dashes" },
-          filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-          requireRootPattern = 0,
-          settings = {},
-        })
-      end
-      vim.g.coc_global_extensions = vim.tbl_filter(function(ext)
-          return ext ~= "coc-cssmodules"
-        end,
-        vim.list_extend(vim.g.coc_global_extensions, {
-          "coc-marketplace",
-          "coc-prettier",
-          "coc-translator"
-        }))
-
+      vim.g.coc_global_extensions = vim.list_extend(vim.g.coc_global_extensions, {
+        "coc-marketplace",
+        "coc-prettier",
+        "coc-translator"
+      })
 
       function _G.check_back_space()
         local col = vim.fn.col('.') - 1
@@ -178,6 +161,9 @@ return {
         { 'n', '<C-.>',         ':<C-u>CocList lines<CR>',                                                                  { desc = 'lines' } },
         { 'x', '<C-.>',         ':<C-u>CocList lines<CR>',                                                                  { desc = 'lines' } },
         { 'v', '<C-.>',         ':<C-u>CocList lines<CR>',                                                                  { desc = 'lines' } },
+        { 'n', '<C-t>',         ':<C-u>CocList windows<CR>',                                                                { desc = 'tabs' } },
+        { 'x', '<C-t>',         ':<C-u>CocList windows<CR>',                                                                { desc = 'tabs' } },
+        { 'v', '<C-t>',         ':<C-u>CocList windows<CR>',                                                                { desc = 'tabs' } },
         { 'n', '<C-n>',         'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',                                   { expr = true, desc = 'Scroll down in Coc float' } },
         { 'n', '<C-p>',         'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Scroll up in Coc float' } },
         { 'i', '<C-n>',         'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"',                     { expr = true, desc = 'Insert mode: Scroll down float' } },
@@ -274,13 +260,13 @@ return {
   {
     "mason-org/mason.nvim",
     optional = true,
-    cmd = "Mason",
     keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
     build = ":MasonUpdate",
+    event = "VeryLazy",
     opts = function(_, opts)
       opts.ensure_installed = vim.tbl_filter(function(tool)
         return tool ~= "stylua" and tool ~= "shfmt"
-      end, vim.list_extend(opts.ensure_installedor or {}, vim.g.mason_ensure_installed or {}) or {})
+      end, opts.ensure_installedor or {})
     end,
   },
   {
