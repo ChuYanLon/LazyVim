@@ -139,6 +139,7 @@ return {
         { 'n', '<leader>pe',    ':<C-u>CocList extensions<CR>',                                                             { desc = 'extensions' } },
         { 'n', '<leader>pr',    ':CocRestart<CR>',                                                                          { desc = 'restart' } },
         { 'n', '<leader>ff',    ':<C-u>CocList files<CR>',                                                                  { desc = 'files' } },
+        { 'n', '<leader>fx',    ':<C-u>CocList diagnostics<CR>',                                                            { desc = 'diagnostics' } },
         { 'n', '<leader>fF',    ':<C-u>CocList gfiles<CR>',                                                                 { desc = 'git files' } },
         { 'n', '<leader>fw',    ':<C-u>CocList grep<CR>',                                                                   { desc = 'grep' } },
         { 'n', '<leader>fz',    ':<C-u>CocList lines<CR>',                                                                  { desc = 'lines' } },
