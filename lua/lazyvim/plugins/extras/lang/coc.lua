@@ -71,7 +71,8 @@ return {
       vim.g.coc_global_extensions = vim.list_extend(vim.g.coc_global_extensions, {
         "coc-marketplace",
         "coc-prettier",
-        "coc-translator"
+        "coc-translator",
+        "coc-file-utils"
       })
 
       function _G.check_back_space()
@@ -148,6 +149,7 @@ return {
         { 'n', '<leader>fr',    ':<C-u>CocList anyRules<CR>',                                                               { desc = 'anyRules' } },
         { 'n', '<leader>fk',    ':<C-u>CocList maps<CR>',                                                                   { desc = 'keymaps' } },
         { 'n', '<leader>f<Cr>', ':<C-u>CocListResume<CR>',                                                                  { desc = 'resume' } },
+        { 'n', '<leader>n',     ':<C-u>CocList dirs<CR>',                                                                   { desc = 'dirs' } },
         { 'n', '<C-m>',         ':<C-u>CocList files<CR>',                                                                  { desc = 'files' } },
         { 'x', '<C-m>',         ':<C-u>CocList files<CR>',                                                                  { desc = 'files' } },
         { 'v', '<C-m>',         ':<C-u>CocList files<CR>',                                                                  { desc = 'files' } },
