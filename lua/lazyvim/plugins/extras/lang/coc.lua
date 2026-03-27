@@ -68,12 +68,14 @@ return {
       vim.keymap.del("n", "<leader>`")
       vim.keymap.set("n", "<leader>p", "<Nop>", { silent = true })
       vim.keymap.set("n", "<Cr>", "<Nop>", { silent = true })
-      vim.g.coc_global_extensions = vim.list_extend(vim.g.coc_global_extensions, {
+      vim.g.coc_global_extensions = vim.tbl_filter(function(ext)
+        return string.match(ext, vim.g.coc_test_plugin) == nil
+      end, vim.list_extend(vim.g.coc_global_extensions, {
         "coc-marketplace",
         "coc-prettier",
         "coc-translator",
         "coc-file-utils"
-      })
+      }) or {})
 
       function _G.check_back_space()
         local col = vim.fn.col('.') - 1
@@ -188,9 +190,6 @@ return {
       })
 
       if vim.g.coc_test_plugin then
-        vim.g.coc_global_extensions = vim.tbl_filter(function(ext)
-        return string.match(ext, vim.g.coc_test_plugin) == nil
-        end, vim.g.coc_global_extensions or {})
         vim.opt.runtimepath:prepend(vim.g.coc_test_plugin)
       end
       vim.api.nvim_command("hi! link CocPum Pmenu")
