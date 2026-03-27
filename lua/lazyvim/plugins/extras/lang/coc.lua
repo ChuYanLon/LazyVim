@@ -391,7 +391,7 @@ return {
         preset = {
           keys = {
             { icon = " ", key = "<C-m>", desc = "Find File", action = ":CocList files" },
-            { icon = " ", key = "<C-.>", desc = "Find Text", action = ":CocList grep" },
+            { icon = " ", key = "<C-a>", desc = "Find Text", action = ":CocList grep" },
             { icon = " ", key = "<C-s>", desc = "Restore Session", section = "session" },
             { icon = " ", key = "<C-q>", desc = "Quit", action = ":qa" },
           },
