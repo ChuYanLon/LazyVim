@@ -68,14 +68,11 @@ return {
       vim.keymap.del("n", "<leader>`")
       vim.keymap.set("n", "<leader>p", "<Nop>", { silent = true })
       vim.keymap.set("n", "<Cr>", "<Nop>", { silent = true })
-      vim.g.coc_global_extensions = vim.tbl_filter(function(ext)
-        return string.match(ext, vim.g.coc_test_plugin) == nil
-      end, vim.list_extend(vim.g.coc_global_extensions, {
+      vim.g.coc_global_extensions = vim.list_extend(vim.g.coc_global_extensions, {
         "coc-marketplace",
         "coc-prettier",
         "coc-translator",
-        "coc-file-utils"
-      }) or {})
+      }) or {}
 
       function _G.check_back_space()
         local col = vim.fn.col('.') - 1
