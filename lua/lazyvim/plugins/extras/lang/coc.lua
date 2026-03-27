@@ -189,7 +189,7 @@ return {
 
       if vim.g.coc_test_plugin then
         vim.g.coc_global_extensions = vim.tbl_filter(function(ext)
-          return ext ~= vim.g.coc_test_plugin
+        return string.match(ext, vim.g.coc_test_plugin) == nil
         end, vim.g.coc_global_extensions or {})
         vim.opt.runtimepath:prepend(vim.g.coc_test_plugin)
       end
