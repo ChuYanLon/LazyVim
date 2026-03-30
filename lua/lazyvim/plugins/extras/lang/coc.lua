@@ -98,6 +98,7 @@ return {
         command = "setl formatexpr=CocAction('formatSelected')",
         desc = "Setup formatexpr specified filetype(s)."
       })
+
       create_keys({
         { "i", "<C-j>",         'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', { silent = true, noremap = true, expr = true, replace_keycodes = false } },
         { "i", "<C-k>",         [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]],                                         { silent = true, noremap = true, expr = true, replace_keycodes = false } },
@@ -390,6 +391,8 @@ return {
         preset = {
           keys = {
             { icon = " ", key = "<C-m>", desc = "Find File", action = ":CocList files" },
+            { icon = "󰙅 ", key = "<C-l>", desc = "Find list", action = ":CocList" },
+            { icon = " ", key = "<C-c>", desc = "Find command", action = ":CocCommand" },
             { icon = " ", key = "<C-a>", desc = "Find Text", action = ":CocList grep" },
             { icon = " ", key = "<C-s>", desc = "Restore Session", section = "session" },
             { icon = " ", key = "<C-q>", desc = "Quit", action = ":qa" },
