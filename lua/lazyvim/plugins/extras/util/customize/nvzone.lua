@@ -3,6 +3,9 @@ return {
     "nvzone/showkeys",
     lazy = true,
     cmd = "ShowkeysToggle",
+    opts = {
+      winhl = "FloatBorder:FloatBorder,Normal:Normal",
+    },
   },
   {
     "nvzone/typr",
