@@ -75,9 +75,9 @@ return {
           filetypes,
         },
         cssmodules_ls = {
-          capabilities = {
-            definitionProvider = false,
-          },
+          on_attach = function(client)
+            client.server_capabilities.definitionProvider = false
+          end,
           init_options = {
             camelCase = "dashes",
           },
