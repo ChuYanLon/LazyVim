@@ -44,20 +44,6 @@ return {
     end,
   },
   {
-    "folke/noice.nvim",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-    },
-    optional = true,
-    opts = {
-      lsp = {
-        hover = {
-          enabled = false,
-        },
-      },
-    },
-  },
-  {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
@@ -74,14 +60,6 @@ return {
           },
           filetypes,
         },
-        cssmodules_ls = {
-          on_attach = function(client)
-            client.server_capabilities.definitionProvider = false
-          end,
-          init_options = {
-            camelCase = "dashes",
-          },
-        },
       },
     },
   },
@@ -93,7 +71,6 @@ return {
         "html-lsp",
         "css-lsp",
         "emmet-language-server",
-        "cssmodules-language-server",
       })
     end,
   },
