@@ -46,13 +46,23 @@ return {
       })
     end,
   },
-
-  {
+{
     "nvim-lualine/lualine.nvim",
     optional = true,
     event = "VeryLazy",
     opts = function(_, opts)
-      table.insert(opts.sections.lualine_x, 2, LazyVim.lualine.cmp_source("codeium"))
+      table.insert(
+        opts.sections.lualine_x,
+        2,
+        LazyVim.lualine.status(LazyVim.config.icons.kinds.Copilot, function()
+          local status = require("codeium.virtual_text").status()
+          if status.state ~= "" then
+            return ((status.state == "waiting" or status.state == "completions") and "pending") or "ok"
+          else
+            return status.state == "idle" and "error" or "ok"
+          end
+        end)
+      )
     end,
   },
 
