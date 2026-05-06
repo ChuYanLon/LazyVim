@@ -94,8 +94,7 @@ return {
 						"--type",
 						"f",
 						"--type",
-						"d",
-						"--hidden",
+						"d"
 					},
 				})
 			end,
