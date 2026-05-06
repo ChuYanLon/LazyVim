@@ -108,6 +108,31 @@ return {
   opts = {
     picker = {
       actions = {
+        findFiles = function(picker)
+          local function get_original_buf()
+            if picker and picker.main then
+              return vim.api.nvim_win_get_buf(picker.main)
+            end
+            return vim.api.nvim_get_current_buf()
+          end
+
+          local current = picker:current()
+          if current then
+            if picker.title == PICKER_NAME and is_directory_path(current.file) ~= true then
+              local buf = get_original_buf()
+              local active_file = vim.api.nvim_buf_get_name(buf)
+              local cwd = vim.fn.getcwd()
+              local relative_path = active_file:gsub("^" .. vim.pesc(cwd) .. "/", "")
+              if picker.input:get() == "" then
+                if relative_path then
+                  picker.input:set(relative_path)
+                end
+              else
+                picker.input:set("")
+              end
+            end
+          end
+        end,
         createFileOrDir = function(picker)
           local current = picker:current()
           if current then
@@ -203,6 +228,7 @@ return {
         input = {
           keys = {
             ["<c-x>"] = { "fileUtils", mode = { "n", "i" } },
+            ["<C-o>"] = { "findFiles", mode = { "n", "i" } },
             ["<CR>"] = { "createFileOrDir", mode = { "n", "i" } },
           },
         },
