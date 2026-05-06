@@ -1,4 +1,4 @@
-local PICKER_NAME = "file_tools"
+local PICKER_NAME = "file management"
 
 local function normalize_path(path)
 	return vim.fs.normalize(path)
