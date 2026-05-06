@@ -91,13 +91,12 @@ return {
 					title = PICKER_NAME,
 					cmd = "fd",
 					args = {
-					   '--color',
-              'never',
-              '--hidden',
-              '--type',
-              'f',
-              '--type',
-              'd',
+				       '--color',
+               'never',
+                '--type', 
+                 'f',
+                 '--type', 
+                 'd'
 					},
 				})
 			end,
