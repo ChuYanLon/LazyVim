@@ -190,14 +190,14 @@ return {
         fileUtils = function(picker)
           local current = picker:current()
           if current ~= nil and picker.title == PICKER_NAME then
-            local options = { "rename", "delete" }
+            local options = { "rename file", "delete file" }
             if is_project_root_file(current.file) then
-              table.insert(options, 1, "create")
+              table.insert(options, 1, "create file by project root")
             end
             vim.ui.select(options, {
               prompt = "Select operations:",
             }, function(choice)
-              if choice == "rename" then
+              if choice == "rename file" then
                 local filePath = vim.fs.normalize(vim.uv.cwd() or ".") .. "/" .. current.file
                 vim.ui.input({
                   prompt = "rename file",
@@ -229,9 +229,9 @@ return {
                 vim.schedule(function()
                   vim.cmd("startinsert!")
                 end)
-              elseif choice == "create" then
+              elseif choice == "create file by project root" then
                 action_create(picker, true)
-              elseif choice == "delete" then
+              elseif choice == "delete file" then
                 local filePath = vim.fs.normalize(vim.uv.cwd() or ".") .. "/" .. current.file
                 vim.ui.select({ "yes", "no" }, {
                   prompt = "Delete " .. get_relative_path(filePath) .. " ?",
