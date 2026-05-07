@@ -81,6 +81,57 @@ local function create_files_or_dirs(base_dir, input_str, opts)
   end
 end
 
+local function action_create(picker, isCreate)
+  local current = picker:current()
+  if current then
+    if picker.title == PICKER_NAME and (isCreate or is_directory_path(current.file)) then
+      local filePath = current.file
+      local parentPath = ""
+      if filePath and vim.fn.fnamemodify(filePath, ":h") ~= "." then
+        parentPath = vim.fs.normalize(vim.uv.cwd() or ".") .. "/" .. vim.fn.fnamemodify(filePath, ":h") .. "/"
+      else
+        parentPath = vim.fs.normalize(vim.uv.cwd() or ".") .. "/"
+      end
+      if parentPath then
+        vim.ui.input({
+          prompt = "Enter name to create (dirs end with /, comma-separated)",
+          default = "",
+          completion = "file",
+        }, function(input)
+          if input then
+            create_files_or_dirs(parentPath, input)
+          end
+          vim.schedule(function()
+            vim.cmd("stopinsert")
+            picker:refresh()
+          end)
+        end)
+        vim.schedule(function()
+          vim.cmd("startinsert!")
+        end)
+      end
+    else
+      picker:action("confirm")
+    end
+  end
+end
+
+local function is_project_root_file(file_path, project_root)
+  project_root = project_root or "."
+
+  local normalized = file_path:gsub("\\", "/")
+
+  local parent_dir = normalized:match("(.*/)")
+
+  if not parent_dir then
+    return true
+  end
+
+  parent_dir = parent_dir:gsub("/$", "")
+
+  return parent_dir == project_root or parent_dir == "." or parent_dir == ""
+end
+
 return {
   "folke/snacks.nvim",
   keys = {
@@ -134,46 +185,19 @@ return {
           end
         end,
         createFileOrDir = function(picker)
-          local current = picker:current()
-          if current then
-            if picker.title == PICKER_NAME and is_directory_path(current.file) then
-              local filePath = current.file
-              local parentPath = ""
-              if filePath and vim.fn.fnamemodify(filePath, ":h") ~= "." then
-                parentPath = vim.fs.normalize(vim.uv.cwd() or ".") .. "/" .. vim.fn.fnamemodify(filePath, ":h") .. "/"
-              else
-                parentPath = vim.fs.normalize(vim.uv.cwd() or ".") .. "/"
-              end
-              if parentPath then
-                vim.ui.input({
-                  prompt = "Enter name to create (dirs end with /, comma-separated)",
-                  default = "",
-                  completion = "file",
-                }, function(input)
-                  if input then
-                    create_files_or_dirs(parentPath, input)
-                  end
-                  vim.schedule(function()
-                    vim.cmd("stopinsert")
-                    picker:refresh()
-                  end)
-                end)
-                vim.schedule(function()
-                  vim.cmd("startinsert!")
-                end)
-              end
-            else
-              picker:action("confirm")
-            end
-          end
+          action_create(picker)
         end,
         fileUtils = function(picker)
           local current = picker:current()
           if current ~= nil and picker.title == PICKER_NAME then
-            vim.ui.select({ "remove", "delete" }, {
+            local options = { "rename", "delete" }
+            if is_project_root_file(current.file) then
+              table.insert(options, 1, "create")
+            end
+            vim.ui.select(options, {
               prompt = "Select operations:",
             }, function(choice)
-              if choice == "remove" then
+              if choice == "rename" then
                 local filePath = vim.fs.normalize(vim.uv.cwd() or ".") .. "/" .. current.file
                 vim.ui.input({
                   prompt = "rename file",
@@ -205,6 +229,8 @@ return {
                 vim.schedule(function()
                   vim.cmd("startinsert!")
                 end)
+              elseif choice == "create" then
+                action_create(picker, true)
               elseif choice == "delete" then
                 local filePath = vim.fs.normalize(vim.uv.cwd() or ".") .. "/" .. current.file
                 vim.ui.select({ "yes", "no" }, {
