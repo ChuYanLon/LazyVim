@@ -17,8 +17,12 @@ return {
         },
       },
     },
+    config = function(_, opts)
+      vim.api.nvim_set_hl(0, "CodeiumSuggestion", { link = "Comment" })
+      require("codeium").setup(opts)
+    end,
   },
-  
+
   -- codeium cmp source
   {
     "hrsh7th/nvim-cmp",
@@ -32,7 +36,7 @@ return {
       })
     end,
   },
-{
+  {
     "nvim-lualine/lualine.nvim",
     optional = true,
     event = "VeryLazy",
