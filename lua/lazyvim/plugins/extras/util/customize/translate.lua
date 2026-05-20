@@ -1,22 +1,28 @@
 return {
-	"uga-rosa/translate.nvim",
-	config = function()
-		vim.api.nvim_set_keymap('n', 'mm', "viw:Translate ZH<CR>", { noremap = true, silent = true })
-		vim.api.nvim_set_keymap('v', 'mm', ":'<,'>Translate ZH<CR>",
-			{ noremap = true, silent = true })
-		vim.api.nvim_set_keymap('n', 'mr', "viw:Translate ZH -output=replace<CR>", { noremap = true, silent = true })
-		vim.api.nvim_set_keymap('v', 'mr', ":'<,'>Translate ZH -output=replace<CR>", { noremap = true, silent = true })
-		require("translate").setup({
-			default = {
-				command = "translate_shell",
-			},
-			preset = {
-				command = {
-					translate_shell = {
-						args = { "-e", "bing" }
-					}
-				}
-			}
-		})
-	end
+  "JuanZoran/Trans.nvim",
+  lazy = true,
+  cmds = {
+    "Translate",
+    "TranslateInput",
+    "TransPlay",
+  },
+  init = function()
+    vim.api.nvim_create_user_command("TransInstall", function()
+      local dir = require("Trans").plugin_dir
+      for _, f in ipairs({ "ultimate.db", "ultimate.zip" }) do
+        local p = dir .. "/" .. f
+        if vim.fn.filereadable(p) == 1 then
+          os.remove(p)
+        end
+      end
+      require("Trans").install()
+    end, {})
+  end,
+  keys = {
+    { "mm", mode = { "n", "x" }, "<Cmd>Translate<CR>", desc = "󰊿 Translate" },
+    { "mk", mode = { "n", "x" }, "<Cmd>TransPlay<CR>", desc = " Auto Play" },
+    { "mi", "<Cmd>TranslateInput<CR>", desc = "󰊿 Translate From Input" },
+  },
+  dependencies = { "kkharji/sqlite.lua" },
+  opts = {},
 }
