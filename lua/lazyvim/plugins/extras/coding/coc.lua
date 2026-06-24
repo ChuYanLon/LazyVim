@@ -51,11 +51,23 @@ return {
       end
       table.insert(opts.sections.lualine_x, {
         function()
-          local status = vim.g.coc_status or ""
-          return status ~= "" and (" " .. status) or ""
+          local status = vim.g.coc_status
+          if type(status) ~= "string" or status == "" then
+            return ""
+          end
+          return " " .. status
         end,
         cond = function()
-          return (vim.g.coc_status or "") ~= ""
+          local status = vim.g.coc_status
+          return type(status) == "string" and status ~= ""
+        end,
+      })
+      -- coc 状态更新时刷新 lualine
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "CocStatusChange",
+        group = vim.api.nvim_create_augroup("lazyvim_coc_lualine", { clear = true }),
+        callback = function()
+          pcall(require("lualine").refresh)
         end,
       })
     end,
