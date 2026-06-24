@@ -142,6 +142,9 @@ return {
       end
       vim.fn["coc#config"]("suggest.completionItemKindLabels", kind_labels)
       vim.fn["coc#config"]("suggest.noselect", false)
+      vim.fn["coc#config"]("suggest.enablePreview", true)
+      vim.fn["coc#config"]("suggest.detail", true)
+      vim.fn["coc#config"]("suggest.floatingConfig", { border = border, winblend = vim.o.pumblend or 10 })
 
       -- LSP 导航
       vim.keymap.set("n", "gd", function()
