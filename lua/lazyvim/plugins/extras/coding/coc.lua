@@ -44,6 +44,10 @@ return {
             cond = function()
               local info = vim.b.coc_diagnostic_info
               return info ~= nil
+                and ((info.error or 0) > 0
+                  or (info.warning or 0) > 0
+                  or (info.information or 0) > 0
+                  or (info.hint or 0) > 0)
             end,
           }
           break
@@ -52,14 +56,15 @@ return {
       table.insert(opts.sections.lualine_x, {
         function()
           local status = vim.g.coc_status
-          if type(status) ~= "string" or status == "" then
+          if type(status) ~= "string" then
             return ""
           end
-          return " " .. status
+          status = vim.trim(status)
+          return status ~= "" and (" " .. status) or ""
         end,
         cond = function()
           local status = vim.g.coc_status
-          return type(status) == "string" and status ~= ""
+          return type(status) == "string" and vim.trim(status) ~= ""
         end,
       })
       -- coc 状态更新时刷新 lualine
