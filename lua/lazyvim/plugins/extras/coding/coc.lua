@@ -171,6 +171,41 @@ return {
       }
       vim.g.coc_user_config = vim.tbl_deep_extend("force", vim.g.coc_user_config or {}, config)
 
+      -- coc 高亮（tokyonight/catppuccin 都无内置 coc 支持，链接到 Neovim 原生组）
+      local hl = vim.api.nvim_set_hl
+      local function link(name, linkto)
+        hl(0, name, { link = linkto })
+      end
+      link("CocFloating", "NormalFloat")
+      link("CocFloatBorder", "FloatBorder")
+      link("CocFloatActive", "NormalFloat")
+      link("CocMenuSel", "PmenuSel")
+      link("CocPumSearch", "PmenuSel")
+      link("CocPumDetail", "Comment")
+      link("CocHighlightText", "Visual")
+      link("CocCodeLens", "Comment")
+      link("CocInlayHint", "Comment")
+      link("CocBold", "Bold")
+      link("CocItalic", "Italic")
+      link("CocUnderline", "Underlined")
+      link("CocMarkdownLink", "markdownLinkText")
+      link("CocMarkdownHeader", "markdownH1")
+      link("CocMarkdownCode", "markdownCode")
+      link("CocErrorHighlight", "DiagnosticUndercurlError")
+      link("CocWarningHighlight", "DiagnosticUndercurlWarn")
+      link("CocInfoHighlight", "DiagnosticUndercurlInfo")
+      link("CocHintHighlight", "DiagnosticUndercurlHint")
+      link("CocDeprecatedHighlight", "DiagnosticDeprecated")
+      link("CocUnusedHighlight", "DiagnosticUnnecessary")
+      link("CocErrorVirtualText", "DiagnosticVirtualTextError")
+      link("CocWarningVirtualText", "DiagnosticVirtualTextWarn")
+      link("CocInfoVirtualText", "DiagnosticVirtualTextInfo")
+      link("CocHintVirtualText", "DiagnosticVirtualTextHint")
+      link("CocErrorSign", "DiagnosticSignError")
+      link("CocWarningSign", "DiagnosticSignWarn")
+      link("CocInfoSign", "DiagnosticSignInfo")
+      link("CocHintSign", "DiagnosticSignHint")
+
       -- LSP 导航
       vim.keymap.set("n", "gd", function()
         vim.fn.CocAction("jumpDefinition")
