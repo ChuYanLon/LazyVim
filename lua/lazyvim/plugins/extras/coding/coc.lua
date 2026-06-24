@@ -114,22 +114,34 @@ return {
       vim.g.coc_notify_info_icon = diag.Info
 
       -- completionItemKindLabels 必须用小写 key（coc 要求）
-      local kind_to_lz = {
-        text = "Text", method = "Method", ["function"] = "Function",
-        constructor = "Constructor", field = "Field", variable = "Variable",
-        class = "Class", interface = "Interface", module = "Module",
-        property = "Property", unit = "Unit", value = "Value",
-        enum = "Enum", keyword = "Keyword", snippet = "Snippet",
-        color = "Color", file = "File", reference = "Reference",
-        folder = "Folder", enumMember = "EnumMember", constant = "Constant",
-        struct = "Struct", event = "Event", operator = "Operator",
-        typeParameter = "TypeParameter", ["default"] = " 󰠱 ",
+      local kind_labels = {
+        text = " " .. icons.kinds.Text .. " ",
+        method = " " .. icons.kinds.Method .. " ",
+        ["function"] = " " .. icons.kinds.Function .. " ",
+        constructor = " " .. icons.kinds.Constructor .. " ",
+        field = " " .. icons.kinds.Field .. " ",
+        variable = " " .. icons.kinds.Variable .. " ",
+        class = " " .. icons.kinds.Class .. " ",
+        interface = " " .. icons.kinds.Interface .. " ",
+        module = " " .. icons.kinds.Module .. " ",
+        property = " " .. icons.kinds.Property .. " ",
+        unit = " " .. icons.kinds.Unit .. " ",
+        value = " " .. icons.kinds.Value .. " ",
+        enum = " " .. icons.kinds.Enum .. " ",
+        keyword = " " .. icons.kinds.Keyword .. " ",
+        snippet = " " .. icons.kinds.Snippet .. " ",
+        color = " " .. icons.kinds.Color .. " ",
+        file = " " .. icons.kinds.File .. " ",
+        reference = " " .. icons.kinds.Reference .. " ",
+        folder = " " .. icons.kinds.Folder .. " ",
+        enumMember = " " .. icons.kinds.EnumMember .. " ",
+        constant = " " .. icons.kinds.Constant .. " ",
+        struct = " " .. icons.kinds.Struct .. " ",
+        event = " " .. icons.kinds.Event .. " ",
+        operator = " " .. icons.kinds.Operator .. " ",
+        typeParameter = " " .. icons.kinds.TypeParameter .. " ",
+        ["default"] = " 󰠱 ",
       }
-      local kind_labels = {}
-      for lck, lzk in pairs(kind_to_lz) do
-        local icon = icons.kinds[lzk]
-        kind_labels[lck] = " " .. (icon or "") .. " "
-      end
 
       local config = {
         diagnostic = {
