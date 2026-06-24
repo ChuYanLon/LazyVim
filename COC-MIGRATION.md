@@ -159,15 +159,51 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     opts = function(_, opts)
+      local icons = LazyVim.config.icons.diagnostics
       for i, item in ipairs(opts.sections.lualine_c) do
         if type(item) == "table" and item[1] == "diagnostics" then
           opts.sections.lualine_c[i] = {
-            function() return vim.fn["coc#status"]() end,
-            cond = function() return vim.fn["coc#status"]() ~= "" end,
+            function()
+              local info = vim.b.coc_diagnostic_info
+              if not info then
+                return ""
+              end
+              local parts = {}
+              if info.error and info.error > 0 then
+                table.insert(parts, icons.Error .. info.error)
+              end
+              if info.warning and info.warning > 0 then
+                table.insert(parts, icons.Warn .. info.warning)
+              end
+              if info.information and info.information > 0 then
+                table.insert(parts, icons.Info .. info.information)
+              end
+              if info.hint and info.hint > 0 then
+                table.insert(parts, icons.Hint .. info.hint)
+              end
+              return table.concat(parts, " ")
+            end,
+            cond = function()
+              return vim.b.coc_diagnostic_info ~= nil
+                and (vim.b.coc_diagnostic_info.error or 0) > 0
+                or (vim.b.coc_diagnostic_info.warning or 0) > 0
+            end,
           }
           break
         end
       end
+      table.insert(opts.sections.lualine_x, {
+        function()
+          local status = vim.fn["coc#status"]()
+          if status ~= "" then
+            return " " .. status
+          end
+          return ""
+        end,
+        cond = function()
+          return vim.fn["coc#status"]() ~= ""
+        end,
+      })
     end,
   },
 
@@ -218,6 +254,10 @@ return {
         "coc-vscode-loader",
       }
       vim.g.coc_loader_global_extensions = {}
+
+      vim.g.coc_notify_error_icon = LazyVim.config.icons.diagnostics.Error
+      vim.g.coc_notify_warning_icon = LazyVim.config.icons.diagnostics.Warn
+      vim.g.coc_notify_info_icon = LazyVim.config.icons.diagnostics.Info
 
       -- LSP 导航
       vim.keymap.set("n", "gd", function() vim.fn.CocAction("jumpDefinition") end, { desc = "Goto Definition" })
