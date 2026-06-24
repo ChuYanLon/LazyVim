@@ -42,9 +42,9 @@ return {
               return table.concat(parts, " ")
             end,
             cond = function()
-              return vim.b.coc_diagnostic_info ~= nil
-                and (vim.b.coc_diagnostic_info.error or 0) > 0
-                or (vim.b.coc_diagnostic_info.warning or 0) > 0
+              local info = vim.b.coc_diagnostic_info
+              return info ~= nil
+                and ((info.error or 0) > 0 or (info.warning or 0) > 0)
             end,
           }
           break
