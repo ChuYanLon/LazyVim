@@ -198,6 +198,13 @@ return {
       }
       vim.g.coc_user_config = vim.tbl_deep_extend("force", vim.g.coc_user_config or {}, config)
 
+      -- 诊断符号（coc 可能不走 signText，确保 Neovim 原生诊断符号也设为 LazyVim 图标）
+      local sign = vim.fn.sign_define
+      sign("DiagnosticSignError", { text = diag.Error, texthl = "DiagnosticSignError" })
+      sign("DiagnosticSignWarn", { text = diag.Warn, texthl = "DiagnosticSignWarn" })
+      sign("DiagnosticSignInfo", { text = diag.Info, texthl = "DiagnosticSignInfo" })
+      sign("DiagnosticSignHint", { text = diag.Hint, texthl = "DiagnosticSignHint" })
+
       -- coc 高亮（tokyonight/catppuccin 都无内置 coc 支持，链接到 Neovim 原生组）
       local hl = vim.api.nvim_set_hl
       local function link(name, linkto)
