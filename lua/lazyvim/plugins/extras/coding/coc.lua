@@ -108,23 +108,31 @@ return {
       vim.g.coc_notify_warning_icon = LazyVim.config.icons.diagnostics.Warn
       vim.g.coc_notify_info_icon = LazyVim.config.icons.diagnostics.Info
 
-      vim.fn["coc#config"]({
-        ["diagnostic.level"] = "hint",
-        ["diagnostic.locationlist"] = true,
-        ["diagnostic.virtualText"] = true,
-      })
+      vim.fn["coc#config"]("diagnostic.level", "hint")
+      vim.fn["coc#config"]("diagnostic.locationlist", true)
+      vim.fn["coc#config"]("diagnostic.virtualText", true)
 
       local diag_icons = LazyVim.config.icons.diagnostics
-      vim.fn["coc#config"]({
-        ["diagnostic.sign"] = {
-          text = {
-            ["error"] = diag_icons.Error,
-            ["warning"] = diag_icons.Warn,
-            ["information"] = diag_icons.Info,
-            ["hint"] = diag_icons.Hint,
-          },
+      vim.fn["coc#config"]("diagnostic.sign", {
+        text = {
+          error = diag_icons.Error,
+          warning = diag_icons.Warn,
+          information = diag_icons.Info,
+          hint = diag_icons.Hint,
         },
       })
+
+      local border = vim.g.coc_borderchars
+      vim.fn["coc#config"]("suggest.pumHeight", vim.o.pumheight)
+      vim.fn["coc#config"]("suggest.pumFloatConfig", {
+        border = border,
+        winblend = vim.o.pumblend or 10,
+      })
+      vim.fn["coc#config"]("hover.floatConfig", { border = border })
+      vim.fn["coc#config"]("signature.floatConfig", { border = border })
+      vim.fn["coc#config"]("diagnostic.floatConfig", { border = border })
+      vim.fn["coc#config"]("coc.preferences.hoverTarget", "float")
+      vim.fn["coc#config"]("coc.preferences.formatOnSave", false)
 
       -- LSP 导航
       vim.keymap.set("n", "gd", function()
