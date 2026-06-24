@@ -235,7 +235,7 @@ return {
         vim.fn.CocAction("codeAction", nil, "source")
       end, { desc = "Source Action" })
       vim.keymap.set("n", "<leader>cl", function()
-        vim.fn.CocAction("codeAction", nil, nil, vim.v.true)
+        vim.fn.CocAction("codeAction", nil, nil, true)
       end, { desc = "Line Action" })
       vim.keymap.set({ "n", "x" }, "<leader>cr", function()
         vim.fn.CocAction("codeAction", nil, "refactor")
