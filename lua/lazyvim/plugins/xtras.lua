@@ -3,6 +3,7 @@ local prios = {
   ["lazyvim.plugins.extras.test.core"] = 1,
   ["lazyvim.plugins.extras.dap.core"] = 1,
   ["lazyvim.plugins.extras.coding.nvim-cmp"] = 2,
+  ["lazyvim.plugins.extras.coding.coc"] = 2,
   ["lazyvim.plugins.extras.editor.neo-tree"] = 2,
   ["lazyvim.plugins.extras.ui.edgy"] = 3,
   ["lazyvim.plugins.extras.ai.copilot-native"] = 4,
