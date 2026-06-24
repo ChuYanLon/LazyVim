@@ -102,49 +102,74 @@ return {
       }
       vim.g.coc_loader_global_extensions = {}
 
-      vim.g.coc_status_error_sign = LazyVim.config.icons.diagnostics.Error
-      vim.g.coc_status_warning_sign = LazyVim.config.icons.diagnostics.Warn
-      vim.g.coc_borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
-      vim.g.coc_notify_error_icon = LazyVim.config.icons.diagnostics.Error
-      vim.g.coc_notify_warning_icon = LazyVim.config.icons.diagnostics.Warn
-      vim.g.coc_notify_info_icon = LazyVim.config.icons.diagnostics.Info
+      local icons = LazyVim.config.icons
+      local diag = icons.diagnostics
 
-      vim.fn["coc#config"]("diagnostic.level", "hint")
-      vim.fn["coc#config"]("diagnostic.locationlist", true)
-      vim.fn["coc#config"]("diagnostic.virtualText", true)
+      vim.g.coc_status_error_sign = diag.Error
+      vim.g.coc_status_warning_sign = diag.Warn
+      vim.g.coc_status_info_sign = diag.Info
+      vim.g.coc_status_hint_sign = diag.Hint
+      vim.g.coc_notify_error_icon = diag.Error
+      vim.g.coc_notify_warning_icon = diag.Warn
+      vim.g.coc_notify_info_icon = diag.Info
 
-      local diag_icons = LazyVim.config.icons.diagnostics
-      vim.fn["coc#config"]("diagnostic.sign", {
-        text = {
-          error = diag_icons.Error,
-          warning = diag_icons.Warn,
-          information = diag_icons.Info,
-          hint = diag_icons.Hint,
-        },
-      })
-
-      local border = vim.g.coc_borderchars
-      vim.fn["coc#config"]("suggest.pumHeight", vim.o.pumheight)
-      vim.fn["coc#config"]("suggest.pumFloatConfig", {
-        border = border,
-        winblend = vim.o.pumblend or 10,
-      })
-      vim.fn["coc#config"]("hover.floatConfig", { border = border })
-      vim.fn["coc#config"]("signature.floatConfig", { border = border })
-      vim.fn["coc#config"]("diagnostic.floatConfig", { border = border })
-      vim.fn["coc#config"]("coc.preferences.hoverTarget", "float")
-      vim.fn["coc#config"]("coc.preferences.formatOnSave", false)
-
-      -- 补全项图标（LazyVim 风格）
+      -- completionItemKindLabels 必须用小写 key（coc 要求）
+      local kind_to_lz = {
+        text = "Text", method = "Method", ["function"] = "Function",
+        constructor = "Constructor", field = "Field", variable = "Variable",
+        class = "Class", interface = "Interface", module = "Module",
+        property = "Property", unit = "Unit", value = "Value",
+        enum = "Enum", keyword = "Keyword", snippet = "Snippet",
+        color = "Color", file = "File", reference = "Reference",
+        folder = "Folder", enumMember = "EnumMember", constant = "Constant",
+        struct = "Struct", event = "Event", operator = "Operator",
+        typeParameter = "TypeParameter", ["default"] = " 󰠱 ",
+      }
       local kind_labels = {}
-      for kind, icon in pairs(LazyVim.config.icons.kinds) do
-        kind_labels[kind] = " " .. icon
+      for lck, lzk in pairs(kind_to_lz) do
+        local icon = icons.kinds[lzk]
+        kind_labels[lck] = " " .. (icon or "") .. " "
       end
-      vim.fn["coc#config"]("suggest.completionItemKindLabels", kind_labels)
-      vim.fn["coc#config"]("suggest.noselect", false)
-      vim.fn["coc#config"]("suggest.enablePreview", true)
-      vim.fn["coc#config"]("suggest.detail", true)
-      vim.fn["coc#config"]("suggest.floatingConfig", { border = border, winblend = vim.o.pumblend or 10 })
+
+      local config = {
+        diagnostic = {
+          enable = true,
+          virtualText = true,
+          virtualTextCurrentLineOnly = false,
+          floatSource = true,
+          floatPrefix = "●",
+          signText = { Error = diag.Error, Warning = diag.Warn, Info = diag.Info, Hint = diag.Hint },
+          signPriority = 10,
+          refreshAfterInsertMode = true,
+          checkCurrentLine = true,
+        },
+        suggest = {
+          noselect = false,
+          maxCompleteItemCount = 200,
+          detailMaxWidth = 80,
+          floatEnable = true,
+          filterDuplicates = true,
+          removeDuplicateItems = true,
+          formatItems = { "kind", "abbr", "menu", "shortcut" },
+          completionItemKindLabels = kind_labels,
+          pumHeight = vim.o.pumheight,
+          pumFloatConfig = {
+            border = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+            winblend = vim.o.pumblend or 10,
+          },
+          floatingConfig = {
+            border = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+            winblend = vim.o.pumblend or 10,
+          },
+        },
+        signature = { enable = true },
+        hover = { border = "rounded" },
+        floating = { border = "rounded" },
+        codeLens = { enable = true },
+        inlayHint = { enable = true },
+        tree = { renderChildren = true, openedIcon = "", closedIcon = "" },
+      }
+      vim.g.coc_user_config = vim.tbl_deep_extend("force", vim.g.coc_user_config or {}, config)
 
       -- LSP 导航
       vim.keymap.set("n", "gd", function()
