@@ -51,12 +51,15 @@ return {
       end
       table.insert(opts.sections.lualine_x, {
         function()
-          local ok, status = pcall(vim.fn["coc#status"])
-          return ok and status or ""
+          local ok = pcall(vim.fn["coc#rpc#started"])
+          if ok and vim.fn["coc#rpc#started"]() == 1 then
+            return " "
+          end
+          return ""
         end,
         cond = function()
-          local ok, status = pcall(vim.fn["coc#status"])
-          return ok and status ~= ""
+          local ok = pcall(vim.fn["coc#rpc#started"])
+          return ok and vim.fn["coc#rpc#started"]() == 1
         end,
       })
     end,
