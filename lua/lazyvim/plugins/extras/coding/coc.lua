@@ -98,6 +98,7 @@ return {
         "coc-json",
         "coc-tsserver",
         "coc-vscode-loader",
+        "coc-snippets",
       }
       vim.g.coc_loader_global_extensions = {}
 
@@ -133,6 +134,14 @@ return {
       vim.fn["coc#config"]("diagnostic.floatConfig", { border = border })
       vim.fn["coc#config"]("coc.preferences.hoverTarget", "float")
       vim.fn["coc#config"]("coc.preferences.formatOnSave", false)
+
+      -- 补全项图标（LazyVim 风格）
+      local kind_labels = {}
+      for kind, icon in pairs(LazyVim.config.icons.kinds) do
+        kind_labels[kind] = " " .. icon
+      end
+      vim.fn["coc#config"]("suggest.completionItemKindLabels", kind_labels)
+      vim.fn["coc#config"]("suggest.noselect", false)
 
       -- LSP 导航
       vim.keymap.set("n", "gd", function()
