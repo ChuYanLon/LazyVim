@@ -21,30 +21,29 @@ return {
       for i, item in ipairs(opts.sections.lualine_c) do
         if type(item) == "table" and item[1] == "diagnostics" then
           opts.sections.lualine_c[i] = {
-            function()
+            function(self)
               local info = vim.b.coc_diagnostic_info
               if not info then
                 return ""
               end
               local parts = {}
               if info.error and info.error > 0 then
-                table.insert(parts, icons.Error .. info.error)
+                table.insert(parts, LazyVim.lualine.format(self, icons.Error .. info.error, "DiagnosticError"))
               end
               if info.warning and info.warning > 0 then
-                table.insert(parts, icons.Warn .. info.warning)
+                table.insert(parts, LazyVim.lualine.format(self, icons.Warn .. info.warning, "DiagnosticWarn"))
               end
               if info.information and info.information > 0 then
-                table.insert(parts, icons.Info .. info.information)
+                table.insert(parts, LazyVim.lualine.format(self, icons.Info .. info.information, "DiagnosticInfo"))
               end
               if info.hint and info.hint > 0 then
-                table.insert(parts, icons.Hint .. info.hint)
+                table.insert(parts, LazyVim.lualine.format(self, icons.Hint .. info.hint, "DiagnosticHint"))
               end
               return table.concat(parts, " ")
             end,
             cond = function()
               local info = vim.b.coc_diagnostic_info
               return info ~= nil
-                and ((info.error or 0) > 0 or (info.warning or 0) > 0)
             end,
           }
           break
