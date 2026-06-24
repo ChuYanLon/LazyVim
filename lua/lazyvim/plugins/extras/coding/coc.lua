@@ -52,14 +52,12 @@ return {
       end
       table.insert(opts.sections.lualine_x, {
         function()
-          local status = vim.fn["coc#status"]()
-          if status ~= "" then
-            return " " .. status
-          end
-          return ""
+          local ok, status = pcall(vim.fn["coc#status"])
+          return ok and status or ""
         end,
         cond = function()
-          return vim.fn["coc#status"]() ~= ""
+          local ok, status = pcall(vim.fn["coc#status"])
+          return ok and status ~= ""
         end,
       })
     end,
@@ -103,27 +101,27 @@ return {
       }
       vim.g.coc_loader_global_extensions = {}
 
+      vim.g.coc_status_error_sign = LazyVim.config.icons.diagnostics.Error
+      vim.g.coc_status_warning_sign = LazyVim.config.icons.diagnostics.Warn
       vim.g.coc_borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
-
       vim.g.coc_notify_error_icon = LazyVim.config.icons.diagnostics.Error
       vim.g.coc_notify_warning_icon = LazyVim.config.icons.diagnostics.Warn
       vim.g.coc_notify_info_icon = LazyVim.config.icons.diagnostics.Info
 
-      vim.diagnostic.config({
-        underline = true,
-        update_in_insert = false,
-        virtual_text = {
-          spacing = 4,
-          source = "if_many",
-          prefix = "●",
-        },
-        severity_sort = true,
-        signs = {
+      vim.fn["coc#config"]({
+        ["diagnostic.level"] = "hint",
+        ["diagnostic.locationlist"] = true,
+        ["diagnostic.virtualText"] = true,
+      })
+
+      local diag_icons = LazyVim.config.icons.diagnostics
+      vim.fn["coc#config"]({
+        ["diagnostic.sign"] = {
           text = {
-            [vim.diagnostic.severity.ERROR] = LazyVim.config.icons.diagnostics.Error,
-            [vim.diagnostic.severity.WARN] = LazyVim.config.icons.diagnostics.Warn,
-            [vim.diagnostic.severity.HINT] = LazyVim.config.icons.diagnostics.Hint,
-            [vim.diagnostic.severity.INFO] = LazyVim.config.icons.diagnostics.Info,
+            ["error"] = diag_icons.Error,
+            ["warning"] = diag_icons.Warn,
+            ["information"] = diag_icons.Info,
+            ["hint"] = diag_icons.Hint,
           },
         },
       })
@@ -203,6 +201,9 @@ return {
       vim.keymap.set("n", "<leader>cd", function()
         vim.fn.CocActionAsync("doHover")
       end, { desc = "Line Diagnostics" })
+      vim.keymap.set("n", "<leader>ud", function()
+        vim.fn.CocAction("diagnosticToggle")
+      end, { desc = "Toggle Diagnostics" })
 
       -- 格式化
       vim.keymap.set({ "n", "x" }, "<leader>cf", function()

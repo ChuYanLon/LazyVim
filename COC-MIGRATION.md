@@ -56,7 +56,7 @@
 | `]w` | `vim.diagnostic.jump({ next, WARN })` | `CocAction('diagnosticNext')` |
 | `[w` | `vim.diagnostic.jump({ prev, WARN })` | `CocAction('diagnosticPrevious')` |
 | `<leader>cd` | `vim.diagnostic.open_float` | `CocActionAsync('doHover')` |
-| `<leader>ud` | `Snacks.toggle.diagnostics()` | 保留（coc 也走 `vim.diagnostic`） |
+| `<leader>ud` | `Snacks.toggle.diagnostics()` | `CocAction('diagnosticToggle')` |
 | `<leader>xx` | `Trouble diagnostics toggle` | 保留 |
 | `<leader>xX` | `Trouble diagnostics filter.buf=0` | 保留 |
 
@@ -255,30 +255,12 @@ return {
       }
       vim.g.coc_loader_global_extensions = {}
 
+      vim.g.coc_status_error_sign = LazyVim.config.icons.diagnostics.Error
+      vim.g.coc_status_warning_sign = LazyVim.config.icons.diagnostics.Warn
       vim.g.coc_borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
-
       vim.g.coc_notify_error_icon = LazyVim.config.icons.diagnostics.Error
       vim.g.coc_notify_warning_icon = LazyVim.config.icons.diagnostics.Warn
       vim.g.coc_notify_info_icon = LazyVim.config.icons.diagnostics.Info
-
-      vim.diagnostic.config({
-        underline = true,
-        update_in_insert = false,
-        virtual_text = {
-          spacing = 4,
-          source = "if_many",
-          prefix = "●",
-        },
-        severity_sort = true,
-        signs = {
-          text = {
-            [vim.diagnostic.severity.ERROR] = LazyVim.config.icons.diagnostics.Error,
-            [vim.diagnostic.severity.WARN] = LazyVim.config.icons.diagnostics.Warn,
-            [vim.diagnostic.severity.HINT] = LazyVim.config.icons.diagnostics.Hint,
-            [vim.diagnostic.severity.INFO] = LazyVim.config.icons.diagnostics.Info,
-          },
-        },
-      })
 
       -- LSP 导航
       vim.keymap.set("n", "gd", function() vim.fn.CocAction("jumpDefinition") end, { desc = "Goto Definition" })
@@ -319,6 +301,7 @@ return {
       vim.keymap.set("n", "]w", function() vim.fn.CocAction("diagnosticNext") end, { desc = "Next Warning" })
       vim.keymap.set("n", "[w", function() vim.fn.CocAction("diagnosticPrevious") end, { desc = "Prev Warning" })
       vim.keymap.set("n", "<leader>cd", function() vim.fn.CocActionAsync("doHover") end, { desc = "Line Diagnostics" })
+      vim.keymap.set("n", "<leader>ud", function() vim.fn.CocAction("diagnosticToggle") end, { desc = "Toggle Diagnostics" })
 
       -- Coc 新增
       vim.keymap.set("n", "]g", function() vim.fn.CocAction("diagnosticNext") end, { desc = "Next Diagnostic" })
