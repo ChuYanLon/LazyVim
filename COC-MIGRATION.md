@@ -255,9 +255,30 @@ return {
       }
       vim.g.coc_loader_global_extensions = {}
 
+      vim.g.coc_borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+
       vim.g.coc_notify_error_icon = LazyVim.config.icons.diagnostics.Error
       vim.g.coc_notify_warning_icon = LazyVim.config.icons.diagnostics.Warn
       vim.g.coc_notify_info_icon = LazyVim.config.icons.diagnostics.Info
+
+      vim.diagnostic.config({
+        underline = true,
+        update_in_insert = false,
+        virtual_text = {
+          spacing = 4,
+          source = "if_many",
+          prefix = "●",
+        },
+        severity_sort = true,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = LazyVim.config.icons.diagnostics.Error,
+            [vim.diagnostic.severity.WARN] = LazyVim.config.icons.diagnostics.Warn,
+            [vim.diagnostic.severity.HINT] = LazyVim.config.icons.diagnostics.Hint,
+            [vim.diagnostic.severity.INFO] = LazyVim.config.icons.diagnostics.Info,
+          },
+        },
+      })
 
       -- LSP 导航
       vim.keymap.set("n", "gd", function() vim.fn.CocAction("jumpDefinition") end, { desc = "Goto Definition" })
