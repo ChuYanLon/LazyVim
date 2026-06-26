@@ -1,3 +1,29 @@
+local function merge_lists(t1, t2, unique)
+  t1 = t1 or {}
+  t2 = t2 or {}
+  unique = unique ~= false  -- 默认去重
+
+  local result = {}
+  local seen = {}
+
+  -- 合并第一个表
+  for _, v in ipairs(t1) do
+    if not unique or not seen[v] then
+      table.insert(result, v)
+      seen[v] = true
+    end
+  end
+
+  -- 合并第二个表
+  for _, v in ipairs(t2) do
+    if not unique or not seen[v] then
+      table.insert(result, v)
+      seen[v] = true
+    end
+  end
+
+  return result
+end
 return {
   {
     "saghen/blink.cmp",
@@ -109,11 +135,15 @@ return {
     build = "npm ci",
     event = "VeryLazy",
     config = function()
-      vim.g.coc_global_extensions = {
-        "coc-json",
-        "coc-vscode-loader",
-        "coc-snippets",
-      }
+      vim.g.coc_global_extensions = merge_lists(
+        { "coc-json", "coc-vscode-loader", "coc-snippets" },
+        vim.g.coc_loader_global_extensions or {}
+      )
+
+      vim.g.coc_loader_global_extensions = merge_lists(
+        {},
+        vim.g.coc_loader_global_extensions or {}
+      )
 
       local icons = LazyVim.config.icons
       local diag = icons.diagnostics
