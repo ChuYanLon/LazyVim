@@ -112,7 +112,7 @@ return {
     opts = function(_, opts)
       opts.lsp = nil
       opts.routes = opts.routes or {}
-      vim.list_extend(opts.routes, {
+     opts.routes = vim.list_extend(opts.routes, {
         {
           filter = {
             event = "cmdline",
