@@ -242,17 +242,21 @@ return {
       }
       vim.g.coc_user_config = vim.tbl_deep_extend("force", vim.g.coc_user_config or {}, config)
 
-      -- CoC 自动保存格式化（替代 LazyVim 默认的 conform 流程）
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        group = vim.api.nvim_create_augroup("CocAutoFormat", { clear = true }),
-        callback = function(args)
-          if vim.g.autoformat == false then
-            return
-          end
-          if vim.b[args.buf] and vim.b[args.buf].autoformat == false then
-            return
-          end
+      -- 注册 CoC 为 LazyVim 格式化器，使 autoformat / <leader>uf / :LazyFormat 走 CoC
+      LazyVim.format.register({
+        name = "coc.nvim",
+        priority = 200,
+        primary = true,
+        format = function(buf)
+          -- CocAction("format") 作用于当前缓冲区，在 BufWritePre 时当前缓冲区就是要保存的 buffer
           pcall(vim.fn.CocAction, "format")
+        end,
+        sources = function(buf)
+          local ok, result = pcall(vim.fn.CocAction, "hasProvider", "format", buf)
+          if ok and result then
+            return { "coc.nvim" }
+          end
+          return {}
         end,
       })
 
