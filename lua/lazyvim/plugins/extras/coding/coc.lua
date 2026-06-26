@@ -386,6 +386,9 @@ return {
       vim.keymap.set({ "n", "x" }, "<leader>cf", function()
         vim.fn.CocAction("format")
       end, { desc = "Format" })
+      vim.keymap.set({ "n", "x" }, "<leader>cF", function()
+        vim.fn.CocAction("format")
+      end, { desc = "Format" })
 
       -- 补全
       vim.keymap.set("i", "<Tab>", function()
