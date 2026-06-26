@@ -68,10 +68,10 @@ return {
             cond = function()
               local info = vim.b.coc_diagnostic_info
               return info ~= nil
-                and ((info.error or 0) > 0
-                  or (info.warning or 0) > 0
-                  or (info.information or 0) > 0
-                  or (info.hint or 0) > 0)
+                  and ((info.error or 0) > 0
+                    or (info.warning or 0) > 0
+                    or (info.information or 0) > 0
+                    or (info.hint or 0) > 0)
             end,
           }
           break
@@ -113,30 +113,27 @@ return {
       opts.lsp = nil
       opts.routes = opts.routes or {}
       vim.list_extend(opts.routes, {
-      {
-        filter = { event = "cmdline", find = "ZFVimIME" },
-        opts = { skip = true },
-      },
-      {
-        filter = { event = "cmdline", find = "Omni" },
-        opts = { skip = true },
-      },
-      {
-        filter = { event = "cmdline", find = "coc#on_enter" },
-        opts = { skip = true },
-      },
-      {
-        filter = { event = "msg_show", find = "coc#on_enter" },
-        opts = { skip = true },
-      },
-      {
-        filter = { find = "coc#on_enter" },
-        opts = { skip = true },
-      },
-      {
-        filter = { event = "cmdline", find = "coc#" },
-        opts = { skip = true },
-      },})
+        {
+          filter = { event = "cmdline", find = "ZFVimIME" },
+          opts = { skip = true },
+        },
+        {
+          filter = { event = "cmdline", find = "Omni" },
+          opts = { skip = true },
+        },
+        {
+          filter = { event = "cmdline", find = "coc#on_enter" },
+          opts = { skip = true },
+        },
+        {
+          filter = { event = "msg_show", find = "coc#on_enter" },
+          opts = { skip = true },
+        },
+        {
+          filter = { find = "coc#on_enter" },
+          opts = { skip = true },
+        },
+      })
     end,
   },
   {
