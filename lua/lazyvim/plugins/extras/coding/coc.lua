@@ -319,7 +319,11 @@ return {
         vim.fn.CocAction("jumpDeclaration")
       end, { desc = "Goto Declaration" })
       vim.keymap.set("n", "K", function()
-        vim.fn.CocActionAsync("doHover")
+        if vim.tbl_contains({ "vim", "help" }, vim.bo.filetype) then
+          vim.cmd("h " .. vim.fn.expand("<cword>"))
+        else
+          vim.fn.CocActionAsync("doHover")
+        end
       end, { desc = "Hover" })
       vim.keymap.set("n", "gK", function()
         vim.fn.CocActionAsync("showSignatureHelp")
