@@ -242,6 +242,23 @@ return {
       }
       vim.g.coc_user_config = vim.tbl_deep_extend("force", vim.g.coc_user_config or {}, config)
 
+      -- 注册 CoC 为 LazyVim 格式化器，使 autoformat 走 CoC
+      LazyVim.format.register({
+        name = "coc.nvim",
+        priority = 200,
+        primary = true,
+        format = function(buf)
+          pcall(vim.fn.CocAction, "format")
+        end,
+        sources = function(buf)
+          local ok, result = pcall(vim.fn.CocAction, "hasProvider", "format")
+          if ok and result then
+            return { "coc.nvim" }
+          end
+          return {}
+        end,
+      })
+
       -- 诊断符号（coc 可能不走 signText，确保 Neovim 原生诊断符号也设为 LazyVim 图标）
       local sign = vim.fn.sign_define
       sign("DiagnosticSignError", { text = diag.Error, texthl = "DiagnosticSignError" })
