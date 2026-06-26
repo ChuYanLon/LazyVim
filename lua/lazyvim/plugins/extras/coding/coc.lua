@@ -112,29 +112,31 @@ return {
     opts = function(_, opts)
       opts.lsp = nil
       opts.routes = opts.routes or {}
-      vim.list_extend(opts.routes, {
-            {
-              filter = {
-                event = "cmdline",
-                find = "ZFVimIM",
-              },
-              opts = { skip = true },
-            },
-            {
-              filter = {
-                event = "cmdline",
-                find = "Omni",
-              },
-              opts = { skip = true },
-            },
-            {
-              filter = {
-                event = "msg_show",
-                find = "ZFVimIM",
-              },
-              opts = { skip = true },
-            },
-          })
+vim.list_extend(opts.routes, {
+      -- === 调试路由：把所有 ZFVimIM 相关的消息显示出来（带详情） ===
+      {
+        filter = {
+          find = "ZFVimIM",     -- 匹配所有包含 ZFVimIM 的消息
+        },
+        view = "notify",        -- 用 notify 样式显示（容易看到）
+        opts = { timeout = 5000, title = "ZFVimIM Debug" },
+      },
+
+      -- 额外匹配 Omni / fixOmni 等
+      {
+        filter = {
+          find = "Omni",
+        },
+        view = "notify",
+        opts = { timeout = 5000, title = "Omni Debug" },
+      },
+
+      -- 你原来的过滤规则（先注释掉，调试完再打开）
+      -- {
+      --   filter = { event = "cmdline", find = "ZFVimIM" },
+      --   opts = { skip = true },
+      -- },
+    })
     end,
   },
   {
