@@ -327,6 +327,7 @@ return {
       vim.keymap.set("i", "<c-k>", function()
         vim.fn.CocActionAsync("showSignatureHelp")
       end, { desc = "Signature Help" })
+      vim.keymap.set({ "n", "x" }, "mm", "<Plug>(coc-translator-p)", { desc = "Translate" })
 
       -- 代码操作（4 个 codeAction 变体）
       vim.keymap.set({ "n", "x" }, "<leader>ca", function()
@@ -375,7 +376,7 @@ return {
         vim.fn.CocAction("diagnosticPrevious")
       end, { desc = "Prev Warning" })
       vim.keymap.set("n", "<leader>cd", function()
-        vim.fn.CocActionAsync("doHover")
+        vim.fn.CocActionAsync("diagnosticInfo")
       end, { desc = "Line Diagnostics" })
       vim.keymap.set("n", "<leader>ud", function()
         vim.fn.CocAction("diagnosticToggle")
@@ -441,12 +442,8 @@ return {
       end, { expr = true, desc = "Escape and Clear hlsearch" })
 
       -- Coc 新增
-      vim.keymap.set("n", "]g", function()
-        vim.fn.CocAction("diagnosticNext")
-      end, { desc = "Next Diagnostic" })
-      vim.keymap.set("n", "[g", function()
-        vim.fn.CocAction("diagnosticPrevious")
-      end, { desc = "Prev Diagnostic" })
+      vim.keymap.set("n", "]g", "<Plug>(coc-git-nextchunk)", { desc = "Next Chunk" })
+      vim.keymap.set("n", "[g", "<Plug>(coc-git-prevchunk)", { desc = "Prev Chunk" })
       vim.keymap.set("n", "g.", function()
         vim.fn.CocAction("doQuickfix")
       end, { desc = "Quickfix" })
