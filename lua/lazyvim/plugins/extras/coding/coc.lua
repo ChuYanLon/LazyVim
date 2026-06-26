@@ -111,11 +111,9 @@ return {
     config = function()
       vim.g.coc_global_extensions = {
         "coc-json",
-        "coc-tsserver",
         "coc-vscode-loader",
         "coc-snippets",
       }
-      vim.g.coc_loader_global_extensions = {}
 
       local icons = LazyVim.config.icons
       local diag = icons.diagnostics
