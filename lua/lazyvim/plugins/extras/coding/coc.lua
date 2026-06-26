@@ -112,22 +112,29 @@ return {
     opts = function(_, opts)
       opts.lsp = nil
       opts.routes = opts.routes or {}
-     opts.routes = vim.list_extend(opts.routes, {
-        {
-          filter = {
-            event = "cmdline",
-            find = "Omni",
-          },
-          opts = { skip = true },
-        },
-        {
-          filter = {
-            event = "cmdline",
-            find = "ZFVimIME_fixOmni",
-          },
-          opts = { skip = true },
-        },
-      })
+      vim.list_extend(opts.routes, {
+            {
+              filter = {
+                event = "cmdline",
+                find = "ZFVimIM",
+              },
+              opts = { skip = true },
+            },
+            {
+              filter = {
+                event = "cmdline",
+                find = "Omni",
+              },
+              opts = { skip = true },
+            },
+            {
+              filter = {
+                event = "msg_show",
+                find = "ZFVimIM",
+              },
+              opts = { skip = true },
+            },
+          })
     end,
   },
   {
