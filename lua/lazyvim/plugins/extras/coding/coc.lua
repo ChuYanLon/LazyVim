@@ -84,7 +84,10 @@ return {
             return ""
           end
           status = vim.trim(status)
-          return status ~= "" and (" " .. status) or ""
+          if status == "" then
+            return ""
+          end
+          return " " .. status:gsub("%%", "%%%%"):gsub("[<>]", { ["<"] = "＜", [">"] = "＞" })
         end,
         cond = function()
           local status = vim.g.coc_status
