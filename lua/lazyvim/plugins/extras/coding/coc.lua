@@ -137,7 +137,7 @@ return {
     config = function()
       vim.g.coc_global_extensions = merge_lists(
         { "coc-json", "coc-vscode-loader", "coc-snippets" },
-        vim.g.coc_loader_global_extensions or {}
+        vim.g.coc_global_extensions or {}
       )
 
       vim.g.coc_loader_global_extensions = merge_lists(
