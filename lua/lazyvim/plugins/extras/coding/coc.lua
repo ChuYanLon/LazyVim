@@ -1,12 +1,11 @@
 local function merge_lists(t1, t2, unique)
   t1 = t1 or {}
   t2 = t2 or {}
-  unique = unique ~= false  -- 默认去重
+  unique = unique ~= false
 
   local result = {}
   local seen = {}
 
-  -- 合并第一个表
   for _, v in ipairs(t1) do
     if not unique or not seen[v] then
       table.insert(result, v)
@@ -14,7 +13,6 @@ local function merge_lists(t1, t2, unique)
     end
   end
 
-  -- 合并第二个表
   for _, v in ipairs(t2) do
     if not unique or not seen[v] then
       table.insert(result, v)
@@ -208,14 +206,6 @@ return {
           formatItems = { "kind", "abbr", "menu", "shortcut" },
           completionItemKindLabels = kind_labels,
           pumHeight = vim.o.pumheight,
-          pumFloatConfig = {
-            border = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-            winblend = vim.o.pumblend or 10,
-          },
-          floatingConfig = {
-            border = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-            winblend = vim.o.pumblend or 10,
-          },
         },
         signature = { enable = true },
         hover = { border = "rounded" },
