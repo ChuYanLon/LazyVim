@@ -111,6 +111,23 @@ return {
     "folke/noice.nvim",
     opts = function(_, opts)
       opts.lsp = nil
+      opts.routes = opts.routes or {}
+      vim.list_extend(opts.routes, {
+        {
+          filter = {
+            event = "cmdline",
+            find = "Omni",
+          },
+          opts = { skip = true },
+        },
+        {
+          filter = {
+            event = "cmdline",
+            find = "ZFVimIME_fixOmni",
+          },
+          opts = { skip = true },
+        },
+      })
     end,
   },
   {
