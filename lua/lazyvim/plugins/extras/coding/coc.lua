@@ -193,7 +193,6 @@ return {
   { "stevearc/conform.nvim",  enabled = false },
   { "mfussenegger/nvim-lint", enabled = false },
   { "catppuccin/nvim",        enabled = false },
-  { "folke/tokyonight.nvim",  enabled = false },
   {
     "nvim-lualine/lualine.nvim",
     opts = function(_, opts)
