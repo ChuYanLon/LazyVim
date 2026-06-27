@@ -302,13 +302,26 @@ return {
       link("CocInfoSign", "DiagnosticSignInfo")
       link("CocHintSign", "DiagnosticSignHint")
 
-      -- LSP 导航
-      vim.keymap.set("n", "gd", "<Plug>(coc-definition)", { desc = "Goto Definition" })
-      vim.keymap.set("n", "gD", "<Plug>(coc-declaration)", { desc = "Goto Declaration" })
-      vim.keymap.set("n", "gy", "<Plug>(coc-type-definition)", { desc = "Goto T[y]pe Definition" })
-      vim.keymap.set("n", "gI", "<Plug>(coc-implementation)", { desc = "Goto Implementation" })
-      vim.keymap.set("n", "gr", "<Plug>(coc-references)", { desc = "References" })
-      vim.keymap.set("n", "gR", "<Plug>(coc-references-used)", { desc = "References (excl. declarations)" })
+      -- LSP 导航（remap=true 确保 <Plug> 被解析）
+      local function plug(lhs, rhs, desc)
+        vim.keymap.set("n", lhs, rhs, { desc = desc, remap = true })
+      end
+      local function plug_x(lhs, rhs, desc)
+        vim.keymap.set({ "x", "o" }, lhs, rhs, { desc = desc, remap = true })
+      end
+      plug("gd", "<Plug>(coc-definition)", "Goto Definition")
+      plug("gD", "<Plug>(coc-declaration)", "Goto Declaration")
+      plug("gy", "<Plug>(coc-type-definition)", "Goto T[y]pe Definition")
+      plug("gI", "<Plug>(coc-implementation)", "Goto Implementation")
+      plug("gr", "<Plug>(coc-references)", "References")
+      plug("gR", "<Plug>(coc-references-used)", "References (excl. declarations)")
+      plug("gx", "<Plug>(coc-openlink)", "Open link")
+      vim.keymap.set({ "n", "x" }, "mm", "<Plug>(coc-translator-p)", { desc = "Translate", remap = true })
+      plug_x("if", "<Plug>(coc-funcobj-i)", "Inner function")
+      plug_x("af", "<Plug>(coc-funcobj-a)", "Around function")
+      plug_x("ic", "<Plug>(coc-classobj-i)", "Inner class")
+      plug_x("ac", "<Plug>(coc-classobj-a)", "Around class")
+
       vim.keymap.set("n", "K", function()
         local cw = vim.fn.expand("<cword>")
         if vim.tbl_contains({ "vim", "help" }, vim.bo.filetype) then
@@ -325,23 +338,18 @@ return {
       vim.keymap.set("i", "<c-k>", function()
         vim.fn.CocActionAsync("showSignatureHelp")
       end, { desc = "Signature Help" })
-      vim.keymap.set({ "n", "x" }, "mm", "<Plug>(coc-translator-p)", { desc = "Translate" })
-      vim.keymap.set("n", "gx", "<Plug>(coc-openlink)", { desc = "Open link" })
-
-      -- Text objects
-      vim.keymap.set({ "x", "o" }, "if", "<Plug>(coc-funcobj-i)", { desc = "Inner function" })
-      vim.keymap.set({ "x", "o" }, "af", "<Plug>(coc-funcobj-a)", { desc = "Around function" })
-      vim.keymap.set({ "x", "o" }, "ic", "<Plug>(coc-classobj-i)", { desc = "Inner class" })
-      vim.keymap.set({ "x", "o" }, "ac", "<Plug>(coc-classobj-a)", { desc = "Around class" })
 
       -- 代码操作
-      vim.keymap.set({ "n", "x" }, "<leader>ca", "<Plug>(coc-codeaction)", { desc = "Code Action" })
-      vim.keymap.set("n", "<leader>cA", "<Plug>(coc-codeaction-source)", { desc = "Source Action" })
-      vim.keymap.set("n", "<leader>cl", "<Plug>(coc-codeaction-cursor)", { desc = "Cursor Action" })
-      vim.keymap.set("n", "<leader>cr", "<Plug>(coc-codeaction-refactor)", { desc = "Refactor" })
-      vim.keymap.set("x", "<leader>cr", "<Plug>(coc-codeaction-refactor-selected)", { desc = "Refactor" })
-      vim.keymap.set("n", "<leader>rn", "<Plug>(coc-rename)", { desc = "Rename" })
-      vim.keymap.set("n", "<leader>cq", "<Plug>(coc-fix-current)", { desc = "Quick Fix" })
+      local function plug_nx(lhs, rhs, desc)
+        vim.keymap.set({ "n", "x" }, lhs, rhs, { desc = desc, remap = true })
+      end
+      plug_nx("<leader>ca", "<Plug>(coc-codeaction)", "Code Action")
+      vim.keymap.set("n", "<leader>cA", "<Plug>(coc-codeaction-source)", { desc = "Source Action", remap = true })
+      vim.keymap.set("n", "<leader>cl", "<Plug>(coc-codeaction-cursor)", { desc = "Cursor Action", remap = true })
+      vim.keymap.set("n", "<leader>cr", "<Plug>(coc-codeaction-refactor)", { desc = "Refactor", remap = true })
+      vim.keymap.set("x", "<leader>cr", "<Plug>(coc-codeaction-refactor-selected)", { desc = "Refactor", remap = true })
+      vim.keymap.set("n", "<leader>rn", "<Plug>(coc-rename)", { desc = "Rename", remap = true })
+      vim.keymap.set("n", "<leader>cq", "<Plug>(coc-fix-current)", { desc = "Quick Fix", remap = true })
       vim.keymap.set("n", "<leader>ci", "<Cmd>CocInfo<CR>", { desc = "Coc Info" })
       vim.keymap.set("n", "<leader>cR", "<Cmd>CocCommand workspace.renameCurrentFile<CR>", { desc = "Rename File" })
       vim.keymap.set("n", "<leader>co", function()
@@ -355,26 +363,28 @@ return {
       vim.keymap.set("n", "<leader>cm", "<Cmd>CocCommand loader.open<CR>", { desc = "Coc Extensions" })
       vim.keymap.set("x", "<leader>cf", "<Plug>(coc-format-selected)", { desc = "Format Selected" })
 
-      -- 诊断导航（复用 vim.diagnostic，Coc 通过 lua/coc/diagnostic.lua 写入）
-      local diagnostic_goto = function(next, severity)
-        return function()
-          vim.diagnostic.jump({
-            count = (next and 1 or -1) * vim.v.count1,
-            severity = severity and vim.diagnostic.severity[severity] or nil,
-            float = true,
-          })
+      -- 诊断导航（defer 确保覆盖 LazyVim 默认）
+      vim.defer_fn(function()
+        local function dmap(next, rhs, desc)
+          vim.keymap.set("n", next, rhs, { desc = desc, remap = true })
         end
-      end
-      vim.keymap.set("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
-      vim.keymap.set("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
-      vim.keymap.set("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
-      vim.keymap.set("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
-      vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
-      vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
-      vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
-      vim.keymap.set("n", "<leader>ud", function()
-        vim.fn.CocAction("diagnosticToggle")
-      end, { desc = "Toggle Diagnostics" })
+        dmap("]d", "<Plug>(coc-diagnostic-next)", "Next Diagnostic")
+        dmap("[d", "<Plug>(coc-diagnostic-prev)", "Prev Diagnostic")
+        dmap("]e", "<Plug>(coc-diagnostic-next-error)", "Next Error")
+        dmap("[e", "<Plug>(coc-diagnostic-prev-error)", "Prev Error")
+        vim.keymap.set("n", "]w", function()
+          vim.fn.CocActionAsync("diagnosticNext", "warning")
+        end, { desc = "Next Warning" })
+        vim.keymap.set("n", "[w", function()
+          vim.fn.CocActionAsync("diagnosticPrevious", "warning")
+        end, { desc = "Prev Warning" })
+        vim.keymap.set("n", "<leader>cd", function()
+          vim.fn.CocActionAsync("diagnosticInfo")
+        end, { desc = "Line Diagnostics" })
+        vim.keymap.set("n", "<leader>ud", function()
+          vim.fn.CocAction("diagnosticToggle")
+        end, { desc = "Toggle Diagnostics" })
+      end, 0)
 
       -- 格式化
       vim.keymap.set({ "n", "x" }, "<leader>cf", function()
