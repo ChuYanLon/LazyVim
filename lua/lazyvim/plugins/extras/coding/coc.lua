@@ -306,6 +306,7 @@ return {
     "neoclide/coc.nvim",
     branch = "master",
     build = "npm ci",
+ event = { "InsertEnter", "User LazyFile" },
     config = function()
       vim.g.coc_global_extensions = merge(
         { "coc-json", "coc-vscode-loader", "coc-snippets" },
