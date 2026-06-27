@@ -360,28 +360,23 @@ return {
       vim.keymap.set("n", "<leader>cC", "<Cmd>CocCommand document.toggleCodeLens<CR>", { desc = "Toggle CodeLens" })
       vim.keymap.set("n", "<leader>cm", "<Cmd>CocCommand loader.open<CR>", { desc = "Coc Extensions" })
 
-      -- 诊断导航
-      vim.keymap.set("n", "]d", function()
-        vim.fn.CocAction("diagnosticNext")
-      end, { desc = "Next Diagnostic" })
-      vim.keymap.set("n", "[d", function()
-        vim.fn.CocAction("diagnosticPrevious")
-      end, { desc = "Prev Diagnostic" })
-      vim.keymap.set("n", "]e", function()
-        vim.fn.CocAction("diagnosticNext", "error")
-      end, { desc = "Next Error" })
-      vim.keymap.set("n", "[e", function()
-        vim.fn.CocAction("diagnosticPrevious", "error")
-      end, { desc = "Prev Error" })
-      vim.keymap.set("n", "]w", function()
-        vim.fn.CocAction("diagnosticNext", "warning")
-      end, { desc = "Next Warning" })
-      vim.keymap.set("n", "[w", function()
-        vim.fn.CocAction("diagnosticPrevious", "warning")
-      end, { desc = "Prev Warning" })
-      vim.keymap.set("n", "<leader>cd", function()
-        vim.fn.CocActionAsync("diagnosticInfo")
-      end, { desc = "Line Diagnostics" })
+      -- 诊断导航（复用 vim.diagnostic，Coc 通过 lua/coc/diagnostic.lua 写入）
+      local diagnostic_goto = function(next, severity)
+        return function()
+          vim.diagnostic.jump({
+            count = (next and 1 or -1) * vim.v.count1,
+            severity = severity and vim.diagnostic.severity[severity] or nil,
+            float = true,
+          })
+        end
+      end
+      vim.keymap.set("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
+      vim.keymap.set("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
+      vim.keymap.set("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
+      vim.keymap.set("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
+      vim.keymap.set("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
+      vim.keymap.set("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
+      vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
       vim.keymap.set("n", "<leader>ud", function()
         vim.fn.CocAction("diagnosticToggle")
       end, { desc = "Toggle Diagnostics" })
