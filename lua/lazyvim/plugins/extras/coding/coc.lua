@@ -1,43 +1,199 @@
-local function merge_lists(t1, t2, unique)
-  t1 = t1 or {}
-  t2 = t2 or {}
-  unique = unique ~= false
-
+local function merge(left, right)
   local result = {}
-  local seen = {}
-
-  for _, v in ipairs(t1) do
-    if not unique or not seen[v] then
-      table.insert(result, v)
-      seen[v] = true
-    end
+  for k, v in pairs(left) do
+    result[k] = v
   end
-
-  for _, v in ipairs(t2) do
-    if not unique or not seen[v] then
-      table.insert(result, v)
-      seen[v] = true
-    end
+  for k, v in pairs(right) do
+    result[k] = v
   end
-
   return result
 end
+
+local function renderUi()
+  local icons = LazyVim.config.icons
+  local diag = icons.diagnostics
+  vim.g.coc_status_error_sign = diag.Error
+  vim.g.coc_status_warning_sign = diag.Warn
+  vim.g.coc_status_info_sign = diag.Info
+  vim.g.coc_status_hint_sign = diag.Hint
+  vim.g.coc_notify_error_icon = diag.Error
+  vim.g.coc_notify_warning_icon = diag.Warn
+  vim.g.coc_notify_info_icon = diag.Info
+  local kind_labels = {
+    text = " " .. icons.kinds.Text .. " ",
+    method = " " .. icons.kinds.Method .. " ",
+    ["function"] = " " .. icons.kinds.Function .. " ",
+    constructor = " " .. icons.kinds.Constructor .. " ",
+    field = " " .. icons.kinds.Field .. " ",
+    variable = " " .. icons.kinds.Variable .. " ",
+    class = " " .. icons.kinds.Class .. " ",
+    interface = " " .. icons.kinds.Interface .. " ",
+    module = " " .. icons.kinds.Module .. " ",
+    property = " " .. icons.kinds.Property .. " ",
+    unit = " " .. icons.kinds.Unit .. " ",
+    value = " " .. icons.kinds.Value .. " ",
+    enum = " " .. icons.kinds.Enum .. " ",
+    keyword = " " .. icons.kinds.Keyword .. " ",
+    snippet = " " .. icons.kinds.Snippet .. " ",
+    color = " " .. icons.kinds.Color .. " ",
+    file = " " .. icons.kinds.File .. " ",
+    reference = " " .. icons.kinds.Reference .. " ",
+    folder = " " .. icons.kinds.Folder .. " ",
+    enumMember = " " .. icons.kinds.EnumMember .. " ",
+    constant = " " .. icons.kinds.Constant .. " ",
+    struct = " " .. icons.kinds.Struct .. " ",
+    event = " " .. icons.kinds.Event .. " ",
+    operator = " " .. icons.kinds.Operator .. " ",
+    typeParameter = " " .. icons.kinds.TypeParameter .. " ",
+    ["default"] = " 󰠱 ",
+  }
+  local config = {
+    diagnostic = {
+      enable = true,
+      virtualText = true,
+      virtualTextCurrentLineOnly = false,
+      floatSource = true,
+      floatPrefix = "●",
+      signText = { Error = diag.Error, Warning = diag.Warn, Info = diag.Info, Hint = diag.Hint },
+      signPriority = 10,
+      refreshAfterInsertMode = true,
+      checkCurrentLine = true,
+    },
+    suggest = {
+      noselect = false,
+      maxCompleteItemCount = 200,
+      detailMaxWidth = 80,
+      floatEnable = true,
+      filterDuplicates = true,
+      removeDuplicateItems = true,
+      formatItems = { "kind", "abbr", "menu", "shortcut" },
+      completionItemKindLabels = kind_labels,
+      pumHeight = vim.o.pumheight,
+    },
+    signature = { enable = true },
+    hover = { border = "rounded" },
+    floating = { border = "rounded" },
+    codeLens = { enable = true },
+    inlayHint = { enable = true },
+    tree = { renderChildren = true, openedIcon = "", closedIcon = "" },
+  }
+  vim.g.coc_user_config = vim.tbl_deep_extend("force", vim.g.coc_user_config or {}, config)
+  local sign = vim.fn.sign_define
+  sign("DiagnosticSignError", { text = diag.Error, texthl = "DiagnosticSignError" })
+  sign("DiagnosticSignWarn", { text = diag.Warn, texthl = "DiagnosticSignWarn" })
+  sign("DiagnosticSignInfo", { text = diag.Info, texthl = "DiagnosticSignInfo" })
+  sign("DiagnosticSignHint", { text = diag.Hint, texthl = "DiagnosticSignHint" })
+  local hl = vim.api.nvim_set_hl
+  local function link(name, linkto)
+    hl(0, name, { link = linkto })
+  end
+  link("CocFloating", "NormalFloat")
+  link("CocFloatBorder", "FloatBorder")
+  link("CocFloatActive", "NormalFloat")
+  link("CocMenuSel", "PmenuSel")
+  link("CocPumSearch", "PmenuSel")
+  link("CocPumDetail", "Comment")
+  link("CocHighlightText", "Visual")
+  link("CocCodeLens", "Comment")
+  link("CocInlayHint", "Comment")
+  link("CocBold", "Bold")
+  link("CocItalic", "Italic")
+  link("CocUnderline", "Underlined")
+  link("CocMarkdownLink", "markdownLinkText")
+  link("CocMarkdownHeader", "markdownH1")
+  link("CocMarkdownCode", "markdownCode")
+  link("CocErrorHighlight", "DiagnosticUndercurlError")
+  link("CocWarningHighlight", "DiagnosticUndercurlWarn")
+  link("CocInfoHighlight", "DiagnosticUndercurlInfo")
+  link("CocHintHighlight", "DiagnosticUndercurlHint")
+  link("CocDeprecatedHighlight", "DiagnosticDeprecated")
+  link("CocUnusedHighlight", "DiagnosticUnnecessary")
+  link("CocErrorVirtualText", "DiagnosticVirtualTextError")
+  link("CocWarningVirtualText", "DiagnosticVirtualTextWarn")
+  link("CocInfoVirtualText", "DiagnosticVirtualTextInfo")
+  link("CocHintVirtualText", "DiagnosticVirtualTextHint")
+  link("CocErrorSign", "DiagnosticSignError")
+  link("CocWarningSign", "DiagnosticSignWarn")
+  link("CocInfoSign", "DiagnosticSignInfo")
+  link("CocHintSign", "DiagnosticSignHint")
+end
+
+local function create_keys(maps, opts)
+  opts = opts or {}
+  for _, map in pairs(maps) do
+    local default_opts = { silent = true, nowait = true }
+    map[4] = map[4] or {}
+    map[4] = merge(default_opts, merge(opts, map[4]))
+
+    if map[4].buffer then
+      map[4].buffer = nil
+      vim.api.nvim_buf_set_keymap(0, map[1], map[2], map[3], map[4])
+    else
+      vim.keymap.set(map[1], map[2], map[3], map[4])
+    end
+  end
+end
+
+local function renderKeys()
+  create_keys({
+    { "i", "<C-j>",      'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', { silent = true, noremap = true, expr = true, replace_keycodes = false } },
+    { "i", "<C-k>",      [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]],                                         { silent = true, noremap = true, expr = true, replace_keycodes = false } },
+    { "i", "<Cr>",       [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]],       { silent = true, noremap = true, expr = true, replace_keycodes = false } },
+    { "n", "K",          '<CMD>lua _G.show_docs()<CR>',                                                              { silent = true } },
+    { "i", "<c-i>",      "coc#refresh()",                                                                            { silent = true, expr = true } },
+    { 'n', 'gd',         '<Plug>(coc-definition)',                                                                   { desc = 'Go to definition' } },
+    { 'n', 'gy',         '<Plug>(coc-type-definition)',                                                              { desc = 'Go to type definition' } },
+    { 'n', 'gi',         '<Plug>(coc-implementation)',                                                               { desc = 'Go to implementation' } },
+    { 'n', 'gr',         '<Plug>(coc-references)',                                                                   { desc = 'Find references' } },
+    { 'x', 'if',         '<Plug>(coc-funcobj-i)',                                                                    { desc = 'Inner function text object (visual)' } },
+    { 'o', 'if',         '<Plug>(coc-funcobj-i)',                                                                    { desc = 'Inner function text object (operator-pending)' } },
+    { 'x', 'af',         '<Plug>(coc-funcobj-a)',                                                                    { desc = 'Around function text object (visual)' } },
+    { 'o', 'af',         '<Plug>(coc-funcobj-a)',                                                                    { desc = 'Around function text object (operator-pending)' } },
+    { 'x', 'ic',         '<Plug>(coc-classobj-i)',                                                                   { desc = 'Inner class text object (visual)' } },
+    { 'o', 'ic',         '<Plug>(coc-classobj-i)',                                                                   { desc = 'Inner class text object (operator-pending)' } },
+    { 'x', 'ac',         '<Plug>(coc-classobj-a)',                                                                   { desc = 'Around class text object (visual)' } },
+    { 'o', 'ac',         '<Plug>(coc-classobj-a)',                                                                   { desc = 'Around class text object (operator-pending)' } },
+    { 'n', '<leader>lr', '<Plug>(coc-codeaction-refactor)',                                                          { desc = 'refactor' } },
+    { 'x', '<leader>lr', '<Plug>(coc-codeaction-refactor-selected)',                                                 { desc = 'refactor' } },
+    { 'n', '<leader>cf', ':Format<CR>',                                                                              { desc = 'format' } },
+    { 'x', '<leader>cf', '<Plug>(coc-format-selected)',                                                              { desc = 'format' } },
+    { 'n', '<leader>la', '<Plug>(coc-codeaction-line)',                                                              { desc = 'action' } },
+    { 'x', '<leader>la', '<Plug>(coc-codeaction-selected)',                                                          { desc = 'action' } },
+    { 'n', '<leader>lA', '<Plug>(coc-codeaction-source)',                                                            { desc = 'sourceAction' } },
+    { 'n', '<leader>ll', '<Plug>(coc-codelens-action)',                                                              { desc = 'codelensAction' } },
+    { 'n', '<leader>cr', '<Plug>(coc-rename)',                                                                       { desc = 'rename' } },
+    { 'n', '<space>cs',  ':<C-u>CocOutline<CR>',                                                                     { desc = 'outline' } },
+    { 'n', '<leader>lq', '<Plug>(coc-fix-current)',                                                                  { desc = 'fix' } },
+    { 'n', '<space>xx',  ':<C-u>CocDiagnostics<CR>',                                                                 { desc = 'diagnostics' } },
+    { 'n', '<space>xs',  ':<C-u>CocList diagnostics<CR>',                                                            { desc = 'all diagnostics' } },
+    { 'n', '[d',         '<Plug>(coc-diagnostic-prev)',                                                              { desc = 'previous diagnostic' } },
+    { 'n', ']d',         '<Plug>(coc-diagnostic-next)',                                                              { desc = 'next diagnostic' } },
+    { 'n', '<leader>pc', ':<C-u>CocList commands<CR>',                                                               { desc = 'commands' } },
+    { 'n', '<leader>pl', ':<C-u>CocList<CR>',                                                                        { desc = 'List' } },
+    { 'n', '<leader>ps', ':<C-u>CocList services<CR>',                                                               { desc = 'services' } },
+    { 'n', '<leader>pm', ':<C-u>CocList marketplace<CR>',                                                            { desc = 'marketplace' } },
+    { 'n', '<leader>pe', ':<C-u>CocList extensions<CR>',                                                             { desc = 'extensions' } },
+    { 'n', '<leader>pr', ':CocRestart<CR>',                                                                          { desc = 'restart' } },
+    { 'n', '<C-n>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',                                   { expr = true, desc = 'Scroll down in Coc float' } },
+    { 'n', '<C-p>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Scroll up in Coc float' } },
+    { 'i', '<C-n>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"',                     { expr = true, desc = 'Insert mode: Scroll down float' } },
+    { 'i', '<C-p>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"',                      { expr = true, desc = 'Insert mode: Scroll up float' } },
+    { 'v', '<C-n>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',                                   { expr = true, desc = 'Visual mode: Scroll down float' } },
+    { 'v', '<C-p>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Visual mode: Scroll up float' } },
+    { 'n', 'mm',         '<Plug>(coc-translator-p)',                                                                 { desc = 'translate' } },
+    { 'v', 'mm',         '<Plug>(coc-translator-pv)',                                                                { desc = 'translate' } },
+  })
+end
+
 return {
-  {
-    "saghen/blink.cmp",
-    enabled = false,
-    optional = true,
-  },
-  {
-    "neovim/nvim-lspconfig",
-    enabled = false,
-    optional = true,
-  },
-  {
-    "mason-org/mason.nvim",
-    enabled = false,
-    optional = true,
-  },
+  { "neovim/nvim-lspconfig",  enabled = false },
+  { "hrsh7th/nvim-cmp",       enabled = false },
+  { "hrsh7th/cmp-nvim-lsp",   enabled = false },
+  { "saghen/blink.cmp",       enabled = false },
+  { "stevearc/conform.nvim",  enabled = false },
+  { "mfussenegger/nvim-lint", enabled = false },
+  { "catppuccin/nvim",        enabled = false },
+  { "folke/tokyonight.nvim",  enabled = false },
   {
     "nvim-lualine/lualine.nvim",
     opts = function(_, opts)
@@ -140,12 +296,6 @@ return {
     end,
   },
   {
-    "stevearc/conform.nvim",
-    opts = function(_, opts)
-      opts.default_format_opts.lsp_format = "never"
-    end,
-  },
-  {
     "folke/snacks.nvim",
     opts = function(_, opts)
       opts.root_spec = vim.tbl_filter(function(v)
@@ -159,293 +309,40 @@ return {
     build = "npm ci",
     event = "VeryLazy",
     config = function()
-      vim.g.coc_global_extensions = merge_lists(
+      vim.g.coc_global_extensions = merge(
         { "coc-json", "coc-vscode-loader", "coc-snippets" },
         vim.g.coc_global_extensions or {}
       )
-
-      vim.g.coc_loader_global_extensions = merge_lists(
+      vim.g.coc_loader_global_extensions = merge(
         {},
         vim.g.coc_loader_global_extensions or {}
       )
-
-      local icons = LazyVim.config.icons
-      local diag = icons.diagnostics
-
-      vim.g.coc_status_error_sign = diag.Error
-      vim.g.coc_status_warning_sign = diag.Warn
-      vim.g.coc_status_info_sign = diag.Info
-      vim.g.coc_status_hint_sign = diag.Hint
-      vim.g.coc_notify_error_icon = diag.Error
-      vim.g.coc_notify_warning_icon = diag.Warn
-      vim.g.coc_notify_info_icon = diag.Info
-
-      -- completionItemKindLabels 必须用小写 key（coc 要求）
-      local kind_labels = {
-        text = " " .. icons.kinds.Text .. " ",
-        method = " " .. icons.kinds.Method .. " ",
-        ["function"] = " " .. icons.kinds.Function .. " ",
-        constructor = " " .. icons.kinds.Constructor .. " ",
-        field = " " .. icons.kinds.Field .. " ",
-        variable = " " .. icons.kinds.Variable .. " ",
-        class = " " .. icons.kinds.Class .. " ",
-        interface = " " .. icons.kinds.Interface .. " ",
-        module = " " .. icons.kinds.Module .. " ",
-        property = " " .. icons.kinds.Property .. " ",
-        unit = " " .. icons.kinds.Unit .. " ",
-        value = " " .. icons.kinds.Value .. " ",
-        enum = " " .. icons.kinds.Enum .. " ",
-        keyword = " " .. icons.kinds.Keyword .. " ",
-        snippet = " " .. icons.kinds.Snippet .. " ",
-        color = " " .. icons.kinds.Color .. " ",
-        file = " " .. icons.kinds.File .. " ",
-        reference = " " .. icons.kinds.Reference .. " ",
-        folder = " " .. icons.kinds.Folder .. " ",
-        enumMember = " " .. icons.kinds.EnumMember .. " ",
-        constant = " " .. icons.kinds.Constant .. " ",
-        struct = " " .. icons.kinds.Struct .. " ",
-        event = " " .. icons.kinds.Event .. " ",
-        operator = " " .. icons.kinds.Operator .. " ",
-        typeParameter = " " .. icons.kinds.TypeParameter .. " ",
-        ["default"] = " 󰠱 ",
-      }
-
-      local config = {
-        diagnostic = {
-          enable = true,
-          virtualText = true,
-          virtualTextCurrentLineOnly = false,
-          floatSource = true,
-          floatPrefix = "●",
-          signText = { Error = diag.Error, Warning = diag.Warn, Info = diag.Info, Hint = diag.Hint },
-          signPriority = 10,
-          refreshAfterInsertMode = true,
-          checkCurrentLine = true,
-        },
-        suggest = {
-          noselect = false,
-          maxCompleteItemCount = 200,
-          detailMaxWidth = 80,
-          floatEnable = true,
-          filterDuplicates = true,
-          removeDuplicateItems = true,
-          formatItems = { "kind", "abbr", "menu", "shortcut" },
-          completionItemKindLabels = kind_labels,
-          pumHeight = vim.o.pumheight,
-        },
-        signature = { enable = true },
-        hover = { border = "rounded" },
-        floating = { border = "rounded" },
-        codeLens = { enable = true },
-        inlayHint = { enable = true },
-        tree = { renderChildren = true, openedIcon = "", closedIcon = "" },
-      }
-      vim.g.coc_user_config = vim.tbl_deep_extend("force", vim.g.coc_user_config or {}, config)
-
-      -- 注册 CoC 为 LazyVim 格式化器，使 autoformat / <leader>uf / :LazyFormat 走 CoC
-      LazyVim.format.register({
-        name = "coc.nvim",
-        priority = 200,
-        primary = true,
-        format = function(buf)
-          -- CocAction("format") 作用于当前缓冲区，在 BufWritePre 时当前缓冲区就是要保存的 buffer
-          pcall(vim.fn.CocAction, "format")
-        end,
-        sources = function(buf)
-          local ok, result = pcall(vim.fn.CocAction, "hasProvider", "format", buf)
-          if ok and result then
-            return { "coc.nvim" }
-          end
-          return {}
-        end,
-      })
-
-      -- 诊断符号（coc 可能不走 signText，确保 Neovim 原生诊断符号也设为 LazyVim 图标）
-      local sign = vim.fn.sign_define
-      sign("DiagnosticSignError", { text = diag.Error, texthl = "DiagnosticSignError" })
-      sign("DiagnosticSignWarn", { text = diag.Warn, texthl = "DiagnosticSignWarn" })
-      sign("DiagnosticSignInfo", { text = diag.Info, texthl = "DiagnosticSignInfo" })
-      sign("DiagnosticSignHint", { text = diag.Hint, texthl = "DiagnosticSignHint" })
-
-      -- coc 高亮（tokyonight/catppuccin 都无内置 coc 支持，链接到 Neovim 原生组）
-      local hl = vim.api.nvim_set_hl
-      local function link(name, linkto)
-        hl(0, name, { link = linkto })
+      function _G.check_back_space()
+        local col = vim.fn.col('.') - 1
+        return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
       end
-      link("CocFloating", "NormalFloat")
-      link("CocFloatBorder", "FloatBorder")
-      link("CocFloatActive", "NormalFloat")
-      link("CocMenuSel", "PmenuSel")
-      link("CocPumSearch", "PmenuSel")
-      link("CocPumDetail", "Comment")
-      link("CocHighlightText", "Visual")
-      link("CocCodeLens", "Comment")
-      link("CocInlayHint", "Comment")
-      link("CocBold", "Bold")
-      link("CocItalic", "Italic")
-      link("CocUnderline", "Underlined")
-      link("CocMarkdownLink", "markdownLinkText")
-      link("CocMarkdownHeader", "markdownH1")
-      link("CocMarkdownCode", "markdownCode")
-      link("CocErrorHighlight", "DiagnosticUndercurlError")
-      link("CocWarningHighlight", "DiagnosticUndercurlWarn")
-      link("CocInfoHighlight", "DiagnosticUndercurlInfo")
-      link("CocHintHighlight", "DiagnosticUndercurlHint")
-      link("CocDeprecatedHighlight", "DiagnosticDeprecated")
-      link("CocUnusedHighlight", "DiagnosticUnnecessary")
-      link("CocErrorVirtualText", "DiagnosticVirtualTextError")
-      link("CocWarningVirtualText", "DiagnosticVirtualTextWarn")
-      link("CocInfoVirtualText", "DiagnosticVirtualTextInfo")
-      link("CocHintVirtualText", "DiagnosticVirtualTextHint")
-      link("CocErrorSign", "DiagnosticSignError")
-      link("CocWarningSign", "DiagnosticSignWarn")
-      link("CocInfoSign", "DiagnosticSignInfo")
-      link("CocHintSign", "DiagnosticSignHint")
 
-      -- LSP 导航（remap=true 确保 <Plug> 被解析）
-      local function plug(lhs, rhs, desc)
-        vim.keymap.set("n", lhs, rhs, { desc = desc, remap = true })
-      end
-      plug("gd", "<Plug>(coc-definition)", "Goto Definition")
-      plug("gD", "<Plug>(coc-declaration)", "Goto Declaration")
-      plug("gy", "<Plug>(coc-type-definition)", "Goto T[y]pe Definition")
-      plug("gI", "<Plug>(coc-implementation)", "Goto Implementation")
-      plug("gr", "<Plug>(coc-references)", "References")
-      plug("gR", "<Plug>(coc-references-used)", "References (excl. declarations)")
-      plug("gx", "<Plug>(coc-openlink)", "Open link")
-      vim.keymap.set({ "n", "x" }, "mm", "<Plug>(coc-translator-p)", { desc = "Translate", remap = true })
-
-      vim.keymap.set("n", "K", function()
-        local cw = vim.fn.expand("<cword>")
-        if vim.tbl_contains({ "vim", "help" }, vim.bo.filetype) then
-          vim.cmd("h " .. cw)
-        elseif vim.fn["coc#rpc#ready"]() == 1 then
-          vim.fn.CocActionAsync("doHover")
+      function _G.show_docs()
+        local cw = vim.fn.expand('<cword>')
+        if vim.fn.index({ 'vim', 'help' }, vim.bo.filetype) >= 0 then
+          vim.api.nvim_command('h ' .. cw)
+        elseif vim.api.nvim_eval('coc#rpc#ready()') then
+          vim.fn.CocActionAsync('doHover')
         else
-          vim.cmd("!" .. vim.o.keywordprg .. " " .. cw)
+          vim.api.nvim_command('!' .. vim.o.keywordprg .. ' ' .. cw)
         end
-      end, { desc = "Hover" })
-      vim.keymap.set("n", "gK", function()
-        vim.fn.CocActionAsync("showSignatureHelp")
-      end, { desc = "Signature Help" })
-      vim.keymap.set("i", "<c-k>", function()
-        vim.fn.CocActionAsync("showSignatureHelp")
-      end, { desc = "Signature Help" })
-
-      -- 代码操作（<leader>ca* 子菜单）
-      local function plug_nx(lhs, rhs, desc)
-        vim.keymap.set({ "n", "x" }, lhs, rhs, { desc = desc, remap = true })
       end
-      plug_nx("<leader>caa", "<Plug>(coc-codeaction)", "Code Action")
-      vim.keymap.set("n", "<leader>caA", "<Plug>(coc-codeaction-source)", { desc = "Source Action", remap = true })
-      vim.keymap.set("n", "<leader>cal", "<Plug>(coc-codeaction-cursor)", { desc = "Cursor Action", remap = true })
-      vim.keymap.set("n", "<leader>car", "<Plug>(coc-codeaction-refactor)", { desc = "Refactor", remap = true })
-      vim.keymap.set("x", "<leader>car", "<Plug>(coc-codeaction-refactor-selected)", { desc = "Refactor", remap = true })
-      vim.keymap.set("n", "<leader>can", "<Plug>(coc-rename)", { desc = "Rename", remap = true })
-      vim.keymap.set("n", "<leader>caq", "<Plug>(coc-fix-current)", { desc = "Quick Fix", remap = true })
-      vim.keymap.set("n", "<leader>cai", "<Cmd>CocInfo<CR>", { desc = "Coc Info" })
-      vim.keymap.set("n", "<leader>caR", "<Cmd>CocCommand workspace.renameCurrentFile<CR>", { desc = "Rename File" })
-      vim.keymap.set("n", "<leader>cao", function()
-        vim.fn.CocActionAsync("organizeImport")
-      end, { desc = "Organize Imports" })
-      vim.keymap.set("n", "<leader>cax", function()
-        vim.fn.CocActionAsync("fixAll")
-      end, { desc = "Fix All" })
-      vim.keymap.set({ "n", "x" }, "<leader>cc", "<Plug>(coc-codelens-action)", { desc = "CodeLens Action" })
-      vim.keymap.set("n", "<leader>cC", "<Cmd>CocCommand document.toggleCodeLens<CR>", { desc = "Toggle CodeLens" })
-      vim.keymap.set("n", "<leader>cm", "<Cmd>CocCommand loader.open<CR>", { desc = "Coc Extensions" })
-      vim.keymap.set("x", "<leader>cf", "<Plug>(coc-format-selected)", { desc = "Format Selected" })
 
-      -- 诊断导航（defer 确保覆盖 LazyVim 默认）
-      vim.defer_fn(function()
-        local function dmap(next, rhs, desc)
-          vim.keymap.set("n", next, rhs, { desc = desc, remap = true })
-        end
-        dmap("]d", "<Plug>(coc-diagnostic-next)", "Next Diagnostic")
-        dmap("[d", "<Plug>(coc-diagnostic-prev)", "Prev Diagnostic")
-        dmap("]e", "<Plug>(coc-diagnostic-next-error)", "Next Error")
-        dmap("[e", "<Plug>(coc-diagnostic-prev-error)", "Prev Error")
-        vim.keymap.set("n", "]w", function()
-          vim.fn.CocActionAsync("diagnosticNext", "warning")
-        end, { desc = "Next Warning" })
-        vim.keymap.set("n", "[w", function()
-          vim.fn.CocActionAsync("diagnosticPrevious", "warning")
-        end, { desc = "Prev Warning" })
-        vim.keymap.set("n", "<leader>cd", function()
-          vim.fn.CocActionAsync("diagnosticInfo")
-        end, { desc = "Line Diagnostics" })
-        vim.keymap.set("n", "<leader>ud", function()
-          vim.fn.CocAction("diagnosticToggle")
-        end, { desc = "Toggle Diagnostics" })
-      end, 0)
-
-      -- 格式化
-      vim.keymap.set({ "n", "x" }, "<leader>cf", function()
-        vim.fn.CocAction("format")
-      end, { desc = "Format" })
-      vim.keymap.set({ "n", "x" }, "<leader>cF", function()
-        vim.fn.CocAction("format")
-      end, { desc = "Format" })
-
-      -- 补全
-      vim.keymap.set("i", "<Tab>", function()
-        if vim.fn["coc#pum#visible"]() == 1 then
-          return vim.fn["coc#pum#next"](1)
-        end
-        if vim.fn["coc#expandableOrJumpable"]() == 1 then
-          return vim.fn["coc#expandOrJump"]()
-        end
-        local col = vim.fn.col(".") - 1
-        if col > 0 and vim.fn.getline("."):sub(col, col):match("%s") then
-          return "<Tab>"
-        end
-        return vim.fn["coc#refresh"]()
-      end, { expr = true, desc = "Tab Complete" })
-
-      vim.keymap.set("i", "<S-Tab>", function()
-        if vim.fn["coc#pum#visible"]() == 1 then
-          return vim.fn["coc#pum#prev"](1)
-        end
-        return "<C-h>"
-      end, { expr = true, desc = "Prev Completion" })
-
-      vim.keymap.set("i", "<CR>", function()
-        if vim.fn["coc#pum#visible"]() == 1 then
-          return vim.fn["coc#pum#confirm"]()
-        end
-        return "<C-g>u<CR><c-r>=coc#on_enter()<CR>"
-      end, { expr = true, desc = "Confirm Completion" })
-
-      vim.keymap.set("i", "<C-space>", "coc#refresh()", { expr = true, desc = "Trigger Completion" })
-
-      -- 浮动窗口滚动
-      vim.keymap.set({ "i", "n", "s" }, "<c-f>", function()
-        if vim.fn["coc#float#has_scroll"]() == 1 then
-          vim.fn["coc#float#scroll"](1)
-          return ""
-        end
-        return "<c-f>"
-      end, { expr = true, desc = "Scroll Forward" })
-
-      vim.keymap.set({ "i", "n", "s" }, "<c-b>", function()
-        if vim.fn["coc#float#has_scroll"]() == 1 then
-          vim.fn["coc#float#scroll"](0)
-          return ""
-        end
-        return "<c-b>"
-      end, { expr = true, desc = "Scroll Backward" })
-
-      -- Escape
-      vim.keymap.set({ "i", "n", "s" }, "<esc>", function()
-        vim.cmd("noh")
-        return "<esc>"
-      end, { expr = true, desc = "Escape and Clear hlsearch" })
-
-      -- Coc 新增
-      vim.keymap.set("n", "<leader>cs", "<Cmd>CocOutline<CR>", { desc = "Coc Outline" })
-      vim.keymap.set("n", "<leader>cS", "<Cmd>CocList outline<CR>", { desc = "Coc List Outline" })
-      vim.keymap.set("n", "<leader>xl", "<Cmd>CocList location<CR>", { desc = "Location List" })
-      vim.keymap.set("n", "<leader>xq", "<Cmd>CocList quickfix<CR>", { desc = "Quickfix List" })
+      vim.api.nvim_create_augroup("CocGroup", {})
+      vim.api.nvim_create_user_command("Format", "call CocAction('format')", {})
+      vim.api.nvim_create_autocmd("FileType", {
+        group = "CocGroup",
+        pattern = "typescript,json",
+        command = "setl formatexpr=CocAction('formatSelected')",
+        desc = "Setup formatexpr specified filetype(s)."
+      })
+      renderUi()
+      renderKeys()
     end,
   },
 }
