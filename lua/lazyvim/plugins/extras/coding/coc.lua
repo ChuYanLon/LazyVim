@@ -306,9 +306,6 @@ return {
       local function plug(lhs, rhs, desc)
         vim.keymap.set("n", lhs, rhs, { desc = desc, remap = true })
       end
-      local function plug_x(lhs, rhs, desc)
-        vim.keymap.set({ "x", "o" }, lhs, rhs, { desc = desc, remap = true })
-      end
       plug("gd", "<Plug>(coc-definition)", "Goto Definition")
       plug("gD", "<Plug>(coc-declaration)", "Goto Declaration")
       plug("gy", "<Plug>(coc-type-definition)", "Goto T[y]pe Definition")
@@ -317,10 +314,6 @@ return {
       plug("gR", "<Plug>(coc-references-used)", "References (excl. declarations)")
       plug("gx", "<Plug>(coc-openlink)", "Open link")
       vim.keymap.set({ "n", "x" }, "mm", "<Plug>(coc-translator-p)", { desc = "Translate", remap = true })
-      plug_x("if", "<Plug>(coc-funcobj-i)", "Inner function")
-      plug_x("af", "<Plug>(coc-funcobj-a)", "Around function")
-      plug_x("ic", "<Plug>(coc-classobj-i)", "Inner class")
-      plug_x("ac", "<Plug>(coc-classobj-a)", "Around class")
 
       vim.keymap.set("n", "K", function()
         local cw = vim.fn.expand("<cword>")
@@ -425,11 +418,6 @@ return {
 
       vim.keymap.set("i", "<C-space>", "coc#refresh()", { expr = true, desc = "Trigger Completion" })
 
-      -- Snippet
-      vim.keymap.set("i", "<C-l>", "<Plug>(coc-snippets-expand-jump)", { desc = "Expand or jump snippet" })
-      vim.keymap.set("x", "<C-l>", "<Plug>(coc-snippets-select)", { desc = "Select placeholder" })
-      vim.keymap.set("x", "<leader>cz", "<Plug>(coc-convert-snippet)", { desc = "Convert to snippet" })
-
       -- 浮动窗口滚动
       vim.keymap.set({ "i", "n", "s" }, "<c-f>", function()
         if vim.fn["coc#float#has_scroll"]() == 1 then
@@ -454,11 +442,6 @@ return {
       end, { expr = true, desc = "Escape and Clear hlsearch" })
 
       -- Coc 新增
-      vim.keymap.set("n", "]g", "<Plug>(coc-git-nextchunk)", { desc = "Next Chunk" })
-      vim.keymap.set("n", "[g", "<Plug>(coc-git-prevchunk)", { desc = "Prev Chunk" })
-      vim.keymap.set("n", "g.", function()
-        vim.fn.CocAction("doQuickfix")
-      end, { desc = "Quickfix" })
       vim.keymap.set("n", "<leader>cs", "<Cmd>CocOutline<CR>", { desc = "Coc Outline" })
       vim.keymap.set("n", "<leader>cS", "<Cmd>CocList outline<CR>", { desc = "Coc List Outline" })
       vim.keymap.set("n", "<leader>xl", "<Cmd>CocList location<CR>", { desc = "Location List" })
