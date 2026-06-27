@@ -153,7 +153,7 @@ local function renderKeys()
     { 'x', '<leader>ca', '<Plug>(coc-codeaction-selected)',                                                          { desc = 'action' } },
     { 'n', '<leader>cA', '<Plug>(coc-codeaction-source)',                                                            { desc = 'sourceAction' } },
     { 'n', '<leader>cl', '<Plug>(coc-codelens-action)',                                                              { desc = 'codelensAction' } },
-    { 'n', '<leader>cr', '<Plug>(coc-rename)',                                                                       { desc = 'rename' } },
+    { 'n', '<leader>cn', '<Plug>(coc-rename)',                                                                       { desc = 'rename' } },
     { 'n', '<space>cs',  ':<C-u>CocOutline<CR>',                                                                     { desc = 'outline' } },
     { 'n', '<leader>cq', '<Plug>(coc-fix-current)',                                                                  { desc = 'fix' } },
     { 'n', '<space>xx',  ':<C-u>CocDiagnostics<CR>',                                                                 { desc = 'diagnostics' } },
@@ -298,7 +298,7 @@ return {
     "neoclide/coc.nvim",
     branch = "master",
     build = "npm ci",
- event = { "InsertEnter", "User LazyFile" },
+    event = { "InsertEnter", "User LazyFile" },
     config = function()
       vim.g.coc_global_extensions = merge(
         { "coc-json", "coc-vscode-loader", "coc-snippets" },
