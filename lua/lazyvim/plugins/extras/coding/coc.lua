@@ -185,6 +185,8 @@ return {
   { "stevearc/conform.nvim",  enabled = false },
   { "mfussenegger/nvim-lint", enabled = false },
   { "catppuccin/nvim",        enabled = false },
+  { "mason-org/mason.nvim",   enabled = false },
+  { "folke/lazydev.nvim",   enabled = false },
   {
     "nvim-lualine/lualine.nvim",
     opts = function(_, opts)
