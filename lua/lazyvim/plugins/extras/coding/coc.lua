@@ -136,8 +136,8 @@ end
 
 local function renderKeys()
   create_keys({
-    { "i", "<C-n>",      'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', { silent = true, noremap = true, expr = true, replace_keycodes = false } },
-    { "i", "<C-p>",      [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]],                                         { silent = true, noremap = true, expr = true, replace_keycodes = false } },
+    { "i", "<C-j>",      'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', { silent = true, noremap = true, expr = true, replace_keycodes = false } },
+    { "i", "<C-k>",      [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]],                                         { silent = true, noremap = true, expr = true, replace_keycodes = false } },
     { "i", "<Cr>",       [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]],       { silent = true, noremap = true, expr = true, replace_keycodes = false } },
     { "n", "K",          '<CMD>lua _G.show_docs()<CR>',                                                              { silent = true } },
     { "i", "<c-i>",      "coc#refresh()",                                                                            { silent = true, expr = true } },
@@ -161,12 +161,12 @@ local function renderKeys()
     { 'n', '[d',         '<Plug>(coc-diagnostic-prev)',                                                              { desc = 'previous diagnostic' } },
     { 'n', ']d',         '<Plug>(coc-diagnostic-next)',                                                              { desc = 'next diagnostic' } },
     { 'n', '<leader>cm', ':<C-u>CocCommand loader.open<CR>',                                                               { desc = 'commands' } },
-    { 'n', '<C-d>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-d>"',                                   { expr = true, desc = 'Scroll down in Coc float' } },
-    { 'n', '<C-f>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-f>"',                                   { expr = true, desc = 'Scroll up in Coc float' } },
-    { 'i', '<C-d>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"',                     { expr = true, desc = 'Insert mode: Scroll down float' } },
-    { 'i', '<C-f>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"',                      { expr = true, desc = 'Insert mode: Scroll up float' } },
-    { 'v', '<C-d>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-d>"',                                   { expr = true, desc = 'Visual mode: Scroll down float' } },
-    { 'v', '<C-f>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-f>"',                                   { expr = true, desc = 'Visual mode: Scroll up float' } },
+    { 'n', '<C-n>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',                                   { expr = true, desc = 'Scroll down in Coc float' } },
+    { 'n', '<C-p>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Scroll up in Coc float' } },
+    { 'i', '<C-n>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"',                     { expr = true, desc = 'Insert mode: Scroll down float' } },
+    { 'i', '<C-p>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"',                      { expr = true, desc = 'Insert mode: Scroll up float' } },
+    { 'v', '<C-n>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',                                   { expr = true, desc = 'Visual mode: Scroll down float' } },
+    { 'v', '<C-p>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Visual mode: Scroll up float' } },
     { 'n', 'mm',         '<Plug>(coc-translator-p)',                                                                 { desc = 'translate' } },
     { 'v', 'mm',         '<Plug>(coc-translator-pv)',                                                                { desc = 'translate' } },
   })
