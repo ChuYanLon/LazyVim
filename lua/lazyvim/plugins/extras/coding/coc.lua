@@ -125,6 +125,7 @@ return {
   {
     "folke/noice.nvim",
     optional = true,
+    enabled = false,
     opts = function(_, opts)
       opts.lsp = nil
       opts.routes = opts.routes or {}
