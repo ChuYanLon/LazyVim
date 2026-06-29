@@ -243,7 +243,6 @@ return {
         { 'n', '<leader>pc', ':<C-u>CocList commands<CR>',                                                               { desc = 'commands' } },
         { 'n', '<leader>pl', ':<C-u>CocList<CR>',                                                                        { desc = 'List' } },
         { 'n', '<leader>ps', ':<C-u>CocList services<CR>',                                                               { desc = 'services' } },
-        { 'n', '<leader>pm', ':<C-u>CocList marketplace<CR>',                                                            { desc = 'marketplace' } },
         { 'n', '<leader>pe', ':<C-u>CocList extensions<CR>',                                                             { desc = 'extensions' } },
         { 'n', '<leader>pr', ':CocRestart<CR>',                                                                          { desc = 'restart' } },
       })
