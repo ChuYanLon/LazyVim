@@ -37,6 +37,7 @@ return {
   { "folke/lazydev.nvim",     enabled = false },
   {
     "nvim-lualine/lualine.nvim",
+    optional = true,
     opts = function(_, opts)
       local icons = LazyVim.config.icons.diagnostics
       for i, item in ipairs(opts.sections.lualine_c) do
@@ -103,12 +104,27 @@ return {
   },
   {
     "akinsho/bufferline.nvim",
+    optional = true,
     opts = function(_, opts)
       opts.options.diagnostics = "coc"
     end,
   },
   {
+    "folke/which-key.nvim",
+    optional = true,
+    opts = {
+      preset = "helix",
+      spec = {
+        {
+          mode = { "n", "x" },
+          { "<leader>p", desc = "package", icon = "󰏖 " },
+        },
+      },
+    },
+  },
+  {
     "folke/noice.nvim",
+    optional = true,
     opts = function(_, opts)
       opts.lsp = nil
       opts.routes = opts.routes or {}
@@ -138,6 +154,7 @@ return {
   },
   {
     "folke/snacks.nvim",
+    optional = true,
     opts = function(_, opts)
       opts.root_spec = vim.tbl_filter(function(v)
         return v ~= "lsp"
@@ -208,6 +225,12 @@ return {
         { 'n', '[d',         '<Plug>(coc-diagnostic-prev)',                                                              { desc = 'previous diagnostic' } },
         { 'n', ']d',         '<Plug>(coc-diagnostic-next)',                                                              { desc = 'next diagnostic' } },
         { 'n', '<leader>cm', ':<C-u>CocCommand loader.open<CR>',                                                         { desc = 'commands' } },
+        { 'n', '<leader>cL', ':<C-u>CocList<CR>',                                                                        { desc = 'list picker' } },
+        { 'n', '<space>fg',  ':<C-u>CocList gfile<CR>',                                                                  { desc = 'git files' } },
+        { 'n', '<space>ff',  ':<C-u>CocList files<CR>',                                                                  { desc = 'files' } },
+        { 'n', '<space>fb',  ':<C-u>CocList buffers<CR>',                                                                { desc = 'buffers' } },
+        { 'n', '<space>fo',  ':<C-u>CocList outline<CR>',                                                                { desc = 'outline' } },
+        { 'n', '<space>fs',  ':<C-u>CocList services<CR>',                                                               { desc = 'services' } },
         { 'n', '<C-n>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',                                   { expr = true, desc = 'Scroll down in Coc float' } },
         { 'n', '<C-p>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Scroll up in Coc float' } },
         { 'i', '<C-n>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"',                     { expr = true, desc = 'Insert mode: Scroll down float' } },
@@ -216,6 +239,12 @@ return {
         { 'v', '<C-p>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Visual mode: Scroll up float' } },
         { 'n', 'mm',         '<Plug>(coc-translator-p)',                                                                 { desc = 'translate' } },
         { 'v', 'mm',         '<Plug>(coc-translator-pv)',                                                                { desc = 'translate' } },
+        { 'n', '<leader>pc', ':<C-u>CocList commands<CR>',                                                               { desc = 'commands' } },
+        { 'n', '<leader>pl', ':<C-u>CocList<CR>',                                                                        { desc = 'List' } },
+        { 'n', '<leader>ps', ':<C-u>CocList services<CR>',                                                               { desc = 'services' } },
+        { 'n', '<leader>pm', ':<C-u>CocList marketplace<CR>',                                                            { desc = 'marketplace' } },
+        { 'n', '<leader>pe', ':<C-u>CocList extensions<CR>',                                                             { desc = 'extensions' } },
+        { 'n', '<leader>pr', ':CocRestart<CR>',                                                                          { desc = 'restart' } },
       })
     end,
   },
