@@ -37,6 +37,13 @@ return {
         {
           mode = { "n", "x" },
           { "<leader>p", desc = "package", icon = "󰏖 " },
+          { "<leader>f", group = " find" },
+          { "<leader>s", group = " search" },
+          { "<leader>g", group = " git" },
+          { "<leader>c", group = " lsp" },
+          { "<leader>l", group = "Lazy" },
+          { "<leader>t", group = " terminal" },
+          { "<leader>b", group = " buffer" },
         },
       },
     },
