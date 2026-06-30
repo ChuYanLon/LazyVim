@@ -36,6 +36,7 @@ return {
   { "mason-org/mason.nvim",   optional = true, enabled = false },
   { "folke/lazydev.nvim",     optional = true, enabled = false },
   { "folke/noice.nvim",       optional = true, enabled = false },
+  { "folke/trouble.nvim",     optional = true, enabled = false },
   {
     "nvim-lualine/lualine.nvim",
     optional = true,
@@ -177,6 +178,7 @@ return {
       vim.keymap.set("x", "<leader>ca", "<Plug>(coc-codeaction-selected)", { silent = true, nowait = true })
       vim.keymap.set("n", "<leader>cA", "<Plug>(coc-codeaction-source)", { silent = true, nowait = true })
 
+      vim.keymap.set("n", "<leader>cq", "<Plug>(coc-fix-current)", { silent = true, nowait = true })
 
       vim.keymap.set("n", "<leader>cm", ":<C-u>CocCommand loader.open<CR>", { silent = true, nowait = true })
 
@@ -240,8 +242,15 @@ return {
       vim.keymap.set("i", "<c-i>", "coc#refresh()", { silent = true, expr = true, nowait = true })
 
 
-      vim.keymap.set('n', '<leader>cr', '<Plug>(coc-codeaction-refactor)', { desc = 'refactor' })
-      vim.keymap.set('x', '<leader>cr', '<Plug>(coc-codeaction-refactor-selected)', { desc = 'refactor' })
+      vim.keymap.set('n', '<leader>cr', '<Plug>(coc-codeaction-refactor)',
+        { desc = 'refactor', silent = true, nowait = true })
+      vim.keymap.set('x', '<leader>cr', '<Plug>(coc-codeaction-refactor-selected)',
+        { desc = 'refactor', silent = true, nowait = true })
+
+
+      vim.keymap.set('n', '<leader>xx', ':<C-u>CocDiagnostics<CR>', { desc = 'diagnostics', silent = true, nowait = true })
+      vim.keymap.set('n', '<leader>xl', ':<C-u>CocList diagnostics<CR>',
+        { desc = 'all diagnostics', silent = true, nowait = true })
 
 
       create_keys({
@@ -264,9 +273,9 @@ return {
         -- { 'n', '<leader>cl', '<Plug>(coc-codelens-action)',                                                              { desc = 'codelensAction' } },
         -- { 'n', '<leader>cn', '<Plug>(coc-rename)',                                                                       { desc = 'rename' } },
         -- { 'n', '<space>cs',  ':<C-u>CocOutline<CR>',                                                                     { desc = 'outline' } },
-        { 'n', '<leader>cq', '<Plug>(coc-fix-current)',       { desc = 'fix' } },
-        { 'n', '<space>xx',  ':<C-u>CocDiagnostics<CR>',      { desc = 'diagnostics' } },
-        { 'n', '<space>xs',  ':<C-u>CocList diagnostics<CR>', { desc = 'all diagnostics' } },
+        -- { 'n', '<leader>cq', '<Plug>(coc-fix-current)', { desc = 'fix' } },
+        -- { 'n', '<space>xx',  ':<C-u>CocDiagnostics<CR>',      { desc = 'diagnostics' } },
+        -- { 'n', '<space>xs',  ':<C-u>CocList diagnostics<CR>', { desc = 'all diagnostics' } },
         -- { 'n', '[d',         '<Plug>(coc-diagnostic-prev)',                                                              { desc = 'previous diagnostic' } },
         -- { 'n', ']d',         '<Plug>(coc-diagnostic-next)',                                                              { desc = 'next diagnostic' } },
         -- { 'n', '<leader>cm', ':<C-u>CocCommand loader.open<CR>',                                                         { desc = 'commands' } },
