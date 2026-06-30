@@ -178,6 +178,9 @@ return {
       vim.keymap.set("n", "<leader>cA", "<Plug>(coc-codeaction-source)", { silent = true, nowait = true })
 
 
+      vim.keymap.set("n", "<leader>cm", ":<C-u>CocCommand loader.open<CR>", { silent = true, nowait = true })
+
+
       vim.keymap.set("n", "<leader>cf", ":Format<CR>", { silent = true, nowait = true })
       vim.keymap.set("x", "<leader>cf", "<Plug>(coc-format-selected)", { silent = true, nowait = true })
 
@@ -186,6 +189,10 @@ return {
 
       vim.keymap.set("n", "<leader>cs", ":<C-u>CocOutline<CR>", { silent = true, nowait = true })
       vim.keymap.set("n", "<leader>cS", ":<C-u>CocList outline<CR>", { silent = true, nowait = true })
+
+
+      vim.keymap.set("n", "[d", "<Plug>(coc-diagnostic-prev)", { silent = true, nowait = true })
+      vim.keymap.set("n", "]d", "<Plug>(coc-diagnostic-next)", { silent = true, nowait = true })
 
 
       create_keys({
@@ -211,9 +218,9 @@ return {
         { 'n', '<leader>cq', '<Plug>(coc-fix-current)',                                                                  { desc = 'fix' } },
         { 'n', '<space>xx',  ':<C-u>CocDiagnostics<CR>',                                                                 { desc = 'diagnostics' } },
         { 'n', '<space>xs',  ':<C-u>CocList diagnostics<CR>',                                                            { desc = 'all diagnostics' } },
-        { 'n', '[d',         '<Plug>(coc-diagnostic-prev)',                                                              { desc = 'previous diagnostic' } },
-        { 'n', ']d',         '<Plug>(coc-diagnostic-next)',                                                              { desc = 'next diagnostic' } },
-        { 'n', '<leader>cm', ':<C-u>CocCommand loader.open<CR>',                                                         { desc = 'commands' } },
+        -- { 'n', '[d',         '<Plug>(coc-diagnostic-prev)',                                                              { desc = 'previous diagnostic' } },
+        -- { 'n', ']d',         '<Plug>(coc-diagnostic-next)',                                                              { desc = 'next diagnostic' } },
+        -- { 'n', '<leader>cm', ':<C-u>CocCommand loader.open<CR>',                                                         { desc = 'commands' } },
         { 'n', '<C-n>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',                                   { expr = true, desc = 'Scroll down in Coc float' } },
         { 'n', '<C-p>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Scroll up in Coc float' } },
         { 'i', '<C-n>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"',                     { expr = true, desc = 'Insert mode: Scroll down float' } },
