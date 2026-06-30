@@ -195,6 +195,19 @@ return {
       vim.keymap.set("n", "]d", "<Plug>(coc-diagnostic-next)", { silent = true, nowait = true })
 
 
+      vim.keymap.set('n', '<C-n>', 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',
+        { silent = true, nowait = true, expr = true, desc = 'Scroll down in Coc float' })
+      vim.keymap.set('n', '<C-p>', 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',
+        { silent = true, nowait = true, expr = true, desc = 'Scroll up in Coc float' })
+      vim.keymap.set('i', '<C-n>', 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"',
+        { silent = true, nowait = true, expr = true, desc = 'Insert mode: Scroll down float' })
+      vim.keymap.set('i', '<C-p>', 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"',
+        { silent = true, nowait = true, expr = true, desc = 'Insert mode: Scroll up float' })
+      vim.keymap.set('v', '<C-n>', 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',
+        { silent = true, nowait = true, expr = true, desc = 'Visual mode: Scroll down float' })
+      vim.keymap.set('v', '<C-p>', 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',
+        { silent = true, nowait = true, expr = true, desc = 'Visual mode: Scroll up float' })
+
       create_keys({
         { "i", "<C-j>",      'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', { silent = true, noremap = true, expr = true, replace_keycodes = false } },
         { "i", "<C-k>",      [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]],                                         { silent = true, noremap = true, expr = true, replace_keycodes = false } },
@@ -221,12 +234,12 @@ return {
         -- { 'n', '[d',         '<Plug>(coc-diagnostic-prev)',                                                              { desc = 'previous diagnostic' } },
         -- { 'n', ']d',         '<Plug>(coc-diagnostic-next)',                                                              { desc = 'next diagnostic' } },
         -- { 'n', '<leader>cm', ':<C-u>CocCommand loader.open<CR>',                                                         { desc = 'commands' } },
-        { 'n', '<C-n>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',                                   { expr = true, desc = 'Scroll down in Coc float' } },
-        { 'n', '<C-p>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Scroll up in Coc float' } },
-        { 'i', '<C-n>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"',                     { expr = true, desc = 'Insert mode: Scroll down float' } },
-        { 'i', '<C-p>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"',                      { expr = true, desc = 'Insert mode: Scroll up float' } },
-        { 'v', '<C-n>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',                                   { expr = true, desc = 'Visual mode: Scroll down float' } },
-        { 'v', '<C-p>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Visual mode: Scroll up float' } },
+        -- { 'n', '<C-n>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',                                   { expr = true, desc = 'Scroll down in Coc float' } },
+        -- { 'n', '<C-p>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Scroll up in Coc float' } },
+        -- { 'i', '<C-n>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"',                     { expr = true, desc = 'Insert mode: Scroll down float' } },
+        -- { 'i', '<C-p>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"',                      { expr = true, desc = 'Insert mode: Scroll up float' } },
+        -- { 'v', '<C-n>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',                                   { expr = true, desc = 'Visual mode: Scroll down float' } },
+        -- { 'v', '<C-p>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Visual mode: Scroll up float' } },
         { 'n', 'mm',         '<Plug>(coc-translator-p)',                                                                 { desc = 'translate' } },
         { 'v', 'mm',         '<Plug>(coc-translator-pv)',                                                                { desc = 'translate' } },
         { 'n', '<leader>pc', ':<C-u>CocList commands<CR>',                                                               { desc = 'commands' } },
