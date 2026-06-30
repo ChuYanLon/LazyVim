@@ -98,7 +98,6 @@ return {
     "folke/which-key.nvim",
     optional = true,
     opts = {
-      preset = "helix",
       spec = {
         {
           mode = { "n", "x" },
