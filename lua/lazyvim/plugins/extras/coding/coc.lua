@@ -26,15 +26,16 @@ local function create_keys(maps, opts)
 end
 
 return {
-  { "neovim/nvim-lspconfig",  enabled = false },
-  { "hrsh7th/nvim-cmp",       enabled = false },
-  { "hrsh7th/cmp-nvim-lsp",   enabled = false },
-  { "saghen/blink.cmp",       enabled = false },
-  { "stevearc/conform.nvim",  enabled = false },
-  { "mfussenegger/nvim-lint", enabled = false },
-  { "catppuccin/nvim",        enabled = false },
-  { "mason-org/mason.nvim",   enabled = false },
-  { "folke/lazydev.nvim",     enabled = false },
+  { "neovim/nvim-lspconfig",  optional = true, enabled = false },
+  { "hrsh7th/nvim-cmp",       optional = true, enabled = false },
+  { "hrsh7th/cmp-nvim-lsp",   optional = true, enabled = false },
+  { "saghen/blink.cmp",       optional = true, enabled = false },
+  { "stevearc/conform.nvim",  optional = true, enabled = false },
+  { "mfussenegger/nvim-lint", optional = true, enabled = false },
+  { "catppuccin/nvim",        optional = true, enabled = false },
+  { "mason-org/mason.nvim",   optional = true, enabled = false },
+  { "folke/lazydev.nvim",     optional = true, enabled = false },
+  { "folke/noice.nvim",       optional = true, enabled = false },
   {
     "nvim-lualine/lualine.nvim",
     optional = true,
@@ -92,7 +93,6 @@ return {
           return type(status) == "string" and vim.trim(status) ~= ""
         end,
       })
-      -- coc 状态更新时刷新 lualine
       vim.api.nvim_create_autocmd("User", {
         pattern = "CocStatusChange",
         group = vim.api.nvim_create_augroup("lazyvim_coc_lualine", { clear = true }),
@@ -121,37 +121,6 @@ return {
         },
       },
     },
-  },
-  {
-    "folke/noice.nvim",
-    optional = true,
-    enabled = false,
-    opts = function(_, opts)
-      opts.lsp = nil
-      opts.routes = opts.routes or {}
-      vim.list_extend(opts.routes, {
-        {
-          filter = { event = "cmdline", find = "ZFVimIME" },
-          opts = { skip = true },
-        },
-        {
-          filter = { event = "cmdline", find = "Omni" },
-          opts = { skip = true },
-        },
-        {
-          filter = { event = "cmdline", find = "coc#on_enter" },
-          opts = { skip = true },
-        },
-        {
-          filter = { event = "msg_show", find = "coc#on_enter" },
-          opts = { skip = true },
-        },
-        {
-          filter = { find = "coc#on_enter" },
-          opts = { skip = true },
-        },
-      })
-    end,
   },
   {
     "folke/snacks.nvim",
@@ -200,6 +169,7 @@ return {
         command = "setl formatexpr=CocAction('formatSelected')",
         desc = "Setup formatexpr specified filetype(s)."
       })
+      vim.keymap.set("n", "<leader>cl", ":<C-u>CocInfo<Cr>", { silent = true, nowait = true })
       create_keys({
         { "i", "<C-j>",      'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', { silent = true, noremap = true, expr = true, replace_keycodes = false } },
         { "i", "<C-k>",      [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]],                                         { silent = true, noremap = true, expr = true, replace_keycodes = false } },
