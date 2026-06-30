@@ -181,6 +181,12 @@ return {
       vim.keymap.set("n", "<leader>cf", ":Format<CR>", { silent = true, nowait = true })
       vim.keymap.set("x", "<leader>cf", "<Plug>(coc-format-selected)", { silent = true, nowait = true })
 
+      vim.keymap.set("n", "<leader>cr", "<Plug>(coc-rename)", { silent = true, nowait = true })
+
+
+      vim.keymap.set("n", "<leader>cs", ":<C-u>CocOutline<CR>", { silent = true, nowait = true })
+      vim.keymap.set("n", "<leader>cS", ":<C-u>CocList outline<CR>", { silent = true, nowait = true })
+
 
       create_keys({
         { "i", "<C-j>",      'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', { silent = true, noremap = true, expr = true, replace_keycodes = false } },
@@ -200,8 +206,8 @@ return {
         -- { 'x', '<leader>ca', '<Plug>(coc-codeaction-selected)',                                                          { desc = 'action' } },
         -- { 'n', '<leader>cA', '<Plug>(coc-codeaction-source)',                                                            { desc = 'sourceAction' } },
         -- { 'n', '<leader>cl', '<Plug>(coc-codelens-action)',                                                              { desc = 'codelensAction' } },
-        { 'n', '<leader>cn', '<Plug>(coc-rename)',                                                                       { desc = 'rename' } },
-        { 'n', '<space>cs',  ':<C-u>CocOutline<CR>',                                                                     { desc = 'outline' } },
+        -- { 'n', '<leader>cn', '<Plug>(coc-rename)',                                                                       { desc = 'rename' } },
+        -- { 'n', '<space>cs',  ':<C-u>CocOutline<CR>',                                                                     { desc = 'outline' } },
         { 'n', '<leader>cq', '<Plug>(coc-fix-current)',                                                                  { desc = 'fix' } },
         { 'n', '<space>xx',  ':<C-u>CocDiagnostics<CR>',                                                                 { desc = 'diagnostics' } },
         { 'n', '<space>xs',  ':<C-u>CocList diagnostics<CR>',                                                            { desc = 'all diagnostics' } },
