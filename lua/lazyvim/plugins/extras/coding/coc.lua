@@ -229,19 +229,33 @@ return {
       vim.keymap.set('n', 'gr', '<Plug>(coc-references)', { desc = 'Find references', silent = true, nowait = true })
 
 
+      vim.keymap.set("i", "<C-j>",
+        'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()',
+        { silent = true, noremap = true, expr = true, replace_keycodes = false, nowait = true })
+      vim.keymap.set("i", "<C-k>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]],
+        { silent = true, noremap = true, expr = true, replace_keycodes = false, nowait = true })
+      vim.keymap.set("i", "<Cr>", [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]],
+        { silent = true, noremap = true, expr = true, replace_keycodes = false, nowait = true })
+      vim.keymap.set("n", "K", '<CMD>lua _G.show_docs()<CR>', { silent = true, nowait = true })
+      vim.keymap.set("i", "<c-i>", "coc#refresh()", { silent = true, expr = true, nowait = true })
+
+
+      vim.keymap.set('n', '<leader>cr', '<Plug>(coc-codeaction-refactor)', { desc = 'refactor' })
+      vim.keymap.set('x', '<leader>cr', '<Plug>(coc-codeaction-refactor-selected)', { desc = 'refactor' })
+
 
       create_keys({
-        { "i", "<C-j>",      'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', { silent = true, noremap = true, expr = true, replace_keycodes = false } },
-        { "i", "<C-k>",      [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]],                                         { silent = true, noremap = true, expr = true, replace_keycodes = false } },
-        { "i", "<Cr>",       [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]],       { silent = true, noremap = true, expr = true, replace_keycodes = false } },
-        { "n", "K",          '<CMD>lua _G.show_docs()<CR>',                                                              { silent = true } },
-        { "i", "<c-i>",      "coc#refresh()",                                                                            { silent = true, expr = true } },
+        -- { "i", "<C-j>",      'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', { silent = true, noremap = true, expr = true, replace_keycodes = false } },
+        -- { "i", "<C-k>",      [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]],                                         { silent = true, noremap = true, expr = true, replace_keycodes = false } },
+        -- { "i", "<Cr>",       [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]],       { silent = true, noremap = true, expr = true, replace_keycodes = false } },
+        -- { "n", "K",          '<CMD>lua _G.show_docs()<CR>',                                                              { silent = true } },
+        -- { "i", "<c-i>",      "coc#refresh()",                                                                            { silent = true, expr = true } },
         -- { 'n', 'gd',         '<Plug>(coc-definition)',                                                                   { desc = 'Go to definition' } },
         -- { 'n', 'gy',         '<Plug>(coc-type-definition)',                                                              { desc = 'Go to type definition' } },
         -- { 'n', 'gi',         '<Plug>(coc-implementation)',                                                               { desc = 'Go to implementation' } },
         -- { 'n', 'gr',         '<Plug>(coc-references)',                                                                   { desc = 'Find references' } },
-        { 'n', '<leader>cr', '<Plug>(coc-codeaction-refactor)',                                                          { desc = 'refactor' } },
-        { 'x', '<leader>cr', '<Plug>(coc-codeaction-refactor-selected)',                                                 { desc = 'refactor' } },
+        -- { 'n', '<leader>cr', '<Plug>(coc-codeaction-refactor)',          { desc = 'refactor' } },
+        -- { 'x', '<leader>cr', '<Plug>(coc-codeaction-refactor-selected)', { desc = 'refactor' } },
         -- { 'n', '<leader>cf', ':Format<CR>',                                                                              { desc = 'format' } },
         -- { 'x', '<leader>cf', '<Plug>(coc-format-selected)',                                                              { desc = 'format' } },
         -- { 'n', '<leader>ca', '<Plug>(coc-codeaction-line)',                                                              { desc = 'action' } },
@@ -250,9 +264,9 @@ return {
         -- { 'n', '<leader>cl', '<Plug>(coc-codelens-action)',                                                              { desc = 'codelensAction' } },
         -- { 'n', '<leader>cn', '<Plug>(coc-rename)',                                                                       { desc = 'rename' } },
         -- { 'n', '<space>cs',  ':<C-u>CocOutline<CR>',                                                                     { desc = 'outline' } },
-        { 'n', '<leader>cq', '<Plug>(coc-fix-current)',                                                                  { desc = 'fix' } },
-        { 'n', '<space>xx',  ':<C-u>CocDiagnostics<CR>',                                                                 { desc = 'diagnostics' } },
-        { 'n', '<space>xs',  ':<C-u>CocList diagnostics<CR>',                                                            { desc = 'all diagnostics' } },
+        { 'n', '<leader>cq', '<Plug>(coc-fix-current)',       { desc = 'fix' } },
+        { 'n', '<space>xx',  ':<C-u>CocDiagnostics<CR>',      { desc = 'diagnostics' } },
+        { 'n', '<space>xs',  ':<C-u>CocList diagnostics<CR>', { desc = 'all diagnostics' } },
         -- { 'n', '[d',         '<Plug>(coc-diagnostic-prev)',                                                              { desc = 'previous diagnostic' } },
         -- { 'n', ']d',         '<Plug>(coc-diagnostic-next)',                                                              { desc = 'next diagnostic' } },
         -- { 'n', '<leader>cm', ':<C-u>CocCommand loader.open<CR>',                                                         { desc = 'commands' } },
