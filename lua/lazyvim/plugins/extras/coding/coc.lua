@@ -165,7 +165,7 @@ return {
       vim.keymap.set("n", "<leader>cA", "<Plug>(coc-codeaction-source)",
         { silent = true, nowait = true, desc = "Source Action" })
 
-      vim.keymap.set("n", "<leader>cq", "<Plug>(coc-fix-current)", { silent = true, nowait = true })
+      vim.keymap.set("n", "<leader>cq", "<Plug>(coc-fix-current)", { silent = true, nowait = true, desc = "Fix Current" })
 
       vim.keymap.set("n", "<leader>cm", ":<C-u>CocCommand loader.open<CR>",
         { silent = true, nowait = true, desc = "Loader" })
