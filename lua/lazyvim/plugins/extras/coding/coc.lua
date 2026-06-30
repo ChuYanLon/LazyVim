@@ -221,6 +221,14 @@ return {
       vim.keymap.set('n', '<leader>pr', ':CocRestart<CR>', { desc = 'restart', silent = true, nowait = true })
 
 
+      vim.keymap.set('n', 'gd', '<Plug>(coc-definition)', { desc = 'Go to definition', silent = true, nowait = true })
+      vim.keymap.set('n', 'gy', '<Plug>(coc-type-definition)',
+        { desc = 'Go to type definition', silent = true, nowait = true })
+      vim.keymap.set('n', 'gI', '<Plug>(coc-implementation)',
+        { desc = 'Go to implementation', silent = true, nowait = true })
+      vim.keymap.set('n', 'gr', '<Plug>(coc-references)', { desc = 'Find references', silent = true, nowait = true })
+
+
 
       create_keys({
         { "i", "<C-j>",      'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', { silent = true, noremap = true, expr = true, replace_keycodes = false } },
@@ -228,10 +236,10 @@ return {
         { "i", "<Cr>",       [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]],       { silent = true, noremap = true, expr = true, replace_keycodes = false } },
         { "n", "K",          '<CMD>lua _G.show_docs()<CR>',                                                              { silent = true } },
         { "i", "<c-i>",      "coc#refresh()",                                                                            { silent = true, expr = true } },
-        { 'n', 'gd',         '<Plug>(coc-definition)',                                                                   { desc = 'Go to definition' } },
-        { 'n', 'gy',         '<Plug>(coc-type-definition)',                                                              { desc = 'Go to type definition' } },
-        { 'n', 'gi',         '<Plug>(coc-implementation)',                                                               { desc = 'Go to implementation' } },
-        { 'n', 'gr',         '<Plug>(coc-references)',                                                                   { desc = 'Find references' } },
+        -- { 'n', 'gd',         '<Plug>(coc-definition)',                                                                   { desc = 'Go to definition' } },
+        -- { 'n', 'gy',         '<Plug>(coc-type-definition)',                                                              { desc = 'Go to type definition' } },
+        -- { 'n', 'gi',         '<Plug>(coc-implementation)',                                                               { desc = 'Go to implementation' } },
+        -- { 'n', 'gr',         '<Plug>(coc-references)',                                                                   { desc = 'Find references' } },
         { 'n', '<leader>cr', '<Plug>(coc-codeaction-refactor)',                                                          { desc = 'refactor' } },
         { 'x', '<leader>cr', '<Plug>(coc-codeaction-refactor-selected)',                                                 { desc = 'refactor' } },
         -- { 'n', '<leader>cf', ':Format<CR>',                                                                              { desc = 'format' } },
