@@ -37,6 +37,7 @@ return {
         {
           mode = { "n", "x" },
           { "<leader>p", desc = "package", icon = "󰏖 " },
+          { "<leader>t", desc = "telegram", icon = "  " },
         },
       },
     },
