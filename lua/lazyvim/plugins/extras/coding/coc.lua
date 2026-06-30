@@ -9,22 +9,6 @@ local function merge(left, right)
   return result
 end
 
-local function create_keys(maps, opts)
-  opts = opts or {}
-  for _, map in pairs(maps) do
-    local default_opts = { silent = true, nowait = true }
-    map[4] = map[4] or {}
-    map[4] = merge(default_opts, merge(opts, map[4]))
-
-    if map[4].buffer then
-      map[4].buffer = nil
-      vim.api.nvim_buf_set_keymap(0, map[1], map[2], map[3], map[4])
-    else
-      vim.keymap.set(map[1], map[2], map[3], map[4])
-    end
-  end
-end
-
 return {
   { "neovim/nvim-lspconfig",  optional = true, enabled = false },
   { "hrsh7th/nvim-cmp",       optional = true, enabled = false },
@@ -171,30 +155,35 @@ return {
         desc = "Setup formatexpr specified filetype(s)."
       })
 
-      vim.keymap.set("n", "<leader>cl", ":<C-u>CocInfo<Cr>", { silent = true, nowait = true })
+      vim.keymap.set("n", "<leader>cl", ":<C-u>CocInfo<Cr>", { silent = true, nowait = true, desc = "Lsp Info" })
 
-      vim.keymap.set("n", "<leader>cc", "<Plug>(coc-codelens-action)", { silent = true, nowait = true })
-      vim.keymap.set("n", "<leader>ca", "<Plug>(coc-codeaction-line)", { silent = true, nowait = true })
-      vim.keymap.set("x", "<leader>ca", "<Plug>(coc-codeaction-selected)", { silent = true, nowait = true })
-      vim.keymap.set("n", "<leader>cA", "<Plug>(coc-codeaction-source)", { silent = true, nowait = true })
+      vim.keymap.set("n", "<leader>cc", "<Plug>(coc-codelens-action)",
+        { silent = true, nowait = true, desc = "Run Codelens" })
+      vim.keymap.set("n", "<leader>ca", "<Plug>(coc-codeaction-line)",
+        { silent = true, nowait = true, desc = "Code Action" })
+      vim.keymap.set("x", "<leader>ca", "<Plug>(coc-codeaction-selected)",
+        { silent = true, nowait = true, desc = "Code Action" })
+      vim.keymap.set("n", "<leader>cA", "<Plug>(coc-codeaction-source)",
+        { silent = true, nowait = true, desc = "Source Action" })
 
       vim.keymap.set("n", "<leader>cq", "<Plug>(coc-fix-current)", { silent = true, nowait = true })
 
-      vim.keymap.set("n", "<leader>cm", ":<C-u>CocCommand loader.open<CR>", { silent = true, nowait = true })
+      vim.keymap.set("n", "<leader>cm", ":<C-u>CocCommand loader.open<CR>",
+        { silent = true, nowait = true, desc = "Loader" })
 
 
-      vim.keymap.set("n", "<leader>cf", ":Format<CR>", { silent = true, nowait = true })
-      vim.keymap.set("x", "<leader>cf", "<Plug>(coc-format-selected)", { silent = true, nowait = true })
+      vim.keymap.set("n", "<leader>cf", ":Format<CR>", { silent = true, nowait = true, desc = "Format" })
+      vim.keymap.set("x", "<leader>cf", "<Plug>(coc-format-selected)", { silent = true, nowait = true, desc = "Format" })
 
-      vim.keymap.set("n", "<leader>cr", "<Plug>(coc-rename)", { silent = true, nowait = true })
-
-
-      vim.keymap.set("n", "<leader>cs", ":<C-u>CocOutline<CR>", { silent = true, nowait = true })
-      vim.keymap.set("n", "<leader>cS", ":<C-u>CocList outline<CR>", { silent = true, nowait = true })
+      vim.keymap.set("n", "<leader>cr", "<Plug>(coc-rename)", { silent = true, nowait = true, desc = "Rename" })
 
 
-      vim.keymap.set("n", "[d", "<Plug>(coc-diagnostic-prev)", { silent = true, nowait = true })
-      vim.keymap.set("n", "]d", "<Plug>(coc-diagnostic-next)", { silent = true, nowait = true })
+      vim.keymap.set("n", "<leader>cs", ":<C-u>CocOutline<CR>", { silent = true, nowait = true, desc = "Symbols" })
+      vim.keymap.set("n", "<leader>cS", ":<C-u>CocList outline<CR>", { silent = true, nowait = true, desc = "Symbols" })
+
+
+      vim.keymap.set("n", "[d", "<Plug>(coc-diagnostic-prev)", { silent = true, nowait = true, desc = "Prev Diagnostic" })
+      vim.keymap.set("n", "]d", "<Plug>(coc-diagnostic-next)", { silent = true, nowait = true, desc = "Next Diagnostic" })
 
 
       vim.keymap.set('n', '<C-n>', 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',
@@ -223,12 +212,12 @@ return {
       vim.keymap.set('n', '<leader>pr', ':CocRestart<CR>', { desc = 'restart', silent = true, nowait = true })
 
 
-      vim.keymap.set('n', 'gd', '<Plug>(coc-definition)', { desc = 'Go to definition', silent = true, nowait = true })
+      vim.keymap.set('n', 'gd', '<Plug>(coc-definition)', { desc = 'Goto Definition', silent = true, nowait = true })
       vim.keymap.set('n', 'gy', '<Plug>(coc-type-definition)',
-        { desc = 'Go to type definition', silent = true, nowait = true })
+        { desc = 'Goto T[y]pe Definition', silent = true, nowait = true })
       vim.keymap.set('n', 'gI', '<Plug>(coc-implementation)',
-        { desc = 'Go to implementation', silent = true, nowait = true })
-      vim.keymap.set('n', 'gr', '<Plug>(coc-references)', { desc = 'Find references', silent = true, nowait = true })
+        { desc = 'Goto Implementation', silent = true, nowait = true })
+      vim.keymap.set('n', 'gr', '<Plug>(coc-references)', { desc = 'References', silent = true, nowait = true })
 
 
       vim.keymap.set("i", "<C-j>",
@@ -248,51 +237,10 @@ return {
         { desc = 'refactor', silent = true, nowait = true })
 
 
-      vim.keymap.set('n', '<leader>xx', ':<C-u>CocDiagnostics<CR>', { desc = 'diagnostics', silent = true, nowait = true })
+      vim.keymap.set('n', '<leader>xx', ':<C-u>CocDiagnostics<CR>',
+        { desc = 'diagnostics', silent = true, nowait = true })
       vim.keymap.set('n', '<leader>xl', ':<C-u>CocList diagnostics<CR>',
         { desc = 'all diagnostics', silent = true, nowait = true })
-
-
-      create_keys({
-        -- { "i", "<C-j>",      'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', { silent = true, noremap = true, expr = true, replace_keycodes = false } },
-        -- { "i", "<C-k>",      [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]],                                         { silent = true, noremap = true, expr = true, replace_keycodes = false } },
-        -- { "i", "<Cr>",       [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]],       { silent = true, noremap = true, expr = true, replace_keycodes = false } },
-        -- { "n", "K",          '<CMD>lua _G.show_docs()<CR>',                                                              { silent = true } },
-        -- { "i", "<c-i>",      "coc#refresh()",                                                                            { silent = true, expr = true } },
-        -- { 'n', 'gd',         '<Plug>(coc-definition)',                                                                   { desc = 'Go to definition' } },
-        -- { 'n', 'gy',         '<Plug>(coc-type-definition)',                                                              { desc = 'Go to type definition' } },
-        -- { 'n', 'gi',         '<Plug>(coc-implementation)',                                                               { desc = 'Go to implementation' } },
-        -- { 'n', 'gr',         '<Plug>(coc-references)',                                                                   { desc = 'Find references' } },
-        -- { 'n', '<leader>cr', '<Plug>(coc-codeaction-refactor)',          { desc = 'refactor' } },
-        -- { 'x', '<leader>cr', '<Plug>(coc-codeaction-refactor-selected)', { desc = 'refactor' } },
-        -- { 'n', '<leader>cf', ':Format<CR>',                                                                              { desc = 'format' } },
-        -- { 'x', '<leader>cf', '<Plug>(coc-format-selected)',                                                              { desc = 'format' } },
-        -- { 'n', '<leader>ca', '<Plug>(coc-codeaction-line)',                                                              { desc = 'action' } },
-        -- { 'x', '<leader>ca', '<Plug>(coc-codeaction-selected)',                                                          { desc = 'action' } },
-        -- { 'n', '<leader>cA', '<Plug>(coc-codeaction-source)',                                                            { desc = 'sourceAction' } },
-        -- { 'n', '<leader>cl', '<Plug>(coc-codelens-action)',                                                              { desc = 'codelensAction' } },
-        -- { 'n', '<leader>cn', '<Plug>(coc-rename)',                                                                       { desc = 'rename' } },
-        -- { 'n', '<space>cs',  ':<C-u>CocOutline<CR>',                                                                     { desc = 'outline' } },
-        -- { 'n', '<leader>cq', '<Plug>(coc-fix-current)', { desc = 'fix' } },
-        -- { 'n', '<space>xx',  ':<C-u>CocDiagnostics<CR>',      { desc = 'diagnostics' } },
-        -- { 'n', '<space>xs',  ':<C-u>CocList diagnostics<CR>', { desc = 'all diagnostics' } },
-        -- { 'n', '[d',         '<Plug>(coc-diagnostic-prev)',                                                              { desc = 'previous diagnostic' } },
-        -- { 'n', ']d',         '<Plug>(coc-diagnostic-next)',                                                              { desc = 'next diagnostic' } },
-        -- { 'n', '<leader>cm', ':<C-u>CocCommand loader.open<CR>',                                                         { desc = 'commands' } },
-        -- { 'n', '<C-n>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',                                   { expr = true, desc = 'Scroll down in Coc float' } },
-        -- { 'n', '<C-p>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Scroll up in Coc float' } },
-        -- { 'i', '<C-n>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"',                     { expr = true, desc = 'Insert mode: Scroll down float' } },
-        -- { 'i', '<C-p>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"',                      { expr = true, desc = 'Insert mode: Scroll up float' } },
-        -- { 'v', '<C-n>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',                                   { expr = true, desc = 'Visual mode: Scroll down float' } },
-        -- { 'v', '<C-p>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Visual mode: Scroll up float' } },
-        -- { 'n', 'mm',         '<Plug>(coc-translator-p)',                                                                 { desc = 'translate' } },
-        -- { 'v', 'mm',         '<Plug>(coc-translator-pv)',                                                                { desc = 'translate' } },
-        -- { 'n', '<leader>pc', ':<C-u>CocList commands<CR>',                                                               { desc = 'commands' } },
-        -- { 'n', '<leader>pl', ':<C-u>CocList<CR>',                                                                        { desc = 'List' } },
-        -- { 'n', '<leader>ps', ':<C-u>CocList services<CR>',                                                               { desc = 'services' } },
-        -- { 'n', '<leader>pe', ':<C-u>CocList extensions<CR>',                                                             { desc = 'extensions' } },
-        -- { 'n', '<leader>pr', ':CocRestart<CR>',                                                                          { desc = 'restart' } },
-      })
     end,
   },
 }
