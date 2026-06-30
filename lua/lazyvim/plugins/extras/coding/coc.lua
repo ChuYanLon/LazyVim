@@ -169,7 +169,19 @@ return {
         command = "setl formatexpr=CocAction('formatSelected')",
         desc = "Setup formatexpr specified filetype(s)."
       })
+
       vim.keymap.set("n", "<leader>cl", ":<C-u>CocInfo<Cr>", { silent = true, nowait = true })
+
+      vim.keymap.set("n", "<leader>cc", "<Plug>(coc-codelens-action)", { silent = true, nowait = true })
+      vim.keymap.set("n", "<leader>ca", "<Plug>(coc-codeaction-line)", { silent = true, nowait = true })
+      vim.keymap.set("x", "<leader>ca", "<Plug>(coc-codeaction-selected)", { silent = true, nowait = true })
+      vim.keymap.set("n", "<leader>cA", "<Plug>(coc-codeaction-source)", { silent = true, nowait = true })
+
+
+      vim.keymap.set("n", "<leader>cf", ":Format<CR>", { silent = true, nowait = true })
+      vim.keymap.set("x", "<leader>cf", "<Plug>(coc-format-selected)", { silent = true, nowait = true })
+
+
       create_keys({
         { "i", "<C-j>",      'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', { silent = true, noremap = true, expr = true, replace_keycodes = false } },
         { "i", "<C-k>",      [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]],                                         { silent = true, noremap = true, expr = true, replace_keycodes = false } },
@@ -182,11 +194,11 @@ return {
         { 'n', 'gr',         '<Plug>(coc-references)',                                                                   { desc = 'Find references' } },
         { 'n', '<leader>cr', '<Plug>(coc-codeaction-refactor)',                                                          { desc = 'refactor' } },
         { 'x', '<leader>cr', '<Plug>(coc-codeaction-refactor-selected)',                                                 { desc = 'refactor' } },
-        { 'n', '<leader>cf', ':Format<CR>',                                                                              { desc = 'format' } },
-        { 'x', '<leader>cf', '<Plug>(coc-format-selected)',                                                              { desc = 'format' } },
-        { 'n', '<leader>ca', '<Plug>(coc-codeaction-line)',                                                              { desc = 'action' } },
-        { 'x', '<leader>ca', '<Plug>(coc-codeaction-selected)',                                                          { desc = 'action' } },
-        { 'n', '<leader>cA', '<Plug>(coc-codeaction-source)',                                                            { desc = 'sourceAction' } },
+        -- { 'n', '<leader>cf', ':Format<CR>',                                                                              { desc = 'format' } },
+        -- { 'x', '<leader>cf', '<Plug>(coc-format-selected)',                                                              { desc = 'format' } },
+        -- { 'n', '<leader>ca', '<Plug>(coc-codeaction-line)',                                                              { desc = 'action' } },
+        -- { 'x', '<leader>ca', '<Plug>(coc-codeaction-selected)',                                                          { desc = 'action' } },
+        -- { 'n', '<leader>cA', '<Plug>(coc-codeaction-source)',                                                            { desc = 'sourceAction' } },
         -- { 'n', '<leader>cl', '<Plug>(coc-codelens-action)',                                                              { desc = 'codelensAction' } },
         { 'n', '<leader>cn', '<Plug>(coc-rename)',                                                                       { desc = 'rename' } },
         { 'n', '<space>cs',  ':<C-u>CocOutline<CR>',                                                                     { desc = 'outline' } },
