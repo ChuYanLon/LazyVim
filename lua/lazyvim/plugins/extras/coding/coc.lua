@@ -231,16 +231,16 @@ return {
       vim.keymap.set("i", "<c-i>", "coc#refresh()", { silent = true, expr = true, nowait = true })
 
 
-      vim.keymap.set('n', '<leader>cr', '<Plug>(coc-codeaction-refactor)',
+      vim.keymap.set('n', '<leader>r', '<Plug>(coc-codeaction-refactor)',
         { desc = 'refactor', silent = true, nowait = true })
-      vim.keymap.set('x', '<leader>cr', '<Plug>(coc-codeaction-refactor-selected)',
+      vim.keymap.set('x', '<leader>r', '<Plug>(coc-codeaction-refactor-selected)',
         { desc = 'refactor', silent = true, nowait = true })
 
 
       vim.keymap.set('n', '<leader>xx', ':<C-u>CocDiagnostics<CR>',
-        { desc = 'diagnostics', silent = true, nowait = true })
+        { desc = 'Buffer Diagnostic', silent = true, nowait = true })
       vim.keymap.set('n', '<leader>xl', ':<C-u>CocList diagnostics<CR>',
-        { desc = 'all diagnostics', silent = true, nowait = true })
+        { desc = 'Diagnostics', silent = true, nowait = true })
     end,
   },
 }
