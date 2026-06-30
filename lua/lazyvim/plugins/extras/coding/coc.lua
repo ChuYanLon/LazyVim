@@ -208,6 +208,20 @@ return {
       vim.keymap.set('v', '<C-p>', 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',
         { silent = true, nowait = true, expr = true, desc = 'Visual mode: Scroll up float' })
 
+
+      vim.keymap.set('n', 'mm', '<Plug>(coc-translator-p)', { desc = 'translate', silent = true, nowait = true })
+      vim.keymap.set('v', 'mm', '<Plug>(coc-translator-pv)', { desc = 'translate', silent = true, nowait = true })
+
+
+      vim.keymap.set('n', '<leader>pc', ':<C-u>CocList commands<CR>', { desc = 'commands', silent = true, nowait = true })
+      vim.keymap.set('n', '<leader>pl', ':<C-u>CocList<CR>', { desc = 'List', silent = true, nowait = true })
+      vim.keymap.set('n', '<leader>ps', ':<C-u>CocList services<CR>', { desc = 'services', silent = true, nowait = true })
+      vim.keymap.set('n', '<leader>pe', ':<C-u>CocList extensions<CR>',
+        { desc = 'extensions', silent = true, nowait = true })
+      vim.keymap.set('n', '<leader>pr', ':CocRestart<CR>', { desc = 'restart', silent = true, nowait = true })
+
+
+
       create_keys({
         { "i", "<C-j>",      'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', { silent = true, noremap = true, expr = true, replace_keycodes = false } },
         { "i", "<C-k>",      [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]],                                         { silent = true, noremap = true, expr = true, replace_keycodes = false } },
@@ -240,13 +254,13 @@ return {
         -- { 'i', '<C-p>',      'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"',                      { expr = true, desc = 'Insert mode: Scroll up float' } },
         -- { 'v', '<C-n>',      'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-n>"',                                   { expr = true, desc = 'Visual mode: Scroll down float' } },
         -- { 'v', '<C-p>',      'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-p>"',                                   { expr = true, desc = 'Visual mode: Scroll up float' } },
-        { 'n', 'mm',         '<Plug>(coc-translator-p)',                                                                 { desc = 'translate' } },
-        { 'v', 'mm',         '<Plug>(coc-translator-pv)',                                                                { desc = 'translate' } },
-        { 'n', '<leader>pc', ':<C-u>CocList commands<CR>',                                                               { desc = 'commands' } },
-        { 'n', '<leader>pl', ':<C-u>CocList<CR>',                                                                        { desc = 'List' } },
-        { 'n', '<leader>ps', ':<C-u>CocList services<CR>',                                                               { desc = 'services' } },
-        { 'n', '<leader>pe', ':<C-u>CocList extensions<CR>',                                                             { desc = 'extensions' } },
-        { 'n', '<leader>pr', ':CocRestart<CR>',                                                                          { desc = 'restart' } },
+        -- { 'n', 'mm',         '<Plug>(coc-translator-p)',                                                                 { desc = 'translate' } },
+        -- { 'v', 'mm',         '<Plug>(coc-translator-pv)',                                                                { desc = 'translate' } },
+        -- { 'n', '<leader>pc', ':<C-u>CocList commands<CR>',                                                               { desc = 'commands' } },
+        -- { 'n', '<leader>pl', ':<C-u>CocList<CR>',                                                                        { desc = 'List' } },
+        -- { 'n', '<leader>ps', ':<C-u>CocList services<CR>',                                                               { desc = 'services' } },
+        -- { 'n', '<leader>pe', ':<C-u>CocList extensions<CR>',                                                             { desc = 'extensions' } },
+        -- { 'n', '<leader>pr', ':CocRestart<CR>',                                                                          { desc = 'restart' } },
       })
     end,
   },
