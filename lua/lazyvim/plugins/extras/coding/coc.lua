@@ -10,18 +10,83 @@ local function merge(left, right)
 end
 
 return {
-  { "neovim/nvim-lspconfig",     optional = true, enabled = false },
-  { "hrsh7th/nvim-cmp",          optional = true, enabled = false },
-  { "hrsh7th/cmp-nvim-lsp",      optional = true, enabled = false },
-  { "saghen/blink.cmp",          optional = true, enabled = false },
-  { "stevearc/conform.nvim",     optional = true, enabled = false },
-  { "mfussenegger/nvim-lint",    optional = true, enabled = false },
-  { "catppuccin/nvim",           optional = true, enabled = false },
-  { "mason-org/mason.nvim",      optional = true, enabled = false },
-  { "folke/lazydev.nvim",        optional = true, enabled = false },
-  { "folke/noice.nvim",          optional = true, enabled = false },
-  { "folke/trouble.nvim",        optional = true, enabled = false },
-  { "nvim-lualine/lualine.nvim", optional = true, enabled = false },
+  { "neovim/nvim-lspconfig",  optional = true, enabled = false },
+  { "hrsh7th/nvim-cmp",       optional = true, enabled = false },
+  { "hrsh7th/cmp-nvim-lsp",   optional = true, enabled = false },
+  { "saghen/blink.cmp",       optional = true, enabled = false },
+  { "stevearc/conform.nvim",  optional = true, enabled = false },
+  { "mfussenegger/nvim-lint", optional = true, enabled = false },
+  { "catppuccin/nvim",        optional = true, enabled = false },
+  { "mason-org/mason.nvim",   optional = true, enabled = false },
+  { "folke/lazydev.nvim",     optional = true, enabled = false },
+  { "folke/noice.nvim",       optional = true, enabled = false },
+  { "folke/trouble.nvim",     optional = true, enabled = false },
+  {
+    "nvim-lualine/lualine.nvim",
+    optional = true,
+    opts = function(_, opts)
+      local icons = LazyVim.config.icons.diagnostics
+      for i, item in ipairs(opts.sections.lualine_c) do
+        if type(item) == "table" and item[1] == "diagnostics" then
+          opts.sections.lualine_c[i] = {
+            function(self)
+              local info = vim.b.coc_diagnostic_info
+              if not info then
+                return ""
+              end
+              local parts = {}
+              if info.error and info.error > 0 then
+                table.insert(parts, LazyVim.lualine.format(self, icons.Error .. info.error, "DiagnosticError"))
+              end
+              if info.warning and info.warning > 0 then
+                table.insert(parts, LazyVim.lualine.format(self, icons.Warn .. info.warning, "DiagnosticWarn"))
+              end
+              if info.information and info.information > 0 then
+                table.insert(parts, LazyVim.lualine.format(self, icons.Info .. info.information, "DiagnosticInfo"))
+              end
+              if info.hint and info.hint > 0 then
+                table.insert(parts, LazyVim.lualine.format(self, icons.Hint .. info.hint, "DiagnosticHint"))
+              end
+              return table.concat(parts, " ")
+            end,
+            cond = function()
+              local info = vim.b.coc_diagnostic_info
+              return info ~= nil
+                  and ((info.error or 0) > 0
+                    or (info.warning or 0) > 0
+                    or (info.information or 0) > 0
+                    or (info.hint or 0) > 0)
+            end,
+          }
+          break
+        end
+      end
+      table.insert(opts.sections.lualine_x, {
+        function()
+          local status = vim.g.coc_status
+          if type(status) ~= "string" then
+            return ""
+          end
+          status = vim.trim(status)
+          if status == "" then
+            return ""
+          end
+          return " " .. status:gsub("%%", "%%%%"):gsub("[<>]", { ["<"] = "＜", [">"] = "＞" })
+        end,
+        cond = function()
+          local status = vim.g.coc_status
+          return type(status) == "string" and vim.trim(status) ~= ""
+        end,
+      })
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "CocStatusChange",
+        group = vim.api.nvim_create_augroup("lazyvim_coc_lualine", { clear = true }),
+        callback = function()
+          pcall(require("lualine").refresh)
+        end,
+      })
+    end,
+  },
   {
     "akinsho/bufferline.nvim",
     optional = true,
