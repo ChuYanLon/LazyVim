@@ -123,12 +123,12 @@ return {
     event = { "InsertEnter", "User LazyFile" },
     config = function()
       vim.g.coc_global_extensions = merge(
-        { "coc-json", "coc-vscode-loader", "coc-snippets" },
-        vim.g.coc_global_extensions or {}
+        vim.g.coc_global_extensions or {},
+        { "coc-json", "coc-vscode-loader", "coc-snippets" }
       )
       vim.g.coc_loader_global_extensions = merge(
-        {},
-        vim.g.coc_loader_global_extensions or {}
+        vim.g.coc_loader_global_extensions or {},
+        {}
       )
       function _G.check_back_space()
         local col = vim.fn.col('.') - 1
