@@ -78,11 +78,19 @@ return {
           return type(status) == "string" and vim.trim(status) ~= ""
         end,
       })
+      local coc_lualine_timer
       vim.api.nvim_create_autocmd("User", {
         pattern = "CocStatusChange",
         group = vim.api.nvim_create_augroup("lazyvim_coc_lualine", { clear = true }),
         callback = function()
-          pcall(require("lualine").refresh)
+          if coc_lualine_timer then
+            coc_lualine_timer:close()
+            coc_lualine_timer = nil
+          end
+          coc_lualine_timer = vim.defer_fn(function()
+            coc_lualine_timer = nil
+            pcall(require("lualine").refresh)
+          end, 100)
         end,
       })
     end,
