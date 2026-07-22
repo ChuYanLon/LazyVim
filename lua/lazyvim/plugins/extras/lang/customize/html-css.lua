@@ -1,3 +1,17 @@
+local function list_insert_unique(list, items)
+  local set = {}
+  for _, item in ipairs(list) do
+    set[item] = true
+  end
+  for _, item in ipairs(items) do
+    if not set[item] then
+      table.insert(list, item)
+      set[item] = true
+    end
+  end
+  return list
+end
+
 return {
   recommended = function()
     return LazyVim.extras.wants({
@@ -10,7 +24,7 @@ return {
     optional = true,
     opts = function(_, opts)
       if opts.ensure_installed ~= "all" then
-        opts.ensure_installed = require("utils").list_insert_unique(opts.ensure_installed, { "html", "css", "scss" })
+        opts.ensure_installed = list_insert_unique(opts.ensure_installed, { "html", "css", "scss" })
       end
       vim.treesitter.language.register("scss", "less")
       vim.treesitter.language.register("scss", "postcss")
